@@ -26,7 +26,7 @@
       {% for n in demo_slides %}
         <div class="slideshow__slide{% if forloop.first %} is-active{% endif %}" data-slideshow-slide tabindex="0" aria-hidden="{% unless forloop.first %}true{% else %}false{% endunless %}">
           <img
-            src="../assets/logo.svg"
+            src="{{ 'logo.svg' | asset_url }}"
             alt="Demo slide {{ n }}"
             class="slideshow__image"
             loading="lazy"
@@ -38,8 +38,8 @@
     {% endif %}
   </div>
   <div class="slideshow__controls">
-    <button class="slideshow__button" data-slideshow-prev aria-label="Previous slide" tabindex="0">&larr;</button>
-    <button class="slideshow__button" data-slideshow-next aria-label="Next slide" tabindex="0">&rarr;</button>
+    <button class="slideshow__button" data-slideshow-prev aria-label="Previous slide" tabindex="0">←</button>
+    <button class="slideshow__button" data-slideshow-next aria-label="Next slide" tabindex="0">→</button>
   </div>
   <div class="slideshow__dots">
     {% if section.blocks.size > 0 %}
