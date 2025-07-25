@@ -47,7 +47,7 @@
 }
 {% endschema %}
 
-{% comment %} Styles for slideshow {% endcomment %}
+{% comment %} Styles for slideshow with fade animation and dots {% endcomment %}
 <style>
   .slideshow-container {
     max-width: 100%;
@@ -58,35 +58,74 @@
   .slide {
     display: none;
     width: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
   }
   .slide.active {
     display: block;
+    opacity: 1;
   }
   .slide img {
     width: 100%;
     height: auto;
+    object-fit: cover;
   }
   .slide-content {
     position: absolute;
-    bottom: 20px;
-    left: 20px;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
     color: white;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+    animation: slideUp 0.8s ease-out;
   }
-  .prev, .next {
-    cursor: pointer;
+  .slide-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+    animation-delay: 0.3s;
+  }
+  .slide-content p {
+    font-size: 1.2rem;
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+    animation-delay: 0.5s;
+  }
+  .dots-container {
+    text-align: center;
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 16px;
-    color: white;
-    font-weight: bold;
-    font-size: 18px;
-    background-color: rgba(0,0,0,0.5);
-    user-select: none;
+    bottom: 20px;
+    width: 100%;
   }
-  .next {
-    right: 0;
+  .dot {
+    cursor: pointer;
+    height: 12px;
+    width: 12px;
+    margin: 0 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+  }
+  .dot.active {
+    background-color: #fff;
+    transform: scale(1.2);
+  }
+  @keyframes slideUp {
+    from {
+      transform: translateX(-50%) translateY(50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
 </style>
 
@@ -110,31 +149,43 @@
       </div>
     </div>
   {% endif %}
-  <a class="prev" onclick="changeSlide(-1)">&#10094;</a>
-  <a class="next" onclick="changeSlide(1)">&#10095;</a>
+  <div class="dots-container">
+    {% if section.settings.image_1 %}
+      <span class="dot" onclick="currentSlide(1)"></span>
+    {% endif %}
+    {% if section.settings.image_2 %}
+      <span class="dot" onclick="currentSlide(2)"></span>
+    {% endif %}
+  </div>
 </div>
 
-{% comment %} JavaScript for slideshow functionality {% endcomment %}
+{% comment %} JavaScript for slideshow functionality with dots {% endcomment %}
 <script>
   let slideIndex = 1;
   showSlides(slideIndex);
 
-  function changeSlide(n) {
-    showSlides(slideIndex += n);
+  function currentSlide(n) {
+    showSlides(slideIndex = n);
   }
 
   function showSlides(n) {
     let slides = document.getElementsByClassName("slide");
-    if (n > slides.length) {slideIndex = 1}
-    if (n < 1) {slideIndex = slides.length}
+    let dots = document.getElementsByClassName("dot");
+    if (n > slides.length) { slideIndex = 1 }
+    if (n < 1) { slideIndex = slides.length }
     for (let i = 0; i < slides.length; i++) {
       slides[i].classList.remove("active");
     }
+    for (let i = 0; i < dots.length; i++) {
+      dots[i].classList.remove("active");
+    }
     slides[slideIndex-1].classList.add("active");
+    dots[slideIndex-1].classList.add("active");
   }
 
   // Auto slide
   setInterval(() => {
-    changeSlide(1);
+    slideIndex++;
+    showSlides(slideIndex);
   }, 5000);
 </script>
