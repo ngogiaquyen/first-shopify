@@ -15,7 +15,13 @@
     },
     "slideshow": {
       "type": "slideshow",
-      "settings": {}
+      "settings": {
+        "image_1": "shopify://shop_images/A2ec6174033224f6ba3db33f98ed1b7afW.webp",
+        "title_1": "Slide 1",
+        "subtitle_1": "Description for slide 1",
+        "title_2": "Slide 2",
+        "subtitle_2": "Description for slide 2"
+      }
     }
   },
   "order": [
