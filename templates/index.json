@@ -9,10 +9,6 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "banner",
-      "settings": {}
-    },
     "slideshow": {
       "type": "slideshow",
       "settings": {
@@ -23,10 +19,14 @@
         "title_2": "Slide 2",
         "subtitle_2": "Description for slide 2"
       }
+    },
+    "main": {
+      "type": "banner",
+      "settings": {}
     }
   },
   "order": [
-    "main",
-    "slideshow"
+    "slideshow",
+    "main"
   ]
 }
