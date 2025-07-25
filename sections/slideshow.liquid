@@ -1,226 +1,140 @@
-{% comment %}
-  Simple slideshow with 3 images, editable in theme editor.
-{% endcomment %}
-
-<div class="slideshow" aria-label="Slideshow">
-  <div class="slideshow__track" data-slideshow-track>
-    {% if section.blocks.size > 0 %}
-      {% for block in section.blocks %}
-        <div class="slideshow__slide{% if forloop.first %} is-active{% endif %}" data-slideshow-slide tabindex="0" aria-hidden="{% unless forloop.first %}true{% else %}false{% endunless %}">
-          {% if block.settings.image != blank %}
-            <img
-              src="{{ block.settings.image | image_url: width: 1200 }}"
-              alt="{{ block.settings.alt | escape }}"
-              class="slideshow__image"
-              loading="lazy"
-              width="1200"
-              height="500"
-            >
-          {% else %}
-            <div class="slideshow__placeholder"></div>
-          {% endif %}
-        </div>
-      {% endfor %}
-    {% else %}
-      {% assign demo_slides = "1,2,3" | split: "," %}
-      {% for n in demo_slides %}
-        <div class="slideshow__slide{% if forloop.first %} is-active{% endif %}" data-slideshow-slide tabindex="0" aria-hidden="{% unless forloop.first %}true{% else %}false{% endunless %}">
-          <img
-            src="{{ 'logo.svg' | asset_url }}"
-            alt="Demo slide {{ n }}"
-            class="slideshow__image"
-            loading="lazy"
-            width="1200"
-            height="500"
-          >
-        </div>
-      {% endfor %}
-    {% endif %}
-  </div>
-  <div class="slideshow__controls">
-    <button class="slideshow__button" data-slideshow-prev aria-label="Previous slide" tabindex="0">←</button>
-    <button class="slideshow__button" data-slideshow-next aria-label="Next slide" tabindex="0">→</button>
-  </div>
-  <div class="slideshow__dots">
-    {% if section.blocks.size > 0 %}
-      {% for block in section.blocks %}
-        <button class="slideshow__dot{% if forloop.first %} is-active{% endif %}" data-slideshow-dot="{{ forloop.index0 }}" aria-label="Go to slide {{ forloop.index }}" tabindex="0"></button>
-      {% endfor %}
-    {% else %}
-      {% for n in demo_slides %}
-        <button class="slideshow__dot{% if forloop.first %} is-active{% endif %}" data-slideshow-dot="{{ forloop.index0 }}" aria-label="Go to slide {{ forloop.index }}" tabindex="0"></button>
-      {% endfor %}
-    {% endif %}
-  </div>
-</div>
-
-{% javascript %}
-document.addEventListener('DOMContentLoaded', () => {
-  const track = document.querySelector('[data-slideshow-track]');
-  const slides = Array.from(document.querySelectorAll('[data-slideshow-slide]'));
-  const dots = Array.from(document.querySelectorAll('[data-slideshow-dot]'));
-  const prev = document.querySelector('[data-slideshow-prev]');
-  const next = document.querySelector('[data-slideshow-next]');
-  let current = 0;
-
-  function showSlide(idx) {
-    slides.forEach((slide, i) => {
-      slide.classList.toggle('is-active', i === idx);
-      slide.setAttribute('aria-hidden', i !== idx);
-    });
-    dots.forEach((dot, i) => {
-      dot.classList.toggle('is-active', i === idx);
-    });
-    current = idx;
-  }
-
-  prev?.addEventListener('click', () => {
-    showSlide((current - 1 + slides.length) % slides.length);
-  });
-
-  next?.addEventListener('click', () => {
-    showSlide((current + 1) % slides.length);
-  });
-
-  dots.forEach((dot, i) => {
-    dot.addEventListener('click', () => showSlide(i));
-  });
-});
-{% endjavascript %}
-
-{% stylesheet %}
-  .slideshow {
-    position: relative;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto 2rem;
-    overflow: hidden;
-    border-radius: 1rem;
-    background: var(--color-background, #f6f6f7);
-  }
-  .slideshow__track {
-    display: flex;
-    transition: transform 0.5s;
-  }
-  .slideshow__slide {
-    min-width: 100%;
-    display: none;
-    justify-content: center;
-    align-items: center;
-    height: 500px;
-    background: #e5e5e5;
-    position: relative;
-  }
-  .slideshow__slide.is-active {
-    display: flex;
-  }
-  .slideshow__image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 1rem;
-  }
-  .slideshow__placeholder {
-    width: 100%;
-    height: 100%;
-    background: #ddd;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #888;
-    font-size: 2rem;
-  }
-  .slideshow__controls {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: space-between;
-    pointer-events: none;
-    z-index: 2;
-  }
-  .slideshow__button {
-    background: rgba(255,255,255,0.8);
-    border: none;
-    border-radius: 50%;
-    width: 2.5rem;
-    height: 2.5rem;
-    font-size: 1.5rem;
-    cursor: pointer;
-    pointer-events: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 1rem;
-    transition: background 0.2s;
-  }
-  .slideshow__button:focus,
-  .slideshow__button:hover {
-    background: var(--color-accent, #b3d4fc);
-    outline: none;
-  }
-  .slideshow__dots {
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    margin: 1rem 0;
-  }
-  .slideshow__dot {
-    width: 1rem;
-    height: 1rem;
-    border-radius: 50%;
-    border: none;
-    background: #ccc;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  .slideshow__dot.is-active {
-    background: var(--color-accent, #007aff);
-  }
-  @media screen and (max-width: 768px) {
-    .slideshow__slide {
-      height: 220px;
-    }
-    .slideshow__image {
-      border-radius: 0.5rem;
-    }
-  }
-{% endstylesheet %}
-
+{% comment %} Defining schema for Shopify Theme Editor {% endcomment %}
 {% schema %}
 {
   "name": "Slideshow",
-  "settings": [],
-  "blocks": [
+  "settings": [
     {
-      "type": "image",
-      "name": "Slide",
-      "settings": [
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Image"
-        },
-        {
-          "type": "text",
-          "id": "alt",
-          "label": "Alt text"
-        }
-      ]
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Image 1"
+    },
+    {
+      "type": "text",
+      "id": "title_1",
+      "label": "Title 1",
+      "default": "Slide 1"
+    },
+    {
+      "type": "text",
+      "id": "subtitle_1",
+      "label": "Subtitle 1",
+      "default": "Description for slide 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Image 2"
+    },
+    {
+      "type": "text",
+      "id": "title_2",
+      "label": "Title 2",
+      "default": "Slide 2"
+    },
+    {
+      "type": "text",
+      "id": "subtitle_2",
+      "label": "Subtitle 2",
+      "default": "Description for slide 2"
     }
   ],
-  "max_blocks": 3,
   "presets": [
     {
       "name": "Slideshow",
-      "category": "Media",
-      "blocks": [
-        { "type": "image" },
-        { "type": "image" },
-        { "type": "image" }
-      ]
+      "category": "Custom"
     }
   ]
 }
 {% endschema %}
+
+{% comment %} Styles for slideshow {% endcomment %}
+<style>
+  .slideshow-container {
+    max-width: 100%;
+    position: relative;
+    margin: auto;
+    overflow: hidden;
+  }
+  .slide {
+    display: none;
+    width: 100%;
+  }
+  .slide.active {
+    display: block;
+  }
+  .slide img {
+    width: 100%;
+    height: auto;
+  }
+  .slide-content {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  }
+  .prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 16px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    background-color: rgba(0,0,0,0.5);
+    user-select: none;
+  }
+  .next {
+    right: 0;
+  }
+</style>
+
+{% comment %} Slideshow HTML structure {% endcomment %}
+<div class="slideshow-container">
+  {% if section.settings.image_1 %}
+    <div class="slide">
+      <img src="{{ section.settings.image_1 | img_url: 'master' }}" alt="{{ section.settings.title_1 }}">
+      <div class="slide-content">
+        <h2>{{ section.settings.title_1 }}</h2>
+        <p>{{ section.settings.subtitle_1 }}</p>
+      </div>
+    </div>
+  {% endif %}
+  {% if section.settings.image_2 %}
+    <div class="slide">
+      <img src="{{ section.settings.image_2 | img_url: 'master' }}" alt="{{ section.settings.title_2 }}">
+      <div class="slide-content">
+        <h2>{{ section.settings.title_2 }}</h2>
+        <p>{{ section.settings.subtitle_2 }}</p>
+      </div>
+    </div>
+  {% endif %}
+  <a class="prev" onclick="changeSlide(-1)">&#10094;</a>
+  <a class="next" onclick="changeSlide(1)">&#10095;</a>
+</div>
+
+{% comment %} JavaScript for slideshow functionality {% endcomment %}
+<script>
+  let slideIndex = 1;
+  showSlides(slideIndex);
+
+  function changeSlide(n) {
+    showSlides(slideIndex += n);
+  }
+
+  function showSlides(n) {
+    let slides = document.getElementsByClassName("slide");
+    if (n > slides.length) {slideIndex = 1}
+    if (n < 1) {slideIndex = slides.length}
+    for (let i = 0; i < slides.length; i++) {
+      slides[i].classList.remove("active");
+    }
+    slides[slideIndex-1].classList.add("active");
+  }
+
+  // Auto slide
+  setInterval(() => {
+    changeSlide(1);
+  }, 5000);
+</script>
