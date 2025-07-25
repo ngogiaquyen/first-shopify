@@ -139,8 +139,8 @@
       <div class="slide">
         <img src="{{ section.settings.image_1 | img_url: 'master' }}" alt="{{ section.settings.title_1 }}">
         <div class="slide-content">
-          <h2>{{ section.settings.title_1 }}</h2>
-          <p>{{ section.settings.subtitle_1 }}</p>
+          {% comment %} <h2>{{ section.settings.title_1 }}</h2>
+          <p>{{ section.settings.subtitle_1 }}</p> {% endcomment %}
         </div>
       </div>
     {% endif %}
