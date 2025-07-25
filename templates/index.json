@@ -10,11 +10,16 @@
 {
   "sections": {
     "main": {
-      "type": "hello-world",
+      "type": "banner",
+      "settings": {}
+    },
+    "slideshow": {
+      "type": "slideshow",
       "settings": {}
     }
   },
   "order": [
-    "main"
+    "main",
+    "slideshow"
   ]
 }

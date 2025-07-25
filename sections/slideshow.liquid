@@ -1,0 +1,204 @@
+{% comment %}
+  Simple slideshow with 3 images, editable in theme editor.
+{% endcomment %}
+
+<div class="slideshow" aria-label="Slideshow">
+  <div class="slideshow__track" data-slideshow-track>
+    {% for block in section.blocks %}
+      <div class="slideshow__slide{% if forloop.first %} is-active{% endif %}" data-slideshow-slide tabindex="0" aria-hidden="{% unless forloop.first %}true{% else %}false{% endunless %}">
+        {% if block.settings.image != blank %}
+          <img
+            src="{{ block.settings.image | image_url: width: 1200 }}"
+            alt="{{ block.settings.alt | escape }}"
+            class="slideshow__image"
+            loading="lazy"
+            width="1200"
+            height="500"
+          >
+        {% else %}
+          <div class="slideshow__placeholder"></div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+  <div class="slideshow__controls">
+    <button class="slideshow__button" data-slideshow-prev aria-label="Previous slide" tabindex="0">&larr;</button>
+    <button class="slideshow__button" data-slideshow-next aria-label="Next slide" tabindex="0">&rarr;</button>
+  </div>
+  <div class="slideshow__dots">
+    {% for block in section.blocks %}
+      <button class="slideshow__dot{% if forloop.first %} is-active{% endif %}" data-slideshow-dot="{{ forloop.index0 }}" aria-label="Go to slide {{ forloop.index }}" tabindex="0"></button>
+    {% endfor %}
+  </div>
+</div>
+
+{% javascript %}
+document.addEventListener('DOMContentLoaded', () => {
+  const track = document.querySelector('[data-slideshow-track]');
+  const slides = Array.from(document.querySelectorAll('[data-slideshow-slide]'));
+  const dots = Array.from(document.querySelectorAll('[data-slideshow-dot]'));
+  const prev = document.querySelector('[data-slideshow-prev]');
+  const next = document.querySelector('[data-slideshow-next]');
+  let current = 0;
+
+  function showSlide(idx) {
+    slides.forEach((slide, i) => {
+      slide.classList.toggle('is-active', i === idx);
+      slide.setAttribute('aria-hidden', i !== idx);
+    });
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('is-active', i === idx);
+    });
+    current = idx;
+  }
+
+  prev?.addEventListener('click', () => {
+    showSlide((current - 1 + slides.length) % slides.length);
+  });
+
+  next?.addEventListener('click', () => {
+    showSlide((current + 1) % slides.length);
+  });
+
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => showSlide(i));
+  });
+});
+{% endjavascript %}
+
+{% stylesheet %}
+  .slideshow {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto 2rem;
+    overflow: hidden;
+    border-radius: 1rem;
+    background: var(--color-background, #f6f6f7);
+  }
+  .slideshow__track {
+    display: flex;
+    transition: transform 0.5s;
+  }
+  .slideshow__slide {
+    min-width: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    height: 500px;
+    background: #e5e5e5;
+    position: relative;
+  }
+  .slideshow__slide.is-active {
+    display: flex;
+  }
+  .slideshow__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 1rem;
+  }
+  .slideshow__placeholder {
+    width: 100%;
+    height: 100%;
+    background: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    font-size: 2rem;
+  }
+  .slideshow__controls {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .slideshow__button {
+    background: rgba(255,255,255,0.8);
+    border: none;
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 1rem;
+    transition: background 0.2s;
+  }
+  .slideshow__button:focus,
+  .slideshow__button:hover {
+    background: var(--color-accent, #b3d4fc);
+    outline: none;
+  }
+  .slideshow__dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 1rem 0;
+  }
+  .slideshow__dot {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    border: none;
+    background: #ccc;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .slideshow__dot.is-active {
+    background: var(--color-accent, #007aff);
+  }
+  @media screen and (max-width: 768px) {
+    .slideshow__slide {
+      height: 220px;
+    }
+    .slideshow__image {
+      border-radius: 0.5rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Slideshow",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "alt",
+          "label": "Alt text"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "Slideshow",
+      "category": "Media",
+      "blocks": [
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" }
+      ]
+    }
+  ]
+}
+{% endschema %}
