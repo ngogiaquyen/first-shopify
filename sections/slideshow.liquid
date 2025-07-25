@@ -4,31 +4,53 @@
 
 <div class="slideshow" aria-label="Slideshow">
   <div class="slideshow__track" data-slideshow-track>
-    {% for block in section.blocks %}
-      <div class="slideshow__slide{% if forloop.first %} is-active{% endif %}" data-slideshow-slide tabindex="0" aria-hidden="{% unless forloop.first %}true{% else %}false{% endunless %}">
-        {% if block.settings.image != blank %}
+    {% if section.blocks.size > 0 %}
+      {% for block in section.blocks %}
+        <div class="slideshow__slide{% if forloop.first %} is-active{% endif %}" data-slideshow-slide tabindex="0" aria-hidden="{% unless forloop.first %}true{% else %}false{% endunless %}">
+          {% if block.settings.image != blank %}
+            <img
+              src="{{ block.settings.image | image_url: width: 1200 }}"
+              alt="{{ block.settings.alt | escape }}"
+              class="slideshow__image"
+              loading="lazy"
+              width="1200"
+              height="500"
+            >
+          {% else %}
+            <div class="slideshow__placeholder"></div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    {% else %}
+      {% assign demo_slides = "1,2,3" | split: "," %}
+      {% for n in demo_slides %}
+        <div class="slideshow__slide{% if forloop.first %} is-active{% endif %}" data-slideshow-slide tabindex="0" aria-hidden="{% unless forloop.first %}true{% else %}false{% endunless %}">
           <img
-            src="{{ block.settings.image | image_url: width: 1200 }}"
-            alt="{{ block.settings.alt | escape }}"
+            src="https://hashcode.dev/api/v1/image/{{ n }}?w=1200&h=500"
+            alt="Demo slide {{ n }}"
             class="slideshow__image"
             loading="lazy"
             width="1200"
             height="500"
           >
-        {% else %}
-          <div class="slideshow__placeholder"></div>
-        {% endif %}
-      </div>
-    {% endfor %}
+        </div>
+      {% endfor %}
+    {% endif %}
   </div>
   <div class="slideshow__controls">
     <button class="slideshow__button" data-slideshow-prev aria-label="Previous slide" tabindex="0">&larr;</button>
     <button class="slideshow__button" data-slideshow-next aria-label="Next slide" tabindex="0">&rarr;</button>
   </div>
   <div class="slideshow__dots">
-    {% for block in section.blocks %}
-      <button class="slideshow__dot{% if forloop.first %} is-active{% endif %}" data-slideshow-dot="{{ forloop.index0 }}" aria-label="Go to slide {{ forloop.index }}" tabindex="0"></button>
-    {% endfor %}
+    {% if section.blocks.size > 0 %}
+      {% for block in section.blocks %}
+        <button class="slideshow__dot{% if forloop.first %} is-active{% endif %}" data-slideshow-dot="{{ forloop.index0 }}" aria-label="Go to slide {{ forloop.index }}" tabindex="0"></button>
+      {% endfor %}
+    {% else %}
+      {% for n in demo_slides %}
+        <button class="slideshow__dot{% if forloop.first %} is-active{% endif %}" data-slideshow-dot="{{ forloop.index0 }}" aria-label="Go to slide {{ forloop.index }}" tabindex="0"></button>
+      {% endfor %}
+    {% endif %}
   </div>
 </div>
 
