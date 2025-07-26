@@ -39,8 +39,8 @@
     "175349180925aa88b1": {
       "type": "_blocks",
       "blocks": {
-        "ai_gen_block_3443861_aLyYgR": {
-          "type": "ai_gen_block_3443861",
+        "two-column": {
+          "type": "two-column",
           "settings": {
             "left_image": "shopify://shop_images/bannerhome002.jpg",
             "right_image": "shopify://shop_images/banner-sale-home-01.jpg",
@@ -56,7 +56,7 @@
         }
       },
       "block_order": [
-        "ai_gen_block_3443861_aLyYgR"
+        "two-column"
       ],
       "settings": {}
     }
