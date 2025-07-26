@@ -28,10 +28,15 @@
         "product_3": "330lbs-stair-stepper-climber-machine-with-handlebar-upgrade-vertical-climber-workout-machine-for-full-body-exercise-climber-fi",
         "product_4": "5-10-25-pcs-emergency-tourniquet-outdoor-portable-first-aid-quick-slow-release-tourniquets-cat-medical-tactical-equipment"
       }
+    },
+    "pilates-section": {
+      "type": "pilates-section",
+      "settings": {}
     }
   },
   "order": [
     "slideshow",
-    "products"
+    "products", 
+    "pilates-section"
   ]
 }
