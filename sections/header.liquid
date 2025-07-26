@@ -189,12 +189,14 @@
       position: fixed;
       top: 3.5rem;
       left: 0;
-      width: 100%;
+      width: 80%;
+      max-width: 300px;
       height: calc(100vh - 3.5rem);
       background: var(--color-background);
-      transform: translateX(100%);
+      transform: translateX(-100%);
       transition: transform 0.3s ease;
       z-index: 999;
+      box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
     }
 
     .header__nav--open {
