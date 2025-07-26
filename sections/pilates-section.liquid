@@ -1,27 +1,27 @@
 {% comment %}
-  Pilates Setup and Reformer Section
-  Displays two cards with background images, hexagonal clip paths, and call-to-action buttons.
+  Phần Pilates Setup và Reformer
+  Hiển thị hai thẻ với hình nền (hoặc màu nền dự phòng), hiệu ứng hình lục giác, và nút kêu gọi hành động.
 {% endcomment %}
 
 {% schema %}
 {
-  "name": "Pilates Section",
+  "name": "Phần Pilates",
   "settings": [
     {
       "type": "image_picker",
       "id": "left_background_image",
-      "label": "Left Card Background Image"
+      "label": "Hình nền thẻ bên trái"
     },
     {
       "type": "image_picker",
       "id": "right_background_image",
-      "label": "Right Card Background Image"
+      "label": "Hình nền thẻ bên phải"
     }
   ],
   "presets": [
     {
-      "name": "Pilates Section",
-      "category": "Custom"
+      "name": "Phần Pilates",
+      "category": "Tùy chỉnh"
     }
   ]
 }
@@ -80,15 +80,24 @@
     inset: 0;
     background-size: cover;
     background-position: center;
+    background-color: #2f4f1f; /* Màu dự phòng cho thẻ trái */
   }
 
   .overlay-layer {
     position: absolute;
-    height: 650px;
     inset: 0;
     background-size: cover;
     background-position: center;
     opacity: 0.9;
+    background-color: #4a4a4a; /* Màu dự phòng cho lớp phủ trái */
+  }
+
+  .card--right .background-layer {
+    background-color: #3a6a2a; /* Màu dự phòng cho thẻ phải */
+  }
+
+  .card--right .overlay-layer {
+    background-color: #66bb6a; /* Màu dự phòng cho lớp phủ phải */
   }
 
   .clip-left-hex {
@@ -167,10 +176,10 @@
 </style>
 
 <main class="pilates-container">
-  <!-- Left card -->
+  <!-- Thẻ bên trái -->
   <section class="card card--left">
-    <div class="background-layer" style="background-image: url({{ section.settings.left_background_image | asset_url }});"></div>
-    <div class="overlay-layer clip-left-hex" style="background-image: url({{ section.settings.left_background_image | asset_url }});"></div>
+    <div class="background-layer" style="{% if section.settings.left_background_image %}background-image: url({{ section.settings.left_background_image | asset_url }});{% endif %}"></div>
+    <div class="overlay-layer clip-left-hex" style="{% if section.settings.left_background_image %}background-image: url({{ section.settings.left_background_image | asset_url }});{% endif %}"></div>
     <div class="content">
       <p class="content__label">DỊCH VỤ TƯ VẤN</p>
       <h2 class="content__title content__title--light">
@@ -182,10 +191,10 @@
       </button>
     </div>
   </section>
-  <!-- Right card -->
+  <!-- Thẻ bên phải -->
   <section class="card card--right">
-    <div class="background-layer" style="background-image: url({{ section.settings.right_background_image | asset_url }});"></div>
-    <div class="overlay-layer clip-right-hex" style="background-image: url({{ section.settings.right_background_image | asset_url }});"></div>
+    <div class="background-layer" style="{% if section.settings.right_background_image %}background-image: url({{ section.settings.right_background_image | asset_url }});{% endif %}"></div>
+    <div class="overlay-layer clip-right-hex" style="{% if section.settings.right_background_image %}background-image: url({{ section.settings.right_background_image | asset_url }});{% endif %}"></div>
     <div class="content">
       <p class="content__label">GIAO HÀNG TOÀN QUỐC</p>
       <h2 class="content__title">
