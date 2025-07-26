@@ -98,7 +98,7 @@
 }
 {% endschema %}
 
-{% comment %} Styles for slideshow with zoom animation and top progress bar {% endcomment %}
+{% comment %} Styles for slideshow with zoom animation, top progress bar, and slide-in title/description {% endcomment %}
 <style>
   .slideshow-container {
     min-width: 100vw;
@@ -140,24 +140,26 @@
     text-align: left;
     color: white;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
-    animation: slideInLeft 0.8s ease-out;
   }
   .slide-content h2 {
     font-size: 3rem;
     font-weight: 700;
     margin-bottom: 15px;
     opacity: 0;
-    animation: fadeIn 1s ease-out forwards;
-    animation-delay: 0.3s;
-    line-height: 1.2;
+    transform: translateX(-50px);
+    transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
   }
   .slide-content p {
     font-size: 1.5rem;
     font-weight: 400;
     opacity: 0;
-    animation: fadeIn 1s ease-out forwards;
-    animation-delay: 0.5s;
-    line-height: 1.4;
+    transform: translateX(-50px);
+    transition: opacity 0.8s ease-in-out 0.2s, transform 0.8s ease-in-out 0.2s;
+  }
+  .slide.active .slide-content h2,
+  .slide.active .slide-content p {
+    opacity: 1;
+    transform: translateX(0);
   }
   .progress-bar-container {
     position: absolute;
@@ -175,20 +177,6 @@
   }
   .progress-bar.active {
     width: 100%;
-  }
-  @keyframes slideInLeft {
-    from {
-      transform: translateX(-100px);
-      opacity: 0;
-    }
-    to {
-      transform: translateX(0);
-      opacity: 1;
-    }
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
   }
   @media screen and (max-width: 768px) {
     .slide-content {
