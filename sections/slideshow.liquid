@@ -98,7 +98,7 @@
 }
 {% endschema %}
 
-{% comment %} Styles for slideshow with slide animation, dots, and progress bar {% endcomment %}
+{% comment %} Styles for slideshow with zoom animation and top progress bar {% endcomment %}
 <style>
   .slideshow-container {
     min-width: 100vw;
@@ -112,13 +112,20 @@
     display: flex;
     width: 100%;
     height: 100%;
-    transition: transform 0.6s ease-in-out;
   }
   .slide {
     flex: 0 0 100%;
     width: 100%;
     height: 100%;
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out, transform 5s ease-in-out;
+  }
+  .slide.active {
+    opacity: 1;
+    transform: scale(1.1);
   }
   .slide img {
     width: 100%;
@@ -148,29 +155,9 @@
     animation: fadeIn 1s ease-out forwards;
     animation-delay: 0.5s;
   }
-  .dots-container {
-    text-align: center;
-    position: absolute;
-    bottom: 40px;
-    width: 100%;
-  }
-  .dot {
-    cursor: pointer;
-    height: 12px;
-    width: 12px;
-    margin: 0 5px;
-    background-color: #bbb;
-    border-radius: 50%;
-    display: inline-block;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-  }
-  .dot.active {
-    background-color: #fff;
-    transform: scale(1.2);
-  }
   .progress-bar-container {
     position: absolute;
-    bottom: 0;
+    top: 0;
     left: 0;
     width: 100%;
     height: 4px;
@@ -178,7 +165,7 @@
   }
   .progress-bar {
     height: 100%;
-    background-color: #fff;
+    background-color: #ff0000;
     width: 0;
     transition: width 5s linear;
   }
@@ -250,76 +237,53 @@
       </div>
     {% endif %}
   </div>
-  <div class="dots-container">
-    {% if section.settings.image_1 %}
-      <span class="dot" onclick="currentSlide(1)"></span>
-    {% endif %}
-    {% if section.settings.image_2 %}
-      <span class="dot" onclick="currentSlide(2)"></span>
-    {% endif %}
-    {% if section.settings.image_3 %}
-      <span class="dot" onclick="currentSlide(3)"></span>
-    {% endif %}
-    {% if section.settings.image_4 %}
-      <span class="dot" onclick="currentSlide(4)"></span>
-    {% endif %}
-    {% if section.settings.image_5 %}
-      <span class="dot" onclick="currentSlide(5)"></span>
-    {% endif %}
-  </div>
   <div class="progress-bar-container">
     <div class="progress-bar"></div>
   </div>
 </div>
 
-{% comment %} JavaScript for slideshow functionality with dots and progress bar {% endcomment %}
+{% comment %} JavaScript for slideshow functionality with zoom and progress bar {% endcomment %}
 <script>
-  let slideIndex = 1;
+  let slideIndex = 0;
   let progressInterval;
 
-  function showSlides(n) {
-    let slidesWrapper = document.querySelector(".slides-wrapper");
+  function showSlides() {
     let slides = document.getElementsByClassName("slide");
-    let dots = document.getElementsByClassName("dot");
     let progressBar = document.querySelector(".progress-bar");
 
-    if (n > slides.length) { slideIndex = 1 }
-    if (n < 1) { slideIndex = slides.length }
+    if (slideIndex >= slides.length) { slideIndex = 0 }
+    if (slideIndex < 0) { slideIndex = slides.length - 1 }
 
-    // Update slide position
-    slidesWrapper.style.transform = `translateX(-${(slideIndex - 1) * 100}%)`;
+    // Hide all slides and reset transform
+    for (let i = 0; i < slides.length; i++) {
+      slides[i].classList.remove("active");
+      slides[i].style.transform = "scale(1)";
+    }
 
-    // Update active dot
-    for (let i = 0; i < dots.length; i++) {
-      dots[i].classList.remove("active");
-    }
-    if (dots[slideIndex-1]) {
-      dots[slideIndex-1].classList.add("active");
-    }
+    // Show current slide with zoom effect
+    slides[slideIndex].classList.add("active");
 
     // Reset and start progress bar
     progressBar.style.width = '0';
     progressBar.classList.add("active");
   }
 
-  function currentSlide(n) {
-    clearInterval(progressInterval);
-    slideIndex = n;
-    showSlides(slideIndex);
-    startProgressBar();
+  function nextSlide() {
+    slideIndex++;
+    showSlides();
   }
 
   function startProgressBar() {
+    clearInterval(progressInterval);
     let progressBar = document.querySelector(".progress-bar");
     progressBar.style.width = '0';
     progressBar.classList.add("active");
     progressInterval = setInterval(() => {
-      slideIndex++;
-      showSlides(slideIndex);
+      nextSlide();
     }, 5000);
   }
 
   // Initialize slideshow
-  showSlides(slideIndex);
+  showSlides();
   startProgressBar();
 </script>
