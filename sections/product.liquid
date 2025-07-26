@@ -377,20 +377,6 @@
   <div class="product-form">
     {% form 'product', product, aria-label: 'Add to cart form' %}
       {% assign current_variant = product.selected_or_first_available_variant %}
-      <div class="variant-selector">
-        <select name="id" aria-label="Select product variant">
-          {% for variant in product.variants %}
-            <option
-              value="{{ variant.id }}"
-              {% if variant == current_variant %}
-                selected="selected"
-              {% endif %}
-            >
-              {{ variant.title }} - {{ variant.price | money }}
-            </option>
-          {% endfor %}
-        </select>
-      </div>
       <div class="quantity-selector">
         <button type="button" onclick="this.nextElementSibling.value = parseInt(this.nextElementSibling.value) - 1 || 1" aria-label="Decrease quantity">-</button>
         <input type="number" name="quantity" min="1" value="1" aria-label="Quantity">
