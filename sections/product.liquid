@@ -408,7 +408,16 @@
       <img src="{{ 'no-image.jpg' | asset_url }}" alt="No image available" class="product-image-main">
     {% endif %}
   </div>
-
+<div class="product-thumbnails">
+          {% for image in product.images %}
+            <img
+              src="{{ image | img_url: '100x100' }}"
+              alt="{{ product.title | escape }} - Thumbnail {{ forloop.index }}"
+              class="product-thumbnail {% if forloop.first %}active{% endif %}"
+              onclick="document.getElementById('main-image').src='{{ image | img_url: '600x600' }}'; this.parentElement.querySelectorAll('.product-thumbnail').forEach(el => el.classList.remove('active')); this.classList.add('active');"
+            >
+          {% endfor %}
+        </div>
   <div class="product-info">
     <h1>{{ product.title | escape }}</h1>
     <div class="product-price">
