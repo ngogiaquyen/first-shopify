@@ -33,19 +33,13 @@
 }
 {% endschema %}
 
-{% comment %} Styles for product grid with DOMContentLoaded animation {% endcomment %}
+{% comment %} Styles for product grid with scroll-based animation {% endcomment %}
 <style>
   .product-grid-container {
     max-width: 1280px;
     margin: 0 auto;
     padding: 40px 20px;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    opacity: 0;
-    transition: opacity 0.5s ease-out;
-  }
-
-  .product-grid-container.visible {
-    opacity: 1;
   }
 
   .product-grid-container .link {
@@ -87,25 +81,25 @@
     transform: translateY(20px);
   }
 
-  .product-grid-container.visible .product-card:nth-child(1) {
+  .product-card.visible:nth-child(1) {
     opacity: 1;
     transform: translateY(0);
     transition-delay: 0.2s;
   }
 
-  .product-grid-container.visible .product-card:nth-child(2) {
+  .product-card.visible:nth-child(2) {
     opacity: 1;
     transform: translateY(0);
     transition-delay: 0.3s;
   }
 
-  .product-grid-container.visible .product-card:nth-child(3) {
+  .product-card.visible:nth-child(3) {
     opacity: 1;
     transform: translateY(0);
     transition-delay: 0.4s;
   }
 
-  .product-grid-container.visible .product-card:nth-child(4) {
+  .product-card.visible:nth-child(4) {
     opacity: 1;
     transform: translateY(0);
     transition-delay: 0.5s;
@@ -283,14 +277,28 @@
 {% comment %} Include FontAwesome CDN {% endcomment %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-{% comment %} JavaScript to handle DOMContentLoaded animation {% endcomment %}
+{% comment %} JavaScript to handle scroll-based animation with Intersection Observer {% endcomment %}
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const productGridContainer = document.querySelector('.product-grid-container');
+    const productCards = document.querySelectorAll('.product-card');
+
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          productGridContainer.classList.add('visible');
+          productCards.forEach(card => {
+            card.classList.add('visible');
+          });
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
+
     if (productGridContainer) {
-      setTimeout(() => {
-        productGridContainer.classList.add('visible');
-      }, 100); // Slight delay to ensure smooth rendering
+      observer.observe(productGridContainer);
     }
   });
 </script>
