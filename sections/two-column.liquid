@@ -1,18 +1,13 @@
-{% doc %}
-  @prompt
-    Create a two-column image section with two images displayed side by side. The section should be responsive and allow merchants to upload custom images for both left and right positions. Include options for image alignment and spacing between the images.
-
-{% enddoc %}
-{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+{% assign section_id = block.id | replace: '_', '' | downcase %}
 
 {% style %}
-  .ai-two-column-images-{{ ai_gen_id }} {
+  .two-column-images-{{ section_id }} {
     width: 100%;
     max-width: 100%;
     padding: {{ block.settings.section_padding }}px 0;
   }
 
-  .ai-two-column-images__container-{{ ai_gen_id }} {
+  .two-column-images__container-{{ section_id }} {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: {{ block.settings.image_spacing }}px;
@@ -22,14 +17,14 @@
     padding: 0 20px;
   }
 
-  .ai-two-column-images__image-wrapper-{{ ai_gen_id }} {
+  .two-column-images__image-wrapper-{{ section_id }} {
     position: relative;
     width: 100%;
     overflow: hidden;
     border-radius: {{ block.settings.border_radius }}px;
   }
 
-  .ai-two-column-images__image-{{ ai_gen_id }} {
+  .two-column-images__image-{{ section_id }} {
     width: 100%;
     height: auto;
     display: block;
@@ -37,7 +32,7 @@
     aspect-ratio: {{ block.settings.aspect_ratio }};
   }
 
-  .ai-two-column-images__placeholder-{{ ai_gen_id }} {
+  .two-column-images__placeholder-{{ section_id }} {
     width: 100%;
     aspect-ratio: {{ block.settings.aspect_ratio }};
     background-color: #f4f4f4;
@@ -47,14 +42,14 @@
     border-radius: {{ block.settings.border_radius }}px;
   }
 
-  .ai-two-column-images__placeholder-{{ ai_gen_id }} svg {
+  .two-column-images__placeholder-{{ section_id }} svg {
     width: 60%;
     height: 60%;
     opacity: 0.5;
   }
 
   @media screen and (max-width: 749px) {
-    .ai-two-column-images__container-{{ ai_gen_id }} {
+    .two-column-images__container-{{ section_id }} {
       grid-template-columns: 1fr;
       gap: {{ block.settings.mobile_spacing }}px;
       padding: 0 16px;
@@ -62,47 +57,47 @@
   }
 
   {% if block.settings.enable_hover_effect %}
-    .ai-two-column-images__image-{{ ai_gen_id }} {
+    .two-column-images__image-{{ section_id }} {
       transition: transform 0.3s ease;
     }
 
-    .ai-two-column-images__image-wrapper-{{ ai_gen_id }}:hover .ai-two-column-images__image-{{ ai_gen_id }} {
+    .two-column-images__image-wrapper-{{ section_id }}:hover .two-column-images__image-{{ section_id }} {
       transform: scale(1.05);
     }
   {% endif %}
 {% endstyle %}
 
-<div class="ai-two-column-images-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
-  <div class="ai-two-column-images__container-{{ ai_gen_id }}">
-    <div class="ai-two-column-images__image-wrapper-{{ ai_gen_id }}">
+<div class="two-column-images-{{ section_id }}" {{ block.shopify_attributes }}>
+  <div class="two-column-images__container-{{ section_id }}">
+    <div class="two-column-images__image-wrapper-{{ section_id }}">
       {% if block.settings.left_image %}
         <img
           src="{{ block.settings.left_image | image_url: width: 800 }}"
           alt="{{ block.settings.left_image.alt | escape }}"
-          class="ai-two-column-images__image-{{ ai_gen_id }}"
+          class="two-column-images__image-{{ section_id }}"
           loading="lazy"
           width="{{ block.settings.left_image.width }}"
           height="{{ block.settings.left_image.height }}"
         >
       {% else %}
-        <div class="ai-two-column-images__placeholder-{{ ai_gen_id }}">
+        <div class="two-column-images__placeholder-{{ section_id }}">
           {{ 'image' | placeholder_svg_tag }}
         </div>
       {% endif %}
     </div>
 
-    <div class="ai-two-column-images__image-wrapper-{{ ai_gen_id }}">
+    <div class="two-column-images__image-wrapper-{{ section_id }}">
       {% if block.settings.right_image %}
         <img
           src="{{ block.settings.right_image | image_url: width: 800 }}"
           alt="{{ block.settings.right_image.alt | escape }}"
-          class="ai-two-column-images__image-{{ ai_gen_id }}"
+          class="two-column-images__image-{{ section_id }}"
           loading="lazy"
           width="{{ block.settings.right_image.width }}"
           height="{{ block.settings.right_image.height }}"
         >
       {% else %}
-        <div class="ai-two-column-images__placeholder-{{ ai_gen_id }}">
+        <div class="two-column-images__placeholder-{{ section_id }}">
           {{ 'image' | placeholder_svg_tag }}
         </div>
       {% endif %}
