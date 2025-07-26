@@ -35,127 +35,133 @@
 
 {% comment %} Styles for two images display with text and button overlay {% endcomment %}
 <style>
-  .two-images-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    box-sizing: border-box;
-  }
-  .two-images-container .image-wrapper {
-    flex: 1 1 calc(50% - 10px);
-    min-width: 300px;
-    position: relative;
-    overflow: hidden;
-  }
-  .two-images-container .image-wrapper:first-child {
-    border-radius: 0px 250px 0px 0px;
-  }
-  .two-images-container .image-wrapper:last-child {
-    border-radius: 0px 0 0px 250px;
-  }
-  .two-images-container .image-wrapper img {
-    width: 100%;
-    height: 650px;
-    object-fit: cover;
-    display: block;
-    border-radius: 8px;
-  }
-  .image-placeholder {
-    width: 100%;
-    height: 650px;
-    background-color: #f0f0f0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    color: #666;
-    font-size: 1rem;
-    text-align: center;
-  }
-
-  .image-wrapper-text{
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 60px;
-  }
-
-  .image-text {
-    {% comment %} position: absolute; {% endcomment %}
-    top: 20px;
-    left: 20px;
-    color: white;
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    z-index: 10;
-  }
-  .image-subtext {
-    {% comment %} position: absolute; {% endcomment %}
-    top: 50px;
-    left: 20px;
-    color: white;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    z-index: 10;
-    font-size: 40px;
-    font-weight: 600;
-    text-transform: capitalize;
-    margin: 10px 0px 35px 0px;
-    padding: 0px 0px 0px 0px;
-  }
-  .buy-now-button {
-    {% comment %} position: absolute; {% endcomment %}
-    top: 90px;
-    left: 20px;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-size: 1rem;
-    font-weight: bold;
-    z-index: 10;
-    transition: background-color 0.3s ease;
-    color: #FFFFFF;
-    border-radius: 25px;
-    background-image: linear-gradient(to right, #ffffff 0%, #ffffff 100%);
-    background-size: 0% 100%;
-    background-repeat: no-repeat;
-    background-position: left;
-    transition: background-size 0.5s ease, color 0.5s ease;
-    position: relative;
-    background-color: #2B2B2B;
-    overflow: hidden;
-  }
-
-  .image-wrapper-text:hover .buy-now-button {
-    background-size: 100% 100%;
-    color: #2B2B2B;
-  }
-  @media (max-width: 768px) {
-    .image-wrapper {
-      flex: 1 1 100%;
-      min-width: 100%;
+    .two-images-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      box-sizing: border-box;
     }
+    .two-images-container .image-wrapper {
+      flex: 1 1 calc(50% - 10px);
+      min-width: 300px;
+      position: relative;
+      overflow: hidden;
+    }
+    .two-images-container .image-wrapper:first-child {
+      border-radius: 0px 250px 0px 0px;
+    }
+    .two-images-container .image-wrapper:last-child {
+      border-radius: 0px 0 0px 250px;
+    }
+    .two-images-container .image-wrapper img {
+      width: 100%;
+      height: 650px;
+      object-fit: cover;
+      display: block;
+      border-radius: 8px;
+    }
+    .image-placeholder {
+      width: 100%;
+      height: 650px;
+      background-color: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      color: #666;
+      font-size: 1rem;
+      text-align: center;
+    }
+
+    .image-wrapper-text{
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 60px;
+    }
+
     .image-text {
-      font-size: 1.2rem;
+      {% comment %} position: absolute; {% endcomment %}
+      top: 20px;
+      left: 20px;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      z-index: 10;
     }
     .image-subtext {
-      font-size: 1rem;
+      {% comment %} position: absolute; {% endcomment %}
+      top: 50px;
+      left: 20px;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      z-index: 10;
+      font-size: 40px;
+      font-weight: 600;
+      text-transform: capitalize;
+      margin: 10px 0px 35px 0px;
+      padding: 0px 0px 0px 0px;
     }
     .buy-now-button {
-      font-size: 0.9rem;
-      padding: 8px 16px;
+      {% comment %} position: absolute; {% endcomment %}
+      top: 90px;
+      left: 20px;
+      padding: 10px 20px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: bold;
+      z-index: 10;
+      transition: background-color 0.3s ease;
+      color: #FFFFFF;
+      border-radius: 25px;
+      background-image: linear-gradient(to right, #ffffff 0%, #ffffff 100%);
+      background-size: 0% 100%;
+      background-repeat: no-repeat;
+      background-position: left;
+      transition: background-size 0.5s ease, color 0.5s ease;
+      position: relative;
+      background-color: #2B2B2B;
+      overflow: hidden;
     }
+
+    .image-wrapper-text:hover .buy-now-button {
+      background-size: 100% 100%;
+      color: #2B2B2B;
+    }
+    @media (max-width: 768px) {
+      .image-wrapper {
+        flex: 1 1 100%;
+        min-width: 100%;
+      }
+      .image-text {
+        font-size: 1.2rem;
+      }
+      .image-subtext {
+        font-size: 1rem;
+      }
+      .buy-now-button {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+      }
+    }
+    @media (max-width: 1024px) {
+      .image-placeholder {
+          height: 350px;
+          background-size: cover;
+      }
   }
 </style>
 
