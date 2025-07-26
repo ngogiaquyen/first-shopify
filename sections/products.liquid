@@ -172,8 +172,7 @@
     border-radius: 8px;
     font-size: 0.95rem;
     font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    text-align: center;
     transition: background 0.3s ease, transform 0.2s ease;
     text-decoration: none;
     opacity: 0;
@@ -239,6 +238,9 @@
   }
 </style>
 
+{% comment %} Include FontAwesome CDN {% endcomment %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 {% comment %} Product grid HTML structure {% endcomment %}
 <div class="product-grid-container">
   <h2 class="title">Featured Products</h2>
@@ -275,7 +277,7 @@
             </p>
           </div>
         </a>
-        <a href="{{ section.settings.product_1.url | append: '?variant=' | append: section.settings.product_1.variants.first.id | append: '&add_to_cart=true' }}" class="add-to-cart">Add to Cart</a>
+        <a href="{{ section.settings.product_1.url | append: '?variant=' | append: section.settings.product_1.variants.first.id | append: '&add_to_cart=true' }}" class="add-to-cart"><i class="fas fa-cart-plus"></i></a>
       </div>
     {% endif %}
     {% if section.settings.product_2 %}
@@ -310,7 +312,7 @@
             </p>
           </div>
         </a>
-        <a href="{{ section.settings.product_2.url | append: '?variant=' | append: section.settings.product_2.variants.first.id | append: '&add_to_cart=true' }}" class="add-to-cart">Add to Cart</a>
+        <a href="{{ section.settings.product_2.url | append: '?variant=' | append: section.settings.product_2.variants.first.id | append: '&add_to_cart=true' }}" class="add-to-cart"><i class="fas fa-cart-plus"></i></a>
       </div>
     {% endif %}
     {% if section.settings.product_3 %}
@@ -345,7 +347,7 @@
             </p>
           </div>
         </a>
-        <a href="{{ section.settings.product_3.url | append: '?variant=' | append: section.settings.product_3.variants.first.id | append: '&add_to_cart=true' }}" class="add-to-cart">Add to Cart</a>
+        <a href="{{ section.settings.product_3.url | append: '?variant=' | append: section.settings.product_3.variants.first.id | append: '&add_to_cart=true' }}" class="add-to-cart"><i class="fas fa-cart-plus"></i></a>
       </div>
     {% endif %}
     {% if section.settings.product_4 %}
@@ -380,7 +382,7 @@
             </p>
           </div>
         </a>
-        <a href="{{ section.settings.product_4.url | append: '?variant=' | append: section.settings.product_4.variants.first.id | append: '&add_to_cart=true' }}" class="add-to-cart">Add to Cart</a>
+        <a href="{{ section.settings.product_4.url | append: '?variant=' | append: section.settings.product_4.variants.first.id | append: '&add_to_cart=true' }}" class="add-to-cart"><i class="fas fa-cart-plus"></i></a>
       </div>
     {% endif %}
   </div>
