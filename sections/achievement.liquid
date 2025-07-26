@@ -1,0 +1,76 @@
+{% comment %} Including Font Awesome for icons {% endcomment %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+{% comment %} Styles for stats display with icons {% endcomment %}
+<style>
+    .stats-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      width: 100%;
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 20px;
+      box-sizing: border-box;
+      justify-content: center;
+    }
+    .stat-item {
+      flex: 1 1 calc(25% - 20px);
+      min-width: 200px;
+      text-align: center;
+      padding: 20px;
+      background-color: #f8f8f8;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .stat-icon {
+      font-size: 2.5rem;
+      color: #ff6b6b;
+      margin-bottom: 10px;
+    }
+    .stat-number {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #333;
+      margin: 10px 0;
+    }
+    .stat-description {
+      font-size: 1rem;
+      color: #666;
+      line-height: 1.4;
+    }
+    @media (max-width: 992px) {
+      .stat-item {
+        flex: 1 1 calc(50% - 20px);
+      }
+    }
+    @media (max-width: 576px) {
+      .stat-item {
+        flex: 1 1 100%;
+      }
+    }
+</style>
+
+{% comment %} HTML structure for displaying stats with icons {% endcomment %}
+<div class="stats-container" role="region" aria-label="Statistics section">
+  <div class="stat-item">
+    <i class="fas fa-star stat-icon"></i>
+    <div class="stat-number">10 Năm</div>
+    <div class="stat-description">Kinh nghiệm</div>
+  </div>
+  <div class="stat-item">
+    <i class="fas fa-shield-alt stat-icon"></i>
+    <div class="stat-number">3 Năm</div>
+    <div class="stat-description">Bảo hành</div>
+  </div>
+  <div class="stat-item">
+    <i class="fas fa-tools stat-icon"></i>
+    <div class="stat-number">1 Năm</div>
+    <div class="stat-description">Bảo dưỡng</div>
+  </div>
+  <div class="stat-item">
+    <i class="fas fa-truck stat-icon"></i>
+    <div class="stat-number">7 Ngày</div>
+    <div class="stat-description">Giao hàng</div>
+  </div>
+</div>
