@@ -13,30 +13,31 @@
   </div>
 
   <div class="header__right">
-    <div class="header__actions">
-      <button class="header__search" aria-label="Search" tabindex="0" type="button">
-        {{ 'icon-search.svg' | inline_asset_content }}
-      </button>
-      {% if shop.customer_accounts_enabled %}
-        <a href="{{ routes.account_url }}" class="header__account" aria-label="Account" tabindex="0">
-          {{ 'icon-account.svg' | inline_asset_content }}
-        </a>
-      {% endif %}
-      <a href="{{ routes.cart_url }}" class="header__cart" aria-label="Cart" tabindex="0">
-        {% if cart.item_count > 0 %}
-          <span class="header__cart-count">{{ cart.item_count }}</span>
+      <div class="header__actions">
+        <button class="header__search" aria-label="Search" tabindex="0" type="button">
+          {{ 'icon-search.svg' | inline_asset_content }}
+        </button>
+        {% if shop.customer_accounts_enabled %}
+          <a href="{{ routes.account_url }}" class="header__account" aria-label="Account" tabindex="0">
+            {{ 'icon-account.svg' | inline_asset_content }}
+          </a>
         {% endif %}
-        {{ 'icon-cart.svg' | inline_asset_content }}
-      </a>
-    </div>
+        <a href="{{ routes.cart_url }}" class="header__cart" aria-label="Cart" tabindex="0">
+          {% if cart.item_count > 0 %}
+            <span class="header__cart-count">{{ cart.item_count }}</span>
+          {% endif %}
+          {{ 'icon-cart.svg' | inline_asset_content }}
+        </a>
+      </div>
+      
+      <button class="header__hamburger" aria-label="Toggle menu" aria-expanded="false" type="button">
+        <svg class="hamburger-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path class="hamburger-lines" d="M4 6h16M4 12h16M4 18h16" />
+          <path class="close-icon" d="M6 6L18 18M6 18L18 6" style="display: none;" />
+        </svg>
+      </button>
     </div>
 
-    <button class="header__hamburger" aria-label="Toggle menu" aria-expanded="false" type="button">
-      <svg class="hamburger-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path class="hamburger-lines" d="M4 6h16M4 12h16M4 18h16" />
-        <path class="close-icon" d="M6 6L18 18M6 18L18 6" style="display: none;" />
-      </svg>
-    </button>
   </div>
 
   <div class="header__overlay" aria-hidden="true"></div>
