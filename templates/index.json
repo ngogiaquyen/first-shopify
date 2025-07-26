@@ -35,12 +35,17 @@
     },
     "two-column": {
       "type": "two-column",
-      "settings": {}
+      "settings": {
+        "image_1": "shopify://shop_images/bannerhome002.jpg",
+        "button_url_1": "",
+        "image_2": "shopify://shop_images/banner-sale-home-01.jpg",
+        "button_url_2": ""
+      }
     },
     "achievement": {
       "type": "achievement",
       "settings": {}
-    },
+    }
   },
   "order": [
     "slideshow",

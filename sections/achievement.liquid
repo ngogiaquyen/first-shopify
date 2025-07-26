@@ -1,17 +1,27 @@
 {% comment %} Including Font Awesome for icons {% endcomment %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-{% comment %} Styles for stats display with icons {% endcomment %}
+{% comment %} Styles for stats display with title and responsive design {% endcomment %}
 <style>
-    .stats-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
+    .stats-section {
       width: 100%;
       max-width: 1200px;
       margin: 40px auto;
       padding: 20px;
       box-sizing: border-box;
+      text-align: center;
+    }
+    .stats-title {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 30px;
+      text-transform: uppercase;
+    }
+    .stats-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
       justify-content: center;
     }
     .stat-item {
@@ -25,7 +35,7 @@
     }
     .stat-icon {
       font-size: 2.5rem;
-      color: #2aab46;
+      color: #ff6b6b;
       margin-bottom: 10px;
     }
     .stat-number {
@@ -40,37 +50,71 @@
       line-height: 1.4;
     }
     @media (max-width: 992px) {
+      .stats-title {
+        font-size: 2rem;
+      }
       .stat-item {
         flex: 1 1 calc(50% - 20px);
+        min-width: 150px;
+        padding: 15px;
+      }
+      .stat-icon {
+        font-size: 2rem;
+      }
+      .stat-number {
+        font-size: 1.8rem;
+      }
+      .stat-description {
+        font-size: 0.9rem;
       }
     }
     @media (max-width: 576px) {
+      .stats-title {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+      }
+      .stats-container {
+        gap: 15px;
+      }
       .stat-item {
         flex: 1 1 100%;
+        padding: 10px;
+      }
+      .stat-icon {
+        font-size: 1.8rem;
+      }
+      .stat-number {
+        font-size: 1.5rem;
+      }
+      .stat-description {
+        font-size: 0.85rem;
       }
     }
 </style>
 
-{% comment %} HTML structure for displaying stats with icons {% endcomment %}
-<div class="stats-container" role="region" aria-label="Statistics section">
-  <div class="stat-item">
-    <i class="fas fa-star stat-icon"></i>
-    <div class="stat-number">10 Năm</div>
-    <div class="stat-description">Kinh nghiệm</div>
-  </div>
-  <div class="stat-item">
-    <i class="fas fa-shield-alt stat-icon"></i>
-    <div class="stat-number">3 Năm</div>
-    <div class="stat-description">Bảo hành</div>
-  </div>
-  <div class="stat-item">
-    <i class="fas fa-tools stat-icon"></i>
-    <div class="stat-number">1 Năm</div>
-    <div class="stat-description">Bảo dưỡng</div>
-  </div>
-  <div class="stat-item">
-    <i class="fas fa-truck stat-icon"></i>
-    <div class="stat-number">7 Ngày</div>
-    <div class="stat-description">Giao hàng</div>
+{% comment %} HTML structure for displaying stats with title and icons {% endcomment %}
+<div class="stats-section" role="region" aria-label="Statistics section">
+  <h2 class="stats-title">Những con số</h2>
+  <div class="stats-container">
+    <div class="stat-item">
+      <i class="fas fa-star stat-icon"></i>
+      <div class="stat-number">10 Năm</div>
+      <div class="stat-description">Kinh nghiệm</div>
+    </div>
+    <div class="stat-item">
+      <i class="fas fa-shield-alt stat-icon"></i>
+      <div class="stat-number">3 Năm</div>
+      <div class="stat-description">Bảo hành</div>
+    </div>
+    <div class="stat-item">
+      <i class="fas fa-tools stat-icon"></i>
+      <div class="stat-number">1 Năm</div>
+      <div class="stat-description">Bảo dưỡng</div>
+    </div>
+    <div class="stat-item">
+      <i class="fas fa-truck stat-icon"></i>
+      <div class="stat-number">7 Ngày</div>
+      <div class="stat-description">Giao hàng</div>
+    </div>
   </div>
 </div>
