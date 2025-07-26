@@ -61,19 +61,30 @@
 }
 {% endschema %}
 
-{% comment %} Load Tailwind CSS and Font Awesome for icons {% endcomment %}
-<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+{% comment %} Load Font Awesome for icons {% endcomment %}
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
-{% comment %} Custom CSS for modern footer styling {% endcomment %}
+{% comment %} Pure CSS for modern footer styling {% endcomment %}
 <style>
   footer {
     background: linear-gradient(180deg, #1a202c 0%, #2d3748 100%);
+    color: #e2e8f0;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    padding: 3rem 0;
+  }
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
   }
   footer h3 {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
     position: relative;
-    padding-bottom: 0.5rem;
     color: #ffffff;
   }
   footer h3::after {
@@ -89,15 +100,17 @@
   footer h3:hover::after {
     width: 4rem;
   }
-  footer p, footer a {
-    color: #e2e8f0;
-    transition: color 0.3s ease, transform 0.2s ease;
+  footer p {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
   }
-  footer a:hover {
-    color: #68d391;
-    transform: translateX(4px);
+  .social-icons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
   }
-  footer .social-icons a {
+  .social-icons a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -105,26 +118,47 @@
     height: 2.5rem;
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
     transition: background-color 0.3s ease, transform 0.3s ease;
   }
-  footer .social-icons a:hover {
+  .social-icons a:hover {
     background-color: #68d391;
     transform: scale(1.1);
-  }
-  footer .social-icons i {
-    color: #ffffff;
-  }
-  footer .social-icons a:hover i {
     color: #1a202c;
   }
-  footer form input,
-  footer form button {
-    transition: all 0.3s ease;
+  .social-icons i {
+    font-size: 1.25rem;
+  }
+  footer ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  footer ul li {
+    margin-bottom: 0.75rem;
+  }
+  footer ul a {
+    font-size: 0.875rem;
+    color: #e2e8f0;
+    text-decoration: none;
+    transition: color 0.3s ease, transform 0.2s ease;
+  }
+  footer ul a:hover {
+    color: #68d391;
+    transform: translateX(4px);
+  }
+  footer form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
   footer form input {
-    background-color: #2d3748;
+    padding: 0.75rem;
     border: 1px solid #4a5568;
+    background-color: #2d3748;
     color: #e2e8f0;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
   }
   footer form input:focus {
     border-color: #68d391;
@@ -132,18 +166,41 @@
     outline: none;
   }
   footer form button {
+    padding: 0.75rem 1rem;
     background-color: #68d391;
     color: #1a202c;
     font-weight: 600;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
   }
   footer form button:hover {
     background-color: #4ade80;
     transform: translateY(-2px);
   }
-  footer .legal-links a {
-    position: relative;
+  .legal-section {
+    border-top: 1px solid #4a5568;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    text-align: center;
+    font-size: 0.875rem;
   }
-  footer .legal-links a::after {
+  .legal-section p {
+    margin-bottom: 1rem;
+  }
+  .legal-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+  .legal-links a {
+    color: #e2e8f0;
+    text-decoration: none;
+    position: relative;
+    transition: color 0.3s ease;
+  }
+  .legal-links a::after {
     content: '';
     position: absolute;
     bottom: -2px;
@@ -153,7 +210,10 @@
     background-color: #68d391;
     transition: width 0.3s ease;
   }
-  footer .legal-links a:hover::after {
+  .legal-links a:hover {
+    color: #68d391;
+  }
+  .legal-links a:hover::after {
     width: 100%;
   }
   footer a:focus, footer button:focus {
@@ -161,7 +221,7 @@
     outline-offset: 2px;
   }
   @media (max-width: 768px) {
-    footer .grid {
+    .footer-container {
       grid-template-columns: 1fr;
     }
     footer h3::after {
@@ -170,88 +230,93 @@
     footer h3:hover::after {
       width: 3rem;
     }
-    footer .social-icons a {
+    .social-icons a {
       width: 2rem;
       height: 2rem;
+    }
+    .social-icons i {
+      font-size: 1rem;
+    }
+    .legal-links {
+      flex-direction: column;
+      gap: 0.5rem;
     }
   }
 </style>
 
 {% comment %} Footer HTML structure {% endcomment %}
-<footer class="py-12">
-  <div class="container mx-auto px-4">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-      {% comment %} Company Info {% endcomment %}
-      <div>
-        <h3 class="text-lg font-bold mb-4">{{ section.settings.company_name | escape }}</h3>
-        <p class="text-sm leading-relaxed">{{ section.settings.address | escape }}</p>
-        <div class="flex space-x-4 mt-6 social-icons">
-          {% if section.settings.whatsapp_url %}
-            <a href="{{ section.settings.whatsapp_url | escape }}" target="_blank" rel="noopener" aria-label="WhatsApp">
-              <i class="fab fa-whatsapp fa-lg"></i>
-            </a>
-          {% endif %}
-          {% if section.settings.facebook_url %}
-            <a href="{{ section.settings.facebook_url | escape }}" target="_blank" rel="noopener" aria-label="Facebook">
-              <i class="fab fa-facebook-f fa-lg"></i>
-            </a>
-          {% endif %}
-          {% if section.settings.linkedin_url %}
-            <a href="{{ section.settings.linkedin_url | escape }}" target="_blank" rel="noopener" aria-label="LinkedIn">
-              <i class="fab fa-linkedin-in fa-lg"></i>
-            </a>
-          {% endif %}
-          {% if section.settings.youtube_url %}
-            <a href="{{ section.settings.youtube_url | escape }}" target="_blank" rel="noopener" aria-label="YouTube">
-              <i class="fab fa-youtube fa-lg"></i>
-            </a>
-          {% endif %}
-        </div>
-      </div>
-
-      {% comment %} Support Links {% endcomment %}
-      <div>
-        <h3 class="text-lg font-bold mb-4">Support</h3>
-        <ul class="space-y-3">
-          <li><a href="/collections/pilates-cadillac-bed" class="hover:text-gray-300">Pilates Cadillac Bed</a></li>
-          <li><a href="/collections/pilates-reformer" class="hover:text-gray-300">Pilates Reformer</a></li>
-          <li><a href="/collections/pilates-barrel" class="hover:text-gray-300">Pilates Barrel</a></li>
-          <li><a href="/collections/pilates-chair" class="hover:text-gray-300">Pilates Chair</a></li>
-          <li><a href="/collections/pilates-spine-corrector" class="hover:text-gray-300">Pilates Spine Corrector</a></li>
-        </ul>
-      </div>
-
-      {% comment %} Company Links {% endcomment %}
-      <div>
-        <h3 class="text-lg font-bold mb-4">Company</h3>
-        <ul class="space-y-3">
-          <li><a href="/pages/why-choose-us" class="hover:text-gray-300">Why Choose Us</a></li>
-          <li><a href="/pages/our-factory" class="hover:text-gray-300">Our Factory</a></li>
-          <li><a href="/pages/our-story" class="hover:text-gray-300">Our Story</a></li>
-          <li><a href="/pages/faqs" class="hover:text-gray-300">FAQs</a></li>
-        </ul>
-      </div>
-
-      {% comment %} Newsletter Signup {% endcomment %}
-      <div>
-        <h3 class="text-lg font-bold mb-4">{{ section.settings.newsletter_title | escape }}</h3>
-        <p class="text-sm mb-6 leading-relaxed">{{ section.settings.newsletter_description | escape }}</p>
-        <form action="/contact#newsletter" method="post" class="space-y-4">
-          <input type="text" name="contact[name]" placeholder="Name" class="w-full p-3 rounded-lg" required>
-          <input type="email" name="contact[email]" placeholder="Email" class="w-full p-3 rounded-lg" required>
-          <button type="submit" class="w-full px-4 py-3 rounded-lg">Subscribe</button>
-        </form>
+<footer>
+  <div class="footer-container">
+    {% comment %} Company Info {% endcomment %}
+    <div>
+      <h3>{{ section.settings.company_name | escape }}</h3>
+      <p>{{ section.settings.address | escape }}</p>
+      <div class="social-icons">
+        {% if section.settings.whatsapp_url %}
+          <a href="{{ section.settings.whatsapp_url | escape }}" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+        {% endif %}
+        {% if section.settings.facebook_url %}
+          <a href="{{ section.settings.facebook_url | escape }}" target="_blank" rel="noopener" aria-label="Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+        {% endif %}
+        {% if section.settings.linkedin_url %}
+          <a href="{{ section.settings.linkedin_url | escape }}" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+        {% endif %}
+        {% if section.settings.youtube_url %}
+          <a href="{{ section.settings.youtube_url | escape }}" target="_blank" rel="noopener" aria-label="YouTube">
+            <i class="fab fa-youtube"></i>
+          </a>
+        {% endif %}
       </div>
     </div>
 
-    {% comment %} Copyright and Legal Links {% endcomment %}
-    <div class="border-t border-gray-700 mt-12 pt-8 text-center text-sm legal-links">
-      <p>Copyright &copy; 2023 {{ section.settings.company_name | escape }}, All rights reserved. Powered by <a href="https://moxcreative.com" target="_blank" rel="noopener">MoxCreative</a>.</p>
-      <div class="flex justify-center space-x-6 mt-4">
-        <a href="/pages/terms-of-use">Terms of Use</a>
-        <a href="/pages/privacy-policy">Privacy Policy</a>
-        <a href="/pages/cookie-policy">Cookie Policy</a>
-      </div>
+    {% comment %} Support Links {% endcomment %}
+    <div>
+      <h3>Support</h3>
+      <ul>
+        <li><a href="/collections/pilates-cadillac-bed">Pilates Cadillac Bed</a></li>
+        <li><a href="/collections/pilates-reformer">Pilates Reformer</a></li>
+        <li><a href="/collections/pilates-barrel">Pilates Barrel</a></li>
+        <li><a href="/collections/pilates-chair">Pilates Chair</a></li>
+        <li><a href="/collections/pilates-spine-corrector">Pilates Spine Corrector</a></li>
+      </ul>
+    </div>
+
+    {% comment %} Company Links {% endcomment %}
+    <div>
+      <h3>Company</h3>
+      <ul>
+        <li><a href="/pages/why-choose-us">Why Choose Us</a></li>
+        <li><a href="/pages/our-factory">Our Factory</a></li>
+        <li><a href="/pages/our-story">Our Story</a></li>
+        <li><a href="/pages/faqs">FAQs</a></li>
+      </ul>
+    </div>
+
+    {% comment %} Newsletter Signup {% endcomment %}
+    <div>
+      <h3>{{ section.settings.newsletter_title | escape }}</h3>
+      <p>{{ section.settings.newsletter_description | escape }}</p>
+      <form action="/contact#newsletter" method="post">
+        <input type="text" name="contact[name]" placeholder="Name" required>
+        <input type="email" name="contact[email]" placeholder="Email" required>
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+  </div>
+
+  {% comment %} Copyright and Legal Links {% endcomment %}
+  <div class="legal-section">
+    <p>Copyright &copy; 2023 {{ section.settings.company_name | escape }}, All rights reserved. Powered by <a href="https://moxcreative.com" target="_blank" rel="noopener">MoxCreative</a>.</p>
+    <div class="legal-links">
+      <a href="/pages/terms-of-use">Terms of Use</a>
+      <a href="/pages/privacy-policy">Privacy Policy</a>
+      <a href="/pages/cookie-policy">Cookie Policy</a>
     </div>
   </div>
 </footer>
