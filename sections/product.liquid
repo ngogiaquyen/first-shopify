@@ -297,6 +297,9 @@
 
 {% comment %} Product HTML structure {% endcomment %}
 <div class="product-section">
+  <div class="product-image">
+  
+
   <div class="product-images">
     {% if product.images.size > 0 %}
       <img
@@ -319,7 +322,7 @@
       <img src="{{ 'no-image.jpg' | asset_url }}" alt="No image available" class="product-image-main">
     {% endif %}
   </div>
-
+</div>
   <div class="product-info">
     <h1>{{ product.title | escape }}</h1>
     <div class="product-price">
