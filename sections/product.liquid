@@ -358,19 +358,6 @@
       </div>
     {% endif %}
   </div>
-
-  <div class="product-form">
-    {% form 'product', product, aria-label: 'Add to cart form' %}
-      {% assign current_variant = product.selected_or_first_available_variant %}
-      <div class="quantity-selector">
-        <button type="button" onclick="this.nextElementSibling.value = parseInt(this.nextElementSibling.value) - 1 || 1" aria-label="Decrease quantity">-</button>
-        <input type="number" name="quantity" min="1" value="1" aria-label="Quantity">
-        <button type="button" onclick="this.previousElementSibling.value = parseInt(this.previousElementSibling.value) + 1" aria-label="Increase quantity">+</button>
-      </div>
-      <input type="submit" value="{{ section.settings.add_to_cart_text | default: 'Add to cart' }}" class="add-to-cart">
-      {{ form | payment_button }}
-    {% endform %}
-  </div>
 </div>
 
 {% comment %} JavaScript for thumbnail interaction {% endcomment %}
