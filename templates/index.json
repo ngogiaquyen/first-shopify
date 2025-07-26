@@ -12,21 +12,27 @@
     "slideshow": {
       "type": "slideshow",
       "settings": {
-        "image_1": "shopify://shop_images/A2ec6174033224f6ba3db33f98ed1b7afW.webp",
+        "image_1": "shopify://shop_images/Beige_Brown_Simple_Modern_Pilates_Presentation.png",
         "title_1": "Slide 1",
         "subtitle_1": "Description for slide 1",
-        "image_2": "shopify://shop_images/Aa7d46980249f428f99820cf01cbc5d0cv.webp",
+        "image_2": "shopify://shop_images/Beige_Brown_Simple_Modern_Pilates_Presentation_2.png",
         "title_2": "Slide 2",
         "subtitle_2": "Description for slide 2",
-        "image_3": "shopify://shop_images/S31f23a6f9acb4148a2df75befd07916eO.webp",
+        "image_3": "shopify://shop_images/Beige_Brown_Simple_Modern_Pilates_Presentation_3.png",
         "title_3": "Slide 3",
         "subtitle_3": "Description for slide 3",
-        "image_4": "shopify://shop_images/S4f866e3f88614cb4a36ddc6856159ceeL.webp",
+        "image_4": "shopify://shop_images/Beige_Brown_Simple_Modern_Pilates_Presentation_4.png",
         "title_4": "Slide 4",
         "subtitle_4": "Description for slide 4",
-        "image_5": "shopify://shop_images/S8dec797c35fa40fea7d3019a8928cae15.webp",
+        "image_5": "shopify://shop_images/Beige_Brown_Simple_Modern_Pilates_Presentation_5.png",
         "title_5": "Slide 5",
-        "subtitle_5": "Description for slide 5"
+        "subtitle_5": "Description for slide 5",
+        "image_6": "shopify://shop_images/Beige_Brown_Simple_Modern_Pilates_Presentation_6.png",
+        "title_6": "Slide 6",
+        "subtitle_6": "Description for slide 6",
+        "image_7": "shopify://shop_images/Beige_Brown_Simple_Modern_Pilates_Presentation_7.png",
+        "title_7": "Slide 7",
+        "subtitle_7": "Description for slide 7"
       }
     },
     "products": {
