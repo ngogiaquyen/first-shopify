@@ -32,8 +32,8 @@
     "pilates-section": {
       "type": "pilates-section",
       "settings": {
-        "left_background_image": "shopify://shop_images/A8fbf1b427e404350bd981089297a4b69O.webp",
-        "right_background_image": "shopify://shop_images/Ae7158a75eafe4f9d80ee9206467726b5C.webp"
+        "left_background_image": "shopify://shop_images/bannerhome002.jpg",
+        "right_background_image": "shopify://shop_images/banner-sale-home-01.jpg"
       }
     }
   },
