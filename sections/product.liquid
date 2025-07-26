@@ -1,6 +1,6 @@
 {% comment %}
   This section is used in the product template to render product page with
-  media, content, and add-to-cart form.
+  media, content, add-to-cart form, and buy-now button.
   https://shopify.dev/docs/storefronts/themes/architecture/templates/product
 {% endcomment %}
 
@@ -156,10 +156,9 @@
     box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
     outline: none;
   }
-  .product-form .add-to-cart {
+  .product-form .add-to-cart,
+  .product-form .buy-now {
     padding: 0.75rem;
-    background-color: #ef4444;
-    color: #ffffff;
     font-weight: 600;
     border: none;
     border-radius: 0.375rem;
@@ -168,8 +167,20 @@
     min-height: 44px;
     font-size: 0.875rem;
   }
+  .product-form .add-to-cart {
+    background-color: #ef4444;
+    color: #ffffff;
+  }
   .product-form .add-to-cart:hover {
     background-color: #dc2626;
+    transform: translateY(-2px);
+  }
+  .product-form .buy-now {
+    background-color: #1a202c;
+    color: #ffffff;
+  }
+  .product-form .buy-now:hover {
+    background-color: #2d3748;
     transform: translateY(-2px);
   }
   .trust-badges {
@@ -178,6 +189,32 @@
     flex-wrap: wrap;
     font-size: 0.875rem;
     color: #4a5568;
+  }
+  .trust-badges a {
+    color: #4a5568;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0;
+    transition: color 0.3s ease;
+    position: relative;
+  }
+  .trust-badges a:hover {
+    color: #ef4444;
+  }
+  .trust-badges a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: #ef4444;
+    transition: width 0.3s ease;
+  }
+  .trust-badges a:hover::after {
+    width: 100%;
   }
   .trust-badges i {
     color: #ef4444;
@@ -251,7 +288,8 @@
       min-width: 36px;
       min-height: 36px;
     }
-    .product-form .add-to-cart {
+    .product-form .add-to-cart,
+    .product-form .buy-now {
       font-size: 0.75rem;
     }
   }
@@ -302,9 +340,15 @@
     <p class="description">{{ product.description | strip_html | truncate: 300 }}</p>
     {% if section.settings.show_trust_badges %}
       <div class="trust-badges">
-        <span><i class="fas fa-shipping-fast"></i> Free Shipping</span>
-        <span><i class="fas fa-lock"></i> Secure Checkout</span>
-        <span><i class="fas fa-undo"></i> 30-Day Returns</span>
+        <a href="{{ section.settings.trust_badge_1_url | default: '/pages/shipping-policy' }}" aria-label="Free Shipping Policy">
+          <i class="fas fa-shipping-fast"></i> Free Shipping
+        </a>
+        <a href="{{ section.settings.trust_badge_2_url | default: '/pages/secure-checkout' }}" aria-label="Secure Checkout Information">
+          <i class="fas fa-lock"></i> Secure Checkout
+        </a>
+        <a href="{{ section.settings.trust_badge_3_url | default: '/pages/return-policy' }}" aria-label="Return Policy">
+          <i class="fas fa-undo"></i> 30-Day Returns
+        </a>
       </div>
     {% endif %}
   </div>
@@ -332,6 +376,7 @@
         <button type="button" onclick="this.previousElementSibling.value = parseInt(this.previousElementSibling.value) + 1" aria-label="Increase quantity">+</button>
       </div>
       <input type="submit" value="{{ section.settings.add_to_cart_text | default: 'Add to cart' }}" class="add-to-cart">
+      <input type="submit" name="checkout" value="{{ section.settings.buy_now_text | default: 'Buy Now' }}" class="buy-now">
       {{ form | payment_button }}
     {% endform %}
   </div>
@@ -379,6 +424,30 @@
       "id": "add_to_cart_text",
       "label": "Add to cart button text",
       "default": "Add to cart"
+    },
+    {
+      "type": "text",
+      "id": "buy_now_text",
+      "label": "Buy Now button text",
+      "default": "Buy Now"
+    },
+    {
+      "type": "text",
+      "id": "trust_badge_1_url",
+      "label": "Free Shipping URL",
+      "default": "/pages/shipping-policy"
+    },
+    {
+      "type": "text",
+      "id": "trust_badge_2_url",
+      "label": "Secure Checkout URL",
+      "default": "/pages/secure-checkout"
+    },
+    {
+      "type": "text",
+      "id": "trust_badge_3_url",
+      "label": "30-Day Returns URL",
+      "default": "/pages/return-policy"
     }
   ],
   "disabled_on": {
