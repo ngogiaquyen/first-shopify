@@ -36,78 +36,192 @@
 {% comment %} Styles for product grid {% endcomment %}
 <style>
   .product-grid-container {
-    max-width: 1200px;
+    max-width: 1280px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 40px 20px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   }
 
-  .title{
-    margin-bottom: 20px;
+  .title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 40px;
+    text-align: center;
+    letter-spacing: -0.02em;
   }
 
   .product-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+    gap: 30px;
   }
+
   .product-card {
-    text-align: center;
-    padding: 15px;
-    border: 1px solid #eee;
-    border-radius: 8px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding-bottom: 60px; /* Space for button */
   }
+
   .product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-8px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   }
+
+  .product-card a {
+    text-decoration: none;
+    display: block;
+  }
+
   .product-card img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 4px;
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 12px 12px 0 0;
+    transition: transform 0.3s ease;
   }
+
+  .product-card:hover img {
+    transform: scale(1.05);
+  }
+
+  .product-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 70%, rgba(0, 0, 0, 0.1));
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .product-card:hover .product-overlay {
+    opacity: 1;
+  }
+
   .product-title {
     font-size: 1.2rem;
-    margin: 10px 0;
-    color: #333;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 15px 15px 10px;
     line-height: 1.4;
-    min-height: 60px; /* Đảm bảo các tiêu đề có chiều cao đồng đều */
+    min-height: 60px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
+
   .product-prices {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 12px;
     align-items: baseline;
+    margin: 0 15px 15px;
   }
+
   .price-original {
-    font-size: 1rem;
-    color: #999;
+    font-size: 0.95rem;
+    color: #6b7280;
     text-decoration: line-through;
+    font-weight: 400;
   }
+
   .price-sale {
-    font-size: 1.1rem;
-    color: #e63946;
-    font-weight: bold;
+    font-size: 1.15rem;
+    color: #dc2626;
+    font-weight: 700;
   }
+
+  .sale-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #dc2626;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 5px 10px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .add-to-cart {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1a1a1a;
+    color: #fff;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: background 0.3s ease;
+    text-decoration: none;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .product-card:hover .add-to-cart {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .add-to-cart:hover {
+    background: #2d2d2d;
+  }
+
+  @media (max-width: 1024px) {
+    .product-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+  }
+
   @media (max-width: 768px) {
     .product-grid {
       grid-template-columns: repeat(2, 1fr);
     }
+    .product-card img {
+      height: 220px;
+    }
   }
+
   @media (max-width: 480px) {
     .product-grid {
       grid-template-columns: 1fr;
+    }
+    .product-card img {
+      height: 300px;
+    }
+    .title {
+      font-size: 1.5rem;
     }
   }
 </style>
 
 {% comment %} Product grid HTML structure {% endcomment %}
 <div class="product-grid-container">
-  <h2 class="title">Featured products</h2>
+  <h2 class="title">Featured Products</h2>
   <div class="product-grid">
     {% if section.settings.product_1 %}
       <div class="product-card">
         <a href="{{ section.settings.product_1.url }}">
+          <div class="product-overlay"></div>
+          {% if section.settings.product_1.compare_at_price > section.settings.product_1.price %}
+            <span class="sale-badge">Sale</span>
+          {% endif %}
           <img src="{{ section.settings.product_1.featured_image | img_url: 'medium' }}" alt="{{ section.settings.product_1.title }}">
           <h3 class="product-title">{{ section.settings.product_1.title }}</h3>
           <div class="product-prices">
@@ -119,11 +233,16 @@
             {% endif %}
           </div>
         </a>
+        <a href="{{ section.settings.product_1.url | append: '?variant=' | append: section.settings.product_1.variants.first.id | append: '&add_to_cart=true' }}" class="add-to-cart">Add to Cart</a>
       </div>
     {% endif %}
     {% if section.settings.product_2 %}
       <div class="product-card">
         <a href="{{ section.settings.product_2.url }}">
+          <div class="product-overlay"></div>
+          {% if section.settings.product_2.compare_at_price > section.settings.product_2.price %}
+            <span class="sale-badge">Sale</span>
+          {% endif %}
           <img src="{{ section.settings.product_2.featured_image | img_url: 'medium' }}" alt="{{ section.settings.product_2.title }}">
           <h3 class="product-title">{{ section.settings.product_2.title }}</h3>
           <div class="product-prices">
@@ -135,11 +254,16 @@
             {% endif %}
           </div>
         </a>
+        <a href="{{ section.settings.product_2.url | append: '?variant=' | append: section.settings.product_2.variants.first.id | append: '&add_to_cart=true' }}" class="add-to-cart">Add to Cart</a>
       </div>
     {% endif %}
     {% if section.settings.product_3 %}
       <div class="product-card">
         <a href="{{ section.settings.product_3.url }}">
+          <div class="product-overlay"></div>
+          {% if section.settings.product_3.compare_at_price > section.settings.product_3.price %}
+            <span class="sale-badge">Sale</span>
+          {% endif %}
           <img src="{{ section.settings.product_3.featured_image | img_url: 'medium' }}" alt="{{ section.settings.product_3.title }}">
           <h3 class="product-title">{{ section.settings.product_3.title }}</h3>
           <div class="product-prices">
@@ -151,11 +275,16 @@
             {% endif %}
           </div>
         </a>
+        <a href="{{ section.settings.product_3.url | append: '?variant=' | append: section.settings.product_3.variants.first.id | append: '&add_to_cart=true' }}" class="add-to-cart">Add to Cart</a>
       </div>
     {% endif %}
     {% if section.settings.product_4 %}
       <div class="product-card">
         <a href="{{ section.settings.product_4.url }}">
+          <div class="product-overlay"></div>
+          {% if section.settings.product_4.compare_at_price > section.settings.product_4.price %}
+            <span class="sale-badge">Sale</span>
+          {% endif %}
           <img src="{{ section.settings.product_4.featured_image | img_url: 'medium' }}" alt="{{ section.settings.product_4.title }}">
           <h3 class="product-title">{{ section.settings.product_4.title }}</h3>
           <div class="product-prices">
@@ -167,6 +296,7 @@
             {% endif %}
           </div>
         </a>
+        <a href="{{ section.settings.product_4.url | append: '?variant=' | append: section.settings.product_4.variants.first.id | append: '&add_to_cart=true' }}" class="add-to-cart">Add to Cart</a>
       </div>
     {% endif %}
   </div>
