@@ -35,11 +35,36 @@
         "left_background_image": "shopify://shop_images/bannerhome002.jpg",
         "right_background_image": "shopify://shop_images/banner-sale-home-01.jpg"
       }
+    },
+    "175349180925aa88b1": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_3443861_aLyYgR": {
+          "type": "ai_gen_block_3443861",
+          "settings": {
+            "left_image": "shopify://shop_images/bannerhome002.jpg",
+            "right_image": "shopify://shop_images/banner-sale-home-01.jpg",
+            "aspect_ratio": "3/2",
+            "vertical_alignment": "center",
+            "image_spacing": 40,
+            "mobile_spacing": 15,
+            "section_padding": 40,
+            "border_radius": 0,
+            "enable_hover_effect": true
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_3443861_aLyYgR"
+      ],
+      "settings": {}
     }
   },
   "order": [
     "slideshow",
     "products",
-    "pilates-section"
+    "pilates-section",
+    "175349180925aa88b1"
   ]
 }
