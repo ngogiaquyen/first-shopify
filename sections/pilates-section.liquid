@@ -1,6 +1,6 @@
 {% comment %}
   Pilates Setup and Reformer Section
-  This section displays two cards for Pilates setup consultation and Reformer machine purchase with background images and pure CSS styling.
+  Displays two cards with background images, hexagonal clip paths, and call-to-action buttons.
 {% endcomment %}
 
 {% schema %}
@@ -27,198 +27,173 @@
 }
 {% endschema %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Pilates Setup and Reformer</title>
-  {{ 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css' | stylesheet_tag }}
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+{{ 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css' | stylesheet_tag }}
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #ffffff;
-      margin: 0;
-    }
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
 
-    main {
-      display: flex;
-      flex-direction: column;
-      max-width: 1280px;
-      margin-left: auto;
-      margin-right: auto;
-      padding: 24px;
-      gap: 24px;
-    }
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #fff;
+    margin: 0;
+  }
 
-    @media (min-width: 768px) {
-      main {
-        flex-direction: row;
-      }
-    }
+  .pilates-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 24px;
+    gap: 24px;
+  }
 
-    section {
-      position: relative;
-      flex: 1;
-      overflow: hidden;
-      max-width: 600px;
-      aspect-ratio: 4 / 5;
+  @media (min-width: 768px) {
+    .pilates-container {
+      flex-direction: row;
     }
+  }
 
-    @media (min-width: 768px) {
-      section {
-        max-width: none;
-      }
-    }
+  .card {
+    position: relative;
+    flex: 1;
+    overflow: hidden;
+    max-width: 600px;
+    aspect-ratio: 4 / 5;
+  }
 
-    section:first-child {
-      border-radius: 300px 0 0 0;
+  @media (min-width: 768px) {
+    .card {
+      max-width: none;
     }
+  }
 
-    section:last-child {
-      border-radius: 0 0 300px 0;
-    }
+  .card--left {
+    border-radius: 300px 0 0 0;
+  }
 
-    .text-container {
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 0 40px;
-      max-width: 320px;
-      color: #ffffff;
-      z-index: 10;
-    }
+  .card--right {
+    border-radius: 0 0 300px 0;
+  }
 
-    .text-container p {
-      text-transform: uppercase;
-      font-weight: 600;
-      font-size: 14px;
-      margin-bottom: 8px;
-    }
+  .background-layer {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+  }
 
-    .text-container h2 {
-      font-size: 36px;
-      font-weight: 800;
-      line-height: 1.2;
-      margin-bottom: 24px;
-    }
+  .overlay-layer {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.9;
+  }
 
-    .text-container h2.text-sky-100 {
-      color: #e0f7ff;
-    }
+  .clip-left-hex {
+    clip-path: polygon(0% 0%, 70% 0%, 100% 25%, 100% 75%, 70% 100%, 0% 100%, 30% 75%, 30% 25%);
+  }
 
-    .button {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background-color: #222222;
-      border-radius: 9999px;
-      padding: 12px 24px;
-      font-weight: 600;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      color: #ffffff;
-      text-decoration: none;
-      width: max-content;
-      transition: background-color 0.3s ease;
-    }
+  .clip-right-hex {
+    clip-path: polygon(30% 0%, 100% 0%, 100% 100%, 30% 100%, 0% 75%, 0% 25%);
+  }
 
-    .button:hover {
-      background-color: #111111;
-    }
+  .content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px;
+    max-width: 320px;
+    color: #fff;
+    z-index: 10;
+  }
 
-    .button span {
-      background-color: #4caf50;
-      border-radius: 50%;
-      width: 24px;
-      height: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      color: #ffffff;
-    }
+  .content__label {
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
 
-    /* Hex clip path for left side */
-    .clip-left-hex {
-      clip-path: polygon(
-        0% 0%,
-        70% 0%,
-        100% 25%,
-        100% 75%,
-        70% 100%,
-        0% 100%,
-        30% 75%,
-        30% 25%
-      );
-    }
+  .content__title {
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 24px;
+  }
 
-    /* Hex clip path for right side */
-    .clip-right-hex {
-      clip-path: polygon(
-        30% 0%,
-        100% 0%,
-        100% 100%,
-        30% 100%,
-        0% 75%,
-        0% 25%
-      );
-    }
+  .content__title--light {
+    color: #e0f7ff;
+  }
 
-    /* Hex shape for images */
-    .clip-hex {
-      clip-path: polygon(
-        25% 0%,
-        75% 0%,
-        100% 50%,
-        75% 100%,
-        25% 100%,
-        0% 50%
-      );
-    }
-  </style>
-</head>
-<body>
-  <main>
-    <!-- Left card -->
-    <section>
-      <div style="position: absolute; inset: 0; background-image: url({{ section.settings.left_background_image | asset_url }}); background-size: cover; background-position: center;"></div>
-      <div style="position: absolute; inset: 0; background-image: url({{ section.settings.left_background_image | asset_url }}); background-size: cover; background-position: center; opacity: 0.9;" class="clip-left-hex"></div>
-      <!-- Text and button container -->
-      <div class="text-container">
-        <p>DỊCH VỤ TƯ VẤN</p>
-        <h2 class="text-sky-100">
-          Setup Phòng<br>Tập Pilates
-        </h2>
-        <button class="button" type="button">
-          ĐĂNG KÍ NGAY
-          <span><i class="fas fa-arrow-right"></i></span>
-        </button>
-      </div>
-    </section>
-    <!-- Right card -->
-    <section>
-      <div style="position: absolute; inset: 0; background-image: url({{ section.settings.right_background_image | asset_url }}); background-size: cover; background-position: center;"></div>
-      <div style="position: absolute; inset: 0; background-image: url({{ section.settings.right_background_image | asset_url }}); background-size: cover; background-position: center; opacity: 0.9;" class="clip-right-hex"></div>
-      <!-- Text and button container -->
-      <div class="text-container">
-        <p>GIAO HÀNG TOÀN QUỐC</p>
-        <h2>
-          Máy Tập Pilates<br>Reformer
-        </h2>
-        <button class="button" type="button">
-          MUA NGAY
-          <span><i class="fas fa-arrow-right"></i></span>
-        </button>
-      </div>
-    </section>
-  </main>
-</body>
-</html>
+  .content__button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #222;
+    border-radius: 9999px;
+    padding: 12px 24px;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #fff;
+    text-decoration: none;
+    width: max-content;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .content__button:hover {
+    background-color: #111;
+  }
+
+  .content__button-icon {
+    background-color: #4caf50;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+</style>
+
+<main class="pilates-container">
+  <!-- Left card -->
+  <section class="card card--left">
+    <div class="background-layer" style="background-image: url({{ section.settings.left_background_image | asset_url }});"></div>
+    <div class="overlay-layer clip-left-hex" style="background-image: url({{ section.settings.left_background_image | asset_url }});"></div>
+    <div class="content">
+      <p class="content__label">DỊCH VỤ TƯ VẤN</p>
+      <h2 class="content__title content__title--light">
+        Setup Phòng<br>Tập Pilates
+      </h2>
+      <button class="content__button">
+        ĐĂNG KÍ NGAY
+        <span class="content__button-icon"><i class="fas fa-arrow-right"></i></span>
+      </button>
+    </div>
+  </section>
+  <!-- Right card -->
+  <section class="card card--right">
+    <div class="background-layer" style="background-image: url({{ section.settings.right_background_image | asset_url }});"></div>
+    <div class="overlay-layer clip-right-hex" style="background-image: url({{ section.settings.right_background_image | asset_url }});"></div>
+    <div class="content">
+      <p class="content__label">GIAO HÀNG TOÀN QUỐC</p>
+      <h2 class="content__title">
+        Máy Tập Pilates<br>Reformer
+      </h2>
+      <button class="content__button">
+        MUA NGAY
+        <span class="content__button-icon"><i class="fas fa-arrow-right"></i></span>
+      </button>
+    </div>
+  </section>
+</main>
