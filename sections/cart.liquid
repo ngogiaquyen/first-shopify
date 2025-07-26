@@ -21,9 +21,9 @@
           <input type="text" name="updates[]" value="{{ item.quantity }}"> <!-- Số lượng nằm dưới -->
         </td>
         <td>
-          <div style="display: flex; gap: 1rem;">
-            {{ 'cart.remove' | t | link_to: item.url_to_remove }} <!-- Remove nằm ngang hàng -->
-            <input type="submit" value="{{ 'cart.update' | t }}"> <!-- Update nằm ngang hàng -->
+          <div>
+            {{ 'cart.remove' | t | link_to: item.url_to_remove }} <!-- Remove nằm trên -->
+            <input type="submit" value="{{ 'cart.update' | t }}"> <!-- Update nằm dưới -->
           </div>
         </td>
       </tr>
@@ -32,6 +32,160 @@
 
   <input type="submit" name="checkout" value="{{ 'cart.checkout' | t }}">
 </form>
+
+<style>
+  /* Styling for the cart table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* Styling for product image */
+  td:first-child img {
+    max-width: 100px;
+    max-height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+  }
+
+  td:first-child img:hover {
+    transform: scale(1.05);
+  }
+
+  /* Styling for product title */
+  td:nth-child(2) p {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #1a202c;
+    margin: 0;
+  }
+
+  /* Styling for quantity input */
+  td:nth-child(3) input[type="text"] {
+    width: 60px;
+    padding: 8px;
+    border: 2px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 1rem;
+    text-align: center;
+    transition: border-color 0.3s ease;
+  }
+
+  td:nth-child(3) input[type="text"]:focus {
+    border-color: #ef4444;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+  }
+
+  /* Styling for Remove and Update buttons */
+  td:last-child div {
+    display: block; /* Đảm bảo xếp dọc */
+  }
+
+  td:last-child a {
+    display: inline-block;
+    padding: 8px 15px;
+    margin-bottom: 10px; /* Khoảng cách giữa Remove và Update */
+    background-color: #ef4444;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  td:last-child a:hover {
+    background-color: #dc2626;
+    transform: translateY(-2px);
+  }
+
+  td:last-child input[type="submit"] {
+    display: inline-block;
+    padding: 8px 15px;
+    background-color: #1a202c;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 100%;
+  }
+
+  td:last-child input[type="submit"]:hover {
+    background-color: #2d3748;
+    transform: translateY(-2px);
+  }
+
+  /* Styling for checkout button */
+  input[name="checkout"] {
+    display: block;
+    margin-top: 20px;
+    padding: 12px 25px;
+    background-color: #ef4444;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  input[name="checkout"]:hover {
+    background-color: #dc2626;
+    transform: translateY(-2px);
+  }
+
+  /* Responsive design */
+  @media (max-width: 768px) {
+    table {
+      display: block;
+      overflow-x: auto;
+    }
+
+    th, td {
+      padding: 10px;
+      font-size: 0.9rem;
+    }
+
+    td:first-child img {
+      max-width: 80px;
+      max-height: 80px;
+    }
+
+    td:nth-child(3) input[type="text"] {
+      width: 50px;
+      padding: 6px;
+    }
+
+    td:last-child a,
+    td:last-child input[type="submit"] {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+    }
+
+    input[name="checkout"] {
+      padding: 10px 20px;
+      font-size: 0.9rem;
+    }
+  }
+</style>
 
 {% schema %}
 {
