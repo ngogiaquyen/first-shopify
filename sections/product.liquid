@@ -18,7 +18,7 @@
     gap: 2rem;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     color: #1a202c;
-    
+
   }
   .product-images {
     display: flex;
@@ -299,10 +299,20 @@
 <div class="product-section">
   <div class="product-images">
     {% if product.images.size > 0 %}
-      <img src="{{ product.featured_image | img_url: '600x600' }}" alt="{{ product.title | escape }} - Main Image" class="product-image-main" id="main-image">
+      <img
+        src="{{ product.featured_image | img_url: '600x600' }}"
+        alt="{{ product.title | escape }} - Main Image"
+        class="product-image-main"
+        id="main-image"
+      >
       <div class="product-thumbnails">
         {% for image in product.images %}
-          <img src="{{ image | img_url: '100x100' }}" alt="{{ product.title | escape }} - Thumbnail {{ forloop.index }}" class="product-thumbnail {% if forloop.first %}active{% endif %}" onclick="document.getElementById('main-image').src='{{ image | img_url: '600x600' }}'; this.parentElement.querySelectorAll('.product-thumbnail').forEach(el => el.classList.remove('active')); this.classList.add('active');">
+          <img
+            src="{{ image | img_url: '100x100' }}"
+            alt="{{ product.title | escape }} - Thumbnail {{ forloop.index }}"
+            class="product-thumbnail {% if forloop.first %}active{% endif %}"
+            onclick="document.getElementById('main-image').src='{{ image | img_url: '600x600' }}'; this.parentElement.querySelectorAll('.product-thumbnail').forEach(el => el.classList.remove('active')); this.classList.add('active');"
+          >
         {% endfor %}
       </div>
     {% else %}
@@ -343,19 +353,18 @@
       {% assign current_variant = product.selected_or_first_available_variant %}
       <input type="hidden" name="id" value="{{ current_variant.id }}">
       <input type="hidden" name="quantity" value="1">
-      <input type="submit" name="checkout" value="{{ section.settings.buy_now_text | default: 'Buy Now' }}" class="buy-now">
+      <input
+        type="submit"
+        name="checkout"
+        value="{{ section.settings.buy_now_text | default: 'Buy Now' }}"
+        class="buy-now"
+      >
     {% endform %}
     {% if section.settings.show_trust_badges %}
       <div class="trust-badges">
-        <a href="{{ section.settings.trust_badge_1_url | default: '/pages/shipping-policy' }}" aria-label="Free Shipping Policy">
-          <i class="fas fa-shipping-fast"></i> Free Shipping
-        </a>
-        <a href="{{ section.settings.trust_badge_2_url | default: '/pages/secure-checkout' }}" aria-label="Secure Checkout Information">
-          <i class="fas fa-lock"></i> Secure Checkout
-        </a>
-        <a href="{{ section.settings.trust_badge_3_url | default: '/pages/return-policy' }}" aria-label="Return Policy">
-          <i class="fas fa-undo"></i> 30-Day Returns
-        </a>
+        <div class="trust-badge-item"><i class="fas fa-shipping-fast"></i> Free Shipping</div>
+        <div class="trust-badge-item"><i class="fas fa-lock"></i> Secure Checkout</div>
+        <div class="trust-badge-item"><i class="fas fa-undo"></i> 30-Day Returns</div>
       </div>
     {% endif %}
   </div>
@@ -363,13 +372,13 @@
 
 {% comment %} JavaScript for thumbnail interaction {% endcomment %}
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     const mainImage = document.getElementById('main-image');
     const thumbnails = document.querySelectorAll('.product-thumbnail');
-    thumbnails.forEach(thumb => {
-      thumb.addEventListener('click', function() {
+    thumbnails.forEach((thumb) => {
+      thumb.addEventListener('click', function () {
         mainImage.src = this.src.replace('100x100', '600x600');
-        thumbnails.forEach(t => t.classList.remove('active'));
+        thumbnails.forEach((t) => t.classList.remove('active'));
         this.classList.add('active');
       });
     });
