@@ -137,12 +137,11 @@
     {% if section.settings.image_1 %}
       <img src="{{ section.settings.image_1 | img_url: 'large' }}" alt="Image 1" loading="lazy">
       <div class="image-wrapper-text">
-
-      <div class="image-text">Dịch vụ tư vấn</div>
-      <div class="image-subtext">Setup Phòng tập Pilates</div>
-      {% if section.settings.button_url_1 %}
-        <a href="{{ section.settings.button_url_1 }}" class="buy-now-button">Đăng kí ngay</a>
-      {% endif %}
+        <div class="image-text">Dịch vụ tư vấn</div>
+        <div class="image-subtext">Setup Phòng tập Pilates</div>
+        {% if section.settings.button_url_1 %}
+          <a href="{{ section.settings.button_url_1 }}" class="buy-now-button">Đăng kí ngay</a>
+        {% endif %}
       </div>
 
     {% else %}
