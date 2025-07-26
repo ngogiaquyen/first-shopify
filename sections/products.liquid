@@ -336,7 +336,7 @@
           </div>
           <div class="featured-products-3-column__item-text">
             <p class="product-title"><span class="underline-child">{{ section.settings.product_3.title }}</span></p>
-            <p class="product-description">{{ section.settings.product_3.description | strip_html | truncate: 100 }}</p>
+            {% comment %} <p class="product-description">{{ section.settings.product_3.description | strip_html | truncate: 100 }}</p> {% endcomment %}
             <p class="product-prices">
               {% if section.settings.product_3.compare_at_price > section.settings.product_3.price %}
                 <span class="price-original">{{ section.settings.product_3.compare_at_price | money }}</span>
@@ -371,7 +371,7 @@
           </div>
           <div class="featured-products-3-column__item-text">
             <p class="product-title"><span class="underline-child">{{ section.settings.product_4.title }}</span></p>
-            <p class="product-description">{{ section.settings.product_4.description | strip_html | truncate: 100 }}</p>
+            {% comment %} <p class="product-description">{{ section.settings.product_4.description | strip_html | truncate: 100 }}</p> {% endcomment %}
             <p class="product-prices">
               {% if section.settings.product_4.compare_at_price > section.settings.product_4.price %}
                 <span class="price-original">{{ section.settings.product_4.compare_at_price | money }}</span>
