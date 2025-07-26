@@ -5,6 +5,47 @@
   https://shopify.dev/docs/storefronts/themes/architecture/templates/cart
 {% endcomment %}
 
+<style>
+  .checkout-button {
+    background-color: #000; /* nền đen */
+    color: #fff; /* chữ trắng */
+    font-size: 18px;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 20px;
+    display: block;
+  }
+
+  .checkout-button:hover {
+    background-color: #444; /* màu khi hover */
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+
+  td {
+    padding: 10px;
+    vertical-align: middle;
+    border-bottom: 1px solid #eee;
+  }
+
+  input[type="text"] {
+    width: 50px;
+    padding: 5px;
+    text-align: center;
+  }
+
+  input[type="submit"] {
+    padding: 5px 10px;
+    margin-left: 10px;
+  }
+</style>
+
 <h1>{{ 'cart.title' | t }}</h1>
 
 <form action="{{ routes.cart_url }}" method="post">
@@ -26,7 +67,7 @@
     {% endfor %}
   </table>
 
-  <input type="submit" name="checkout" value="{{ 'cart.checkout' | t }}">
+  <input type="submit" name="checkout" value="{{ 'cart.checkout' | t }}" class="checkout-button">
 </form>
 
 {% schema %}
