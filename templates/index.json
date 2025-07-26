@@ -31,12 +31,15 @@
     },
     "pilates-section": {
       "type": "pilates-section",
-      "settings": {}
+      "settings": {
+        "left_background_image": "shopify://shop_images/bannerhome002.jpg",
+        "right_background_image": "shopify://shop_images/banner-sale-home-01.jpg"
+      }
     }
   },
   "order": [
     "slideshow",
-    "products", 
+    "products",
     "pilates-section"
   ]
 }
