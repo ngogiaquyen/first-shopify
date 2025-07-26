@@ -37,6 +37,8 @@
     </button>
   </div>
 
+  <div class="header__overlay" aria-hidden="true"></div>
+
   <nav class="header__nav" aria-label="Main navigation">
     <ul class="header__menu" role="list">
       {% for link in section.settings.menu.links %}
@@ -55,6 +57,7 @@
     --color-accent: #2563eb;
     --color-background-hover: #f1f5f9;
     --color-border: #e2e8f0;
+    --color-overlay: rgba(0, 0, 0, 0.5);
     --page-margin: 1.5rem;
   }
 
@@ -183,6 +186,24 @@
     font-weight: 700;
   }
 
+  .header__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: var(--color-overlay);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 998;
+  }
+
+  .header__overlay--visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
   @media screen and (max-width: 768px) {
     .header {
       height: 3.5rem;
@@ -240,11 +261,23 @@
 {% endstylesheet %}
 
 {% javascript %}
-  document.querySelector('.header__hamburger').addEventListener('click', function() {
+  document.addEventListener('DOMContentLoaded', function() {
+    const hamburger = document.querySelector('.header__hamburger');
     const nav = document.querySelector('.header__nav');
-    const isOpen = this.getAttribute('aria-expanded') === 'true';
-    this.setAttribute('aria-expanded', !isOpen);
-    nav.classList.toggle('header__nav--open');
+    const overlay = document.querySelector('.header__overlay');
+
+    hamburger.addEventListener('click', function() {
+      const isOpen = this.getAttribute('aria-expanded') === 'true';
+      this.setAttribute('aria-expanded', !isOpen);
+      nav.classList.toggle('header__nav--open');
+      overlay.classList.toggle('header__overlay--visible');
+    });
+
+    overlay.addEventListener('click', function() {
+      hamburger.setAttribute('aria-expanded', 'false');
+      nav.classList.remove('header__nav--open');
+      this.classList.remove('header__overlay--visible');
+    });
   });
 {% endjavascript %}
 
