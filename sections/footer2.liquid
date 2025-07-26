@@ -4,6 +4,11 @@
   "name": "Footer",
   "settings": [
     {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
       "type": "text",
       "id": "company_name",
       "label": "Company Name",
@@ -17,15 +22,21 @@
     },
     {
       "type": "text",
+      "id": "email_url",
+      "label": "Email URL",
+      "default": "mailto:support@dustrium.com"
+    },
+    {
+      "type": "text",
       "id": "whatsapp_url",
       "label": "WhatsApp URL",
-      "default": "https://wa.me/1234567890"
+      "default": "https://wa.me/18231139331"
     },
     {
       "type": "text",
       "id": "facebook_url",
       "label": "Facebook URL",
-      "default": "https://facebook.com"
+      "default": "https://www.facebook.com/JoyMaRaetin"
     },
     {
       "type": "text",
@@ -37,7 +48,7 @@
       "type": "text",
       "id": "youtube_url",
       "label": "YouTube URL",
-      "default": "https://youtube.com"
+      "default": "https://www.youtube.com/channel/UC74GSURtjqjGeZUIKCAGpyg"
     },
     {
       "type": "text",
@@ -64,7 +75,7 @@
 {% comment %} Load Font Awesome for icons {% endcomment %}
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
-{% comment %} Pure CSS for modern footer styling {% endcomment %}
+{% comment %} Pure CSS for modern fitness-focused footer styling {% endcomment %}
 <style>
   footer {
     background: linear-gradient(180deg, #1a202c 0%, #2d3748 100%);
@@ -76,39 +87,46 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 1rem;
+  }
+  .footer-columns {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 2rem;
+    margin-bottom: 3rem;
   }
-  footer h3 {
+  .footer-logo img {
+    max-width: 150px;
+    height: auto;
+    margin-bottom: 1rem;
+  }
+  footer h5 {
     font-size: 1.125rem;
     font-weight: 700;
+    color: #ffffff;
     margin-bottom: 1rem;
     position: relative;
-    color: #ffffff;
   }
-  footer h3::after {
+  footer h5::after {
     content: '';
     position: absolute;
     bottom: 0;
     left: 0;
     width: 2rem;
     height: 2px;
-    background-color: #68d391;
+    background-color: #ef4444;
     transition: width 0.3s ease;
   }
-  footer h3:hover::after {
+  footer h5:hover::after {
     width: 4rem;
   }
   footer p {
     font-size: 0.875rem;
-    line-height: 1.5;
+    line-height: 1.6;
     margin-bottom: 1.5rem;
   }
   .social-icons {
     display: flex;
     gap: 1rem;
-    margin-top: 1.5rem;
   }
   .social-icons a {
     display: inline-flex;
@@ -119,40 +137,48 @@
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.1);
     color: #ffffff;
+    text-decoration: none;
     transition: background-color 0.3s ease, transform 0.3s ease;
   }
   .social-icons a:hover {
-    background-color: #68d391;
+    background-color: #ef4444;
     transform: scale(1.1);
     color: #1a202c;
   }
   .social-icons i {
     font-size: 1.25rem;
   }
-  footer ul {
+  .footer-links {
     list-style: none;
     padding: 0;
     margin: 0;
   }
-  footer ul li {
+  .footer-links li {
     margin-bottom: 0.75rem;
   }
-  footer ul a {
+  .footer-links a {
     font-size: 0.875rem;
     color: #e2e8f0;
     text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     transition: color 0.3s ease, transform 0.2s ease;
   }
-  footer ul a:hover {
-    color: #68d391;
+  .footer-links i {
+    font-size: 0.75rem;
+    color: #ef4444;
+  }
+  .footer-links a:hover {
+    color: #ef4444;
     transform: translateX(4px);
   }
-  footer form {
+  .newsletter-form {
     display: flex;
     flex-direction: column;
     gap: 1rem;
   }
-  footer form input {
+  .newsletter-form input {
     padding: 0.75rem;
     border: 1px solid #4a5568;
     background-color: #2d3748;
@@ -160,28 +186,27 @@
     border-radius: 0.5rem;
     font-size: 0.875rem;
   }
-  footer form input:focus {
-    border-color: #68d391;
-    box-shadow: 0 0 0 3px rgba(104, 211, 145, 0.2);
+  .newsletter-form input:focus {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
     outline: none;
   }
-  footer form button {
+  .newsletter-form button {
     padding: 0.75rem 1rem;
-    background-color: #68d391;
-    color: #1a202c;
+    background-color: #ef4444;
+    color: #ffffff;
     font-weight: 600;
     border: none;
     border-radius: 0.5rem;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
   }
-  footer form button:hover {
-    background-color: #4ade80;
+  .newsletter-form button:hover {
+    background-color: #dc2626;
     transform: translateY(-2px);
   }
   .legal-section {
     border-top: 1px solid #4a5568;
-    margin-top: 3rem;
     padding-top: 2rem;
     text-align: center;
     font-size: 0.875rem;
@@ -207,27 +232,27 @@
     left: 0;
     width: 0;
     height: 1px;
-    background-color: #68d391;
+    background-color: #ef4444;
     transition: width 0.3s ease;
   }
   .legal-links a:hover {
-    color: #68d391;
+    color: #ef4444;
   }
   .legal-links a:hover::after {
     width: 100%;
   }
   footer a:focus, footer button:focus {
-    outline: 2px solid #68d391;
+    outline: 2px solid #ef4444;
     outline-offset: 2px;
   }
   @media (max-width: 768px) {
-    .footer-container {
+    .footer-columns {
       grid-template-columns: 1fr;
     }
-    footer h3::after {
+    footer h5::after {
       width: 1.5rem;
     }
-    footer h3:hover::after {
+    footer h5:hover::after {
       width: 3rem;
     }
     .social-icons a {
@@ -241,73 +266,97 @@
       flex-direction: column;
       gap: 0.5rem;
     }
+    .newsletter-form input, .newsletter-form button {
+      width: 100%;
+    }
   }
 </style>
 
 {% comment %} Footer HTML structure {% endcomment %}
 <footer>
   <div class="footer-container">
-    {% comment %} Company Info {% endcomment %}
-    <div>
-      <h3>{{ section.settings.company_name | escape }}</h3>
-      <p>{{ section.settings.address | escape }}</p>
-      <div class="social-icons">
-        {% if section.settings.whatsapp_url %}
-          <a href="{{ section.settings.whatsapp_url | escape }}" target="_blank" rel="noopener" aria-label="WhatsApp">
-            <i class="fab fa-whatsapp"></i>
-          </a>
+    <div class="footer-columns">
+      {% comment %} Company Info {% endcomment %}
+      <div class="footer-column">
+        {% if section.settings.logo %}
+          <div class="footer-logo">
+            <img src="{{ section.settings.logo | img_url: '150x' }}" alt="{{ section.settings.company_name | escape }} Logo" loading="lazy">
+          </div>
         {% endif %}
-        {% if section.settings.facebook_url %}
-          <a href="{{ section.settings.facebook_url | escape }}" target="_blank" rel="noopener" aria-label="Facebook">
-            <i class="fab fa-facebook-f"></i>
-          </a>
-        {% endif %}
-        {% if section.settings.linkedin_url %}
-          <a href="{{ section.settings.linkedin_url | escape }}" target="_blank" rel="noopener" aria-label="LinkedIn">
-            <i class="fab fa-linkedin-in"></i>
-          </a>
-        {% endif %}
-        {% if section.settings.youtube_url %}
-          <a href="{{ section.settings.youtube_url | escape }}" target="_blank" rel="noopener" aria-label="YouTube">
-            <i class="fab fa-youtube"></i>
-          </a>
-        {% endif %}
+        <p>{{ section.settings.address | escape }}</p>
+        <div class="social-icons">
+          {% if section.settings.email_url %}
+            <a href="{{ section.settings.email_url | escape }}" target="_blank" rel="noopener" aria-label="Email">
+              <i class="fas fa-envelope"></i>
+            </a>
+          {% endif %}
+          {% if section.settings.whatsapp_url %}
+            <a href="{{ section.settings.whatsapp_url | escape }}" target="_blank" rel="noopener" aria-label="WhatsApp">
+              <i class="fab fa-whatsapp"></i>
+            </a>
+          {% endif %}
+          {% if section.settings.facebook_url %}
+            <a href="{{ section.settings.facebook_url | escape }}" target="_blank" rel="noopener" aria-label="Facebook">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+          {% endif %}
+          {% if section.settings.linkedin_url %}
+            <a href="{{ section.settings.linkedin_url | escape }}" target="_blank" rel="noopener" aria-label="LinkedIn">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+          {% endif %}
+          {% if section.settings.youtube_url %}
+            <a href="{{ section.settings.youtube_url | escape }}" target="_blank" rel="noopener" aria-label="YouTube">
+              <i class="fab fa-youtube"></i>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+
+      {% comment %} Shop Links {% endcomment %}
+      <div class="footer-column">
+        <h5>Shop</h5>
+        <ul class="footer-links">
+          <li><a href="/collections/treadmills"><i class="fas fa-square-full"></i>Treadmills</a></li>
+          <li><a href="/collections/dumbbells"><i class="fas fa-square-full"></i>Dumbbells</a></li>
+          <li><a href="/collections/resistance-bands"><i class="fas fa-square-full"></i>Resistance Bands</a></li>
+          <li><a href="/collections/protein-powders"><i class="fas fa-square-full"></i>Protein Powders</a></li>
+          <li><a href="/collections/pre-workouts"><i class="fas fa-square-full"></i>Pre-Workouts</a></li>
+        </ul>
+      </div>
+
+      {% comment %} About Us Links {% endcomment %}
+      <div class="footer-column">
+        <h5>About Us</h5>
+        <ul class="footer-links">
+          <li><a href="/pages/our-mission"><i class="fas fa-square-full"></i>Our Mission</a></li>
+          <li><a href="/pages/why-shop-with-us"><i class="fas fa-square-full"></i>Why Shop With Us</a></li>
+          <li><a href="/pages/fitness-tips"><i class="fas fa-square-full"></i>Fitness Tips</a></li>
+          <li><a href="/pages/faqs"><i class="fas fa-square-full"></i>FAQs</a></li>
+        </ul>
+      </div>
+
+      {% comment %} Newsletter Signup {% endcomment %}
+      <div class="footer-column">
+        <h5>{{ section.settings.newsletter_title | escape }}</h5>
+        <p>{{ section.settings.newsletter_description | escape }}</p>
+        <form class="newsletter-form" method="post" action="/contact#newsletter" aria-label="Newsletter Signup">
+          <input type="hidden" name="form_id" value="newsletter_form">
+          <input type="text" name="contact[name]" id="newsletter-name" placeholder="Name" required>
+          <input type="email" name="contact[email]" id="newsletter-email" placeholder="Email" required>
+          <button type="submit">Sign Up</button>
+        </form>
       </div>
     </div>
 
-    {% comment %} Support Links {% endcomment %}
-    <div>
-      <h3>Shop</h3>
-      <ul>
-        <li><a href="/collections/treadmills">Treadmills</a></li>
-        <li><a href="/collections/dumbbells">Dumbbells</a></li>
-        <li><a href="/collections/resistance-bands">Resistance Bands</a></li>
-        <li><a href="/collections/protein-powders">Protein Powders</a></li>
-        <li><a href="/collections/pre-workouts">Pre-Workouts</a></li>
-      </ul>
-    </div>
-
-    {% comment %} Company Links {% endcomment %}
-    <div>
-      <h3>About Us</h3>
-      <ul>
-        <li><a href="/pages/our-mission">Our Mission</a></li>
-        <li><a href="/pages/why-shop-with-us">Why Shop With Us</a></li>
-        <li><a href="/pages/fitness-tips">Fitness Tips</a></li>
-        <li><a href="/pages/faqs">FAQs</a></li>
-      </ul>
-    </div>
-
-    {% comment %} Newsletter Signup {% endcomment %}
-    <div>
-      <h3>{{ section.settings.newsletter_title | escape }}</h3>
-      <p>{{ section.settings.newsletter_description | escape }}</p>
-      <form action="/contact#newsletter" method="post">
-        <input type="text" name="contact[name]" placeholder="Name" required>
-        <input type="email" name="contact[email]" placeholder="Email" required>
-        <button type="submit">Subscribe</button>
-      </form>
+    {% comment %} Copyright and Legal Links {% endcomment %}
+    <div class="legal-section">
+      <p>Copyright &copy; 2025 {{ section.settings.company_name | escape }}, All rights reserved. Powered by <a href="https://moxcreative.com" target="_blank" rel="noopener">MoxCreative</a>.</p>
+      <div class="legal-links">
+        <a href="/pages/terms-of-use">Terms of Use</a>
+        <a href="/pages/privacy-policy">Privacy Policy</a>
+        <a href="/pages/cookie-policy">Cookie Policy</a>
+      </div>
     </div>
   </div>
-
 </footer>
