@@ -45,6 +45,11 @@
     "achievement": {
       "type": "achievement",
       "settings": {}
+    },
+    
+    "footer2": {
+      "type": "footer2",
+      "settings": {}
     }
   },
   "order": [
@@ -52,6 +57,7 @@
     "products",
     "pilates-section",
     "two-column",
-    "achievement"
+    "achievement",
+    "footer2",
   ]
 }
