@@ -98,7 +98,7 @@
 }
 {% endschema %}
 
-{% comment %} Styles for slideshow with zoom animation, top progress bar, and slide-in title/description {% endcomment %}
+{% comment %} Styles for slideshow with zoom animation, top progress bar, and responsive design {% endcomment %}
 <style>
   .slideshow-container {
     min-width: 100vw;
@@ -178,18 +178,43 @@
   .progress-bar.active {
     width: 100%;
   }
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1024px) {
     .slide-content {
-      top: 15%;
+      top: auto;
+      bottom: 20%;
       left: 5%;
       max-width: 90%;
-      text-align: center;
+      text-align: left;
     }
     .slide-content h2 {
       font-size: 2rem;
     }
     .slide-content p {
+      font-size: 1.2rem;
+    }
+    .slide.active {
+      transform: scale(1.05);
+    }
+  }
+  @media screen and (max-width: 768px) {
+    .slideshow-container {
+      height: calc(100vh - 56px);
+      margin-top: 56px;
+    }
+    .slide-content {
+      bottom: 10%;
+      left: 5%;
+      max-width: 80%;
+    }
+    .slide-content h2 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+    .slide-content p {
       font-size: 1rem;
+    }
+    .slide.active {
+      transform: scale(1.03);
     }
   }
 </style>
