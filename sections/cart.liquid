@@ -5,47 +5,6 @@
   https://shopify.dev/docs/storefronts/themes/architecture/templates/cart
 {% endcomment %}
 
-<style>
-  .checkout-button {
-    background-color: #000; /* nền đen */
-    color: #fff; /* chữ trắng */
-    font-size: 18px;
-    padding: 15px 30px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 20px;
-    display: block;
-  }
-
-  .checkout-button:hover {
-    background-color: #444; /* màu khi hover */
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
-
-  td {
-    padding: 10px;
-    vertical-align: middle;
-    border-bottom: 1px solid #eee;
-  }
-
-  input[type="text"] {
-    width: 50px;
-    padding: 5px;
-    text-align: center;
-  }
-
-  input[type="submit"] {
-    padding: 5px 10px;
-    margin-left: 10px;
-  }
-</style>
-
 <h1>{{ 'cart.title' | t }}</h1>
 
 <form action="{{ routes.cart_url }}" method="post">
@@ -56,18 +15,22 @@
           {% render 'image', image: item.image, url: item.url %}
         </td>
         <td>
-          <p>{{ item.product.title }}</p>
-          {{ 'cart.remove' | t | link_to: item.url_to_remove }}
+          <p>{{ item.product.title }}</p> <!-- Thông tin sản phẩm nằm đầu tiên -->
         </td>
         <td>
-          <input type="text" name="updates[]" value="{{ item.quantity }}">
-          <input type="submit" value="{{ 'cart.update' | t }}">
+          <input type="text" name="updates[]" value="{{ item.quantity }}"> <!-- Số lượng nằm dưới -->
+        </td>
+        <td>
+          <div style="display: flex; gap: 1rem;">
+            {{ 'cart.remove' | t | link_to: item.url_to_remove }} <!-- Remove nằm ngang hàng -->
+            <input type="submit" value="{{ 'cart.update' | t }}"> <!-- Update nằm ngang hàng -->
+          </div>
         </td>
       </tr>
     {% endfor %}
   </table>
 
-  <input type="submit" name="checkout" value="{{ 'cart.checkout' | t }}" class="checkout-button">
+  <input type="submit" name="checkout" value="{{ 'cart.checkout' | t }}">
 </form>
 
 {% schema %}
