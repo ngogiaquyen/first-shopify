@@ -10,7 +10,17 @@
             <img src="{{ 'logo.svg' | asset_url }}" alt="{{ shop.name }}" height="40" loading="lazy">
           </a>
         {% endif %}
-  </div>
+
+          <nav class="header__nav" aria-label="Main navigation">
+            <ul class="header__menu" role="list">
+              {% for link in section.settings.menu.links %}
+                <li>
+                  <a href="{{ link.url }}" class="header__menu-link" tabindex="0">{{ link.title }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          </nav>
+        </div>
 
   <div class="header__right">
       <div class="header__actions">
