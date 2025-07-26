@@ -119,12 +119,6 @@
     text-overflow: ellipsis;
   }
 
-  .product-description {
-    font-size: 0.95rem;
-    color: #4b5563;
-    margin: 0 15px 10px;
-    line-height: 1.5;
-  }
 
   .product-prices {
     display: flex;
@@ -368,7 +362,6 @@
           </div>
           <div class="featured-products-3-column__item-text">
             <p class="product-title"><span class="underline-child">{{ section.settings.product_4.title }}</span></p>
-            {% comment %} <p class="product-description">{{ section.settings.product_4.description | strip_html | truncate: 100 }}</p> {% endcomment %}
             <p class="product-prices">
               {% if section.settings.product_4.compare_at_price > section.settings.product_4.price %}
                 <span class="price-original">{{ section.settings.product_4.compare_at_price | money }}</span>
