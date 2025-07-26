@@ -1,14 +1,15 @@
 <header class="header" aria-label="Site header">
-  <div class="header__left">
-    {% if section.settings.logo != blank %}
-      <a href="{{ routes.root_url }}" class="header__logo" aria-label="{{ shop.name }}">
-        <img src="{{ section.settings.logo | image_url: width: 120 }}" alt="{{ shop.name }}" height="40" loading="lazy">
-      </a>
-    {% else %}
-      <a href="{{ routes.root_url }}" class="header__logo" aria-label="{{ shop.name }}">
-        <img src="{{ 'logo.svg' | asset_url }}" alt="{{ shop.name }}" height="40" loading="lazy">
-      </a>
-    {% endif %}
+    <div>
+        <div class="header__left">
+        {% if section.settings.logo != blank %}
+          <a href="{{ routes.root_url }}" class="header__logo" aria-label="{{ shop.name }}">
+            <img src="{{ section.settings.logo | image_url: width: 120 }}" alt="{{ shop.name }}" height="40" loading="lazy">
+          </a>
+        {% else %}
+          <a href="{{ routes.root_url }}" class="header__logo" aria-label="{{ shop.name }}">
+            <img src="{{ 'logo.svg' | asset_url }}" alt="{{ shop.name }}" height="40" loading="lazy">
+          </a>
+        {% endif %}
   </div>
 
   <div class="header__right">
@@ -27,6 +28,7 @@
         {% endif %}
         {{ 'icon-cart.svg' | inline_asset_content }}
       </a>
+    </div>
     </div>
 
     <button class="header__hamburger" aria-label="Toggle menu" aria-expanded="false" type="button">
