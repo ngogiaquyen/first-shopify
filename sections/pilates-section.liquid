@@ -1,6 +1,6 @@
 {% comment %}
   Pilates Setup and Reformer Section
-  This section displays two cards for Pilates setup consultation and Reformer machine purchase with background images.
+  This section displays two cards for Pilates setup consultation and Reformer machine purchase with background images and pure CSS styling.
 {% endcomment %}
 
 {% schema %}
@@ -33,13 +33,119 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pilates Setup and Reformer</title>
-  {{ 'https://cdn.tailwindcss.com' | script_tag }}
   {{ 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css' | stylesheet_tag }}
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
     body {
       font-family: 'Inter', sans-serif;
+      background-color: #ffffff;
+      margin: 0;
     }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      max-width: 1280px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 24px;
+      gap: 24px;
+    }
+
+    @media (min-width: 768px) {
+      main {
+        flex-direction: row;
+      }
+    }
+
+    section {
+      position: relative;
+      flex: 1;
+      overflow: hidden;
+      max-width: 600px;
+      aspect-ratio: 4 / 5;
+    }
+
+    @media (min-width: 768px) {
+      section {
+        max-width: none;
+      }
+    }
+
+    section:first-child {
+      border-radius: 300px 0 0 0;
+    }
+
+    section:last-child {
+      border-radius: 0 0 300px 0;
+    }
+
+    .text-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 40px;
+      max-width: 320px;
+      color: #ffffff;
+      z-index: 10;
+    }
+
+    .text-container p {
+      text-transform: uppercase;
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .text-container h2 {
+      font-size: 36px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 24px;
+    }
+
+    .text-container h2.text-sky-100 {
+      color: #e0f7ff;
+    }
+
+    .button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background-color: #222222;
+      border-radius: 9999px;
+      padding: 12px 24px;
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #ffffff;
+      text-decoration: none;
+      width: max-content;
+      transition: background-color 0.3s ease;
+    }
+
+    .button:hover {
+      background-color: #111111;
+    }
+
+    .button span {
+      background-color: #4caf50;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: #ffffff;
+    }
+
     /* Hex clip path for left side */
     .clip-left-hex {
       clip-path: polygon(
@@ -53,6 +159,7 @@
         30% 25%
       );
     }
+
     /* Hex clip path for right side */
     .clip-right-hex {
       clip-path: polygon(
@@ -64,6 +171,7 @@
         0% 25%
       );
     }
+
     /* Hex shape for images */
     .clip-hex {
       clip-path: polygon(
@@ -77,41 +185,37 @@
     }
   </style>
 </head>
-<body class="bg-white">
-  <main class="flex flex-col md:flex-row max-w-[1280px] mx-auto p-6 gap-6">
+<body>
+  <main>
     <!-- Left card -->
-    <section class="relative flex-1 rounded-[300px_0_0_0] overflow-hidden max-w-[600px] md:max-w-none" style="aspect-ratio: 4 / 5">
-      <div class="absolute inset-0" style="background-image: url({{ section.settings.left_background_image | asset_url }}); background-size: cover; background-position: center;"></div>
-      <div class="absolute inset-0" style="background-image: url({{ section.settings.left_background_image | asset_url }}); background-size: cover; background-position: center; opacity: 0.9; clip-path: polygon(0% 0%, 70% 0%, 100% 25%, 100% 75%, 70% 100%, 0% 100%, 30% 75%, 30% 25%);"></div>
+    <section>
+      <div style="position: absolute; inset: 0; background-image: url({{ section.settings.left_background_image | asset_url }}); background-size: cover; background-position: center;"></div>
+      <div style="position: absolute; inset: 0; background-image: url({{ section.settings.left_background_image | asset_url }}); background-size: cover; background-position: center; opacity: 0.9;" class="clip-left-hex"></div>
       <!-- Text and button container -->
-      <div class="absolute top-0 left-0 bottom-0 flex flex-col justify-center px-10 max-w-[320px] text-white z-10">
-        <p class="uppercase font-semibold text-sm mb-2">DỊCH VỤ TƯ VẤN</p>
-        <h2 class="text-4xl font-extrabold leading-tight mb-6 text-sky-100">
+      <div class="text-container">
+        <p>DỊCH VỤ TƯ VẤN</p>
+        <h2 class="text-sky-100">
           Setup Phòng<br>Tập Pilates
         </h2>
-        <button class="flex items-center gap-2 bg-[#222222] hover:bg-[#111111] rounded-full px-6 py-3 font-semibold text-xs uppercase tracking-widest w-max" type="button">
+        <button class="button" type="button">
           ĐĂNG KÍ NGAY
-          <span class="bg-[#4caf50] rounded-full w-6 h-6 flex items-center justify-center text-white text-sm">
-            <i class="fas fa-arrow-right"></i>
-          </span>
+          <span><i class="fas fa-arrow-right"></i></span>
         </button>
       </div>
     </section>
     <!-- Right card -->
-    <section class="relative flex-1 rounded-[0_0_300px_0] overflow-hidden max-w-[600px] md:max-w-none" style="aspect-ratio: 4 / 5">
-      <div class="absolute inset-0" style="background-image: url({{ section.settings.right_background_image | asset_url }}); background-size: cover; background-position: center;"></div>
-      <div class="absolute inset-0" style="background-image: url({{ section.settings.right_background_image | asset_url }}); background-size: cover; background-position: center; opacity: 0.9; clip-path: polygon(30% 0%, 100% 0%, 100% 100%, 30% 100%, 0% 75%, 0% 25%);"></div>
+    <section>
+      <div style="position: absolute; inset: 0; background-image: url({{ section.settings.right_background_image | asset_url }}); background-size: cover; background-position: center;"></div>
+      <div style="position: absolute; inset: 0; background-image: url({{ section.settings.right_background_image | asset_url }}); background-size: cover; background-position: center; opacity: 0.9;" class="clip-right-hex"></div>
       <!-- Text and button container -->
-      <div class="absolute top-0 left-0 bottom-0 flex flex-col justify-center px-10 max-w-[320px] text-white z-10">
-        <p class="uppercase font-semibold text-sm mb-2">GIAO HÀNG TOÀN QUỐC</p>
-        <h2 class="text-4xl font-extrabold leading-tight mb-6">
+      <div class="text-container">
+        <p>GIAO HÀNG TOÀN QUỐC</p>
+        <h2>
           Máy Tập Pilates<br>Reformer
         </h2>
-        <button class="flex items-center gap-2 bg-[#222222] hover:bg-[#111111] rounded-full px-6 py-3 font-semibold text-xs uppercase tracking-widest w-max" type="button">
+        <button class="button" type="button">
           MUA NGAY
-          <span class="bg-[#4caf50] rounded-full w-6 h-6 flex items-center justify-center text-white text-sm">
-            <i class="fas fa-arrow-right"></i>
-          </span>
+          <span><i class="fas fa-arrow-right"></i></span>
         </button>
       </div>
     </section>
