@@ -36,29 +36,11 @@
         "right_background_image": "shopify://shop_images/banner-sale-home-01.jpg"
       }
     },
+    
     "two-column": {
       "type": "two-column",
-      "blocks": {
-        "two-column": {
-          "type": "two-column",
-          "settings": {
-            "left_image": "shopify://shop_images/bannerhome002.jpg",
-            "right_image": "shopify://shop_images/banner-sale-home-01.jpg",
-            "aspect_ratio": "3/2",
-            "vertical_alignment": "center",
-            "image_spacing": 40,
-            "mobile_spacing": 15,
-            "section_padding": 40,
-            "border_radius": 0,
-            "enable_hover_effect": true
-          }
-        }
-      },
-      "block_order": [
-        "two-column"
-      ],
       "settings": {}
-    }
+    },
   },
   "order": [
     "slideshow",
