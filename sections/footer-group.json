@@ -11,8 +11,24 @@
   "type": "footer",
   "name": "t:general.footer",
   "sections": {
+    "footer2_hYFpQU": {
+      "type": "footer2",
+      "name": "Footer",
+      "settings": {
+        "company_name": "Dustrium",
+        "address": "Room 901, Building A, Wanda Plaza, No. 121, Huaian East Road, Yuhua District, Shijiazhuang City, Hebei Province, China",
+        "email_url": "mailto:support@dustrium.com",
+        "whatsapp_url": "https://wa.me/18231139331",
+        "facebook_url": "https://www.facebook.com/JoyMaRaetin",
+        "linkedin_url": "https://linkedin.com",
+        "youtube_url": "https://www.youtube.com/channel/UC74GSURtjqjGeZUIKCAGpyg",
+        "newsletter_title": "Join Our Fitness Community",
+        "newsletter_description": "Get workout tips, exclusive offers, and the latest on gym equipment and supplements."
+      }
+    },
     "footer": {
       "type": "footer",
+      "disabled": true,
       "settings": {
         "menu": "",
         "show_payment_icons": true
@@ -20,6 +36,7 @@
     }
   },
   "order": [
+    "footer2_hYFpQU",
     "footer"
   ]
 }
