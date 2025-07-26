@@ -30,7 +30,7 @@
 
   .product-image-main {
     width: 100%;
-    max-height: 350px; /* Giảm kích thước ảnh chính */
+    max-height: 350px; /* Kích thước ảnh chính nhỏ gọn */
     object-fit: contain;
     border-radius: 1rem;
     background-color: #f9fafb;
@@ -139,6 +139,7 @@
 
   .buy-now-form {
     flex-grow: 1;
+    max-width: 50%;
   }
 
   .buy-now-form input[type="submit"] {
@@ -322,6 +323,10 @@
       flex-wrap: wrap;
       justify-content: center;
     }
+
+    .buy-now-form {
+      max-width: 100%;
+    }
   }
 
   /* Mobile (below 768px) */
@@ -383,8 +388,8 @@
       align-items: stretch;
     }
 
-    .buy-now-thumbnails .product-thumbnails {
-      justify-content: center;
+    .buy-now-form {
+      margin-bottom: 1rem;
     }
   }
 </style>
