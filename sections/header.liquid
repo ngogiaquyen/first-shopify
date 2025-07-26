@@ -11,12 +11,31 @@
     {% endif %}
   </div>
 
-  <button class="header__hamburger" aria-label="Toggle menu" aria-expanded="false" type="button">
-    <svg class="hamburger-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path class="hamburger-lines" d="M4 6h16M4 12h16M4 18h16" />
-      <path class="close-icon" d="M6 6L18 18M6 18L18 6" style="display: none;" />
-    </svg>
-  </button>
+  <div class="header__right">
+    <div class="header__actions">
+      <button class="header__search" aria-label="Search" tabindex="0" type="button">
+        {{ 'icon-search.svg' | inline_asset_content }}
+      </button>
+      {% if shop.customer_accounts_enabled %}
+        <a href="{{ routes.account_url }}" class="header__account" aria-label="Account" tabindex="0">
+          {{ 'icon-account.svg' | inline_asset_content }}
+        </a>
+      {% endif %}
+      <a href="{{ routes.cart_url }}" class="header__cart" aria-label="Cart" tabindex="0">
+        {% if cart.item_count > 0 %}
+          <span class="header__cart-count">{{ cart.item_count }}</span>
+        {% endif %}
+        {{ 'icon-cart.svg' | inline_asset_content }}
+      </a>
+    </div>
+
+    <button class="header__hamburger" aria-label="Toggle menu" aria-expanded="false" type="button">
+      <svg class="hamburger-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path class="hamburger-lines" d="M4 6h16M4 12h16M4 18h16" />
+        <path class="close-icon" d="M6 6L18 18M6 18L18 6" style="display: none;" />
+      </svg>
+    </button>
+  </div>
 
   <nav class="header__nav" aria-label="Main navigation">
     <ul class="header__menu" role="list">
@@ -27,23 +46,6 @@
       {% endfor %}
     </ul>
   </nav>
-
-  <div class="header__actions">
-    <button class="header__search" aria-label="Search" tabindex="0" type="button">
-      {{ 'icon-search.svg' | inline_asset_content }}
-    </button>
-    {% if shop.customer_accounts_enabled %}
-      <a href="{{ routes.account_url }}" class="header__account" aria-label="Account" tabindex="0">
-        {{ 'icon-account.svg' | inline_asset_content }}
-      </a>
-    {% endif %}
-    <a href="{{ routes.cart_url }}" class="header__cart" aria-label="Cart" tabindex="0">
-      {% if cart.item_count > 0 %}
-        <span class="header__cart-count">{{ cart.item_count }}</span>
-      {% endif %}
-      {{ 'icon-cart.svg' | inline_asset_content }}
-    </a>
-  </div>
 </header>
 
 {% stylesheet %}
@@ -84,6 +86,12 @@
 
   .header__logo:hover img {
     transform: scale(1.05);
+  }
+
+  .header__right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
   }
 
   .header__hamburger {
@@ -188,15 +196,15 @@
     .header__nav {
       position: fixed;
       top: 3.5rem;
-      left: 0;
+      right: 0;
       width: 80%;
       max-width: 300px;
       height: calc(100vh - 3.5rem);
       background: var(--color-background);
-      transform: translateX(-100%);
+      transform: translateX(100%);
       transition: transform 0.3s ease;
       z-index: 999;
-      box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+      box-shadow: -2px 0 4px rgba(0, 0, 0, 0.1);
     }
 
     .header__nav--open {
