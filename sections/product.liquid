@@ -43,20 +43,22 @@
     transform: scale(1.02);
   }
   .product-thumbnails {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    width: 100px; /* Tăng chiều rộng thumbnails để phù hợp với ảnh lớn hơn */
-  }
-  .product-thumbnail {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 0.25rem;
-    cursor: pointer;
-    border: 2px solid transparent;
-    transition: border-color 0.3s ease;
-  }
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  max-width: 260px; /* giới hạn chiều rộng để chia 2 hàng nếu mỗi ảnh rộng 60px + gap */
+}
+
+.product-thumbnail {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color 0.3s ease, transform 0.2s ease;
+}
+
   .product-thumbnail:hover,
   .product-thumbnail.active {
     border-color: #ef4444;
