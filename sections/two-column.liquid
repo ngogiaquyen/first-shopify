@@ -108,127 +108,140 @@
 {% schema %}
 {
   "name": "Two Column Images",
-  "settings": [
+  "tag": "section",
+  "class": "section",
+  "blocks": [
     {
-      "type": "header",
-      "content": "Images"
-    },
-    {
-      "type": "image_picker",
-      "id": "left_image",
-      "label": "Left image"
-    },
-    {
-      "type": "image_picker",
-      "id": "right_image",
-      "label": "Right image"
-    },
-    {
-      "type": "header",
-      "content": "Layout"
-    },
-    {
-      "type": "select",
-      "id": "aspect_ratio",
-      "label": "Image aspect ratio",
-      "options": [
+      "type": "two-column",
+      "name": "Two Column Images",
+      "settings": [
         {
-          "value": "1/1",
-          "label": "Square (1:1)"
+          "type": "header",
+          "content": "Images"
         },
         {
-          "value": "4/3",
-          "label": "Landscape (4:3)"
+          "type": "image_picker",
+          "id": "left_image",
+          "label": "Left image"
         },
         {
-          "value": "3/2",
-          "label": "Classic (3:2)"
+          "type": "image_picker",
+          "id": "right_image",
+          "label": "Right image"
         },
         {
-          "value": "16/9",
-          "label": "Wide (16:9)"
+          "type": "header",
+          "content": "Layout"
         },
         {
-          "value": "auto",
-          "label": "Original"
+          "type": "select",
+          "id": "aspect_ratio",
+          "label": "Image aspect ratio",
+          "options": [
+            {
+              "value": "1/1",
+              "label": "Square (1:1)"
+            },
+            {
+              "value": "4/3",
+              "label": "Landscape (4:3)"
+            },
+            {
+              "value": "3/2",
+              "label": "Classic (3:2)"
+            },
+            {
+              "value": "16/9",
+              "label": "Wide (16:9)"
+            },
+            {
+              "value": "auto",
+              "label": "Original"
+            }
+          ],
+          "default": "4/3"
+        },
+        {
+          "type": "select",
+          "id": "vertical_alignment",
+          "label": "Vertical alignment",
+          "options": [
+            {
+              "value": "start",
+              "label": "Top"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "end",
+              "label": "Bottom"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "range",
+          "id": "image_spacing",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "unit": "px",
+          "label": "Spacing between images",
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "mobile_spacing",
+          "min": 0,
+          "max": 60,
+          "step": 5,
+          "unit": "px",
+          "label": "Mobile spacing",
+          "default": 15
+        },
+        {
+          "type": "range",
+          "id": "section_padding",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "unit": "px",
+          "label": "Section padding",
+          "default": 40
+        },
+        {
+          "type": "header",
+          "content": "Style"
+        },
+        {
+          "type": "range",
+          "id": "border_radius",
+          "min": 0,
+          "max": 30,
+          "step": 2,
+          "unit": "px",
+          "label": "Corner radius",
+          "default": 8
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_hover_effect",
+          "label": "Enable hover zoom effect",
+          "default": false
         }
-      ],
-      "default": "4/3"
-    },
-    {
-      "type": "select",
-      "id": "vertical_alignment",
-      "label": "Vertical alignment",
-      "options": [
-        {
-          "value": "start",
-          "label": "Top"
-        },
-        {
-          "value": "center",
-          "label": "Center"
-        },
-        {
-          "value": "end",
-          "label": "Bottom"
-        }
-      ],
-      "default": "center"
-    },
-    {
-      "type": "range",
-      "id": "image_spacing",
-      "min": 0,
-      "max": 100,
-      "step": 5,
-      "unit": "px",
-      "label": "Spacing between images",
-      "default": 20
-    },
-    {
-      "type": "range",
-      "id": "mobile_spacing",
-      "min": 0,
-      "max": 60,
-      "step": 5,
-      "unit": "px",
-      "label": "Mobile spacing",
-      "default": 15
-    },
-    {
-      "type": "range",
-      "id": "section_padding",
-      "min": 0,
-      "max": 100,
-      "step": 5,
-      "unit": "px",
-      "label": "Section padding",
-      "default": 40
-    },
-    {
-      "type": "header",
-      "content": "Style"
-    },
-    {
-      "type": "range",
-      "id": "border_radius",
-      "min": 0,
-      "max": 30,
-      "step": 2,
-      "unit": "px",
-      "label": "Corner radius",
-      "default": 8
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_hover_effect",
-      "label": "Enable hover zoom effect",
-      "default": false
+      ]
     }
   ],
   "presets": [
     {
-      "name": "Two Column Images"
+      "name": "Two Column Images",
+      "blocks": [
+        {
+          "type": "two-column"
+        }
+      ]
     }
   ]
 }
