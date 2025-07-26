@@ -87,6 +87,40 @@
       "id": "subtitle_5",
       "label": "Subtitle 5",
       "default": "Description for slide 5"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_6",
+      "label": "Image 6"
+    },
+    {
+      "type": "text",
+      "id": "title_6",
+      "label": "Title 6",
+      "default": "Slide 6"
+    },
+    {
+      "type": "text",
+      "id": "subtitle_6",
+      "label": "Subtitle 6",
+      "default": "Description for slide 6"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_7",
+      "label": "Image 7"
+    },
+    {
+      "type": "text",
+      "id": "title_7",
+      "label": "Title 7",
+      "default": "Slide 7"
+    },
+    {
+      "type": "text",
+      "id": "subtitle_7",
+      "label": "Subtitle 7",
+      "default": "Description for slide 7"
     }
   ],
   "presets": [
@@ -264,6 +298,24 @@
         <div class="slide-content">
           <h2>{{ section.settings.title_5 }}</h2>
           <p>{{ section.settings.subtitle_5 }}</p>
+        </div>
+      </div>
+    {% endif %}
+    {% if section.settings.image_6 %}
+      <div class="slide">
+        <img src="{{ section.settings.image_6 | img_url: 'master' }}" alt="{{ section.settings.title_6 }}">
+        <div class="slide-content">
+          <h2>{{ section.settings.title_6 }}</h2>
+          <p>{{ section.settings.subtitle_6 }}</p>
+        </div>
+      </div>
+    {% endif %}
+    {% if section.settings.image_7 %}
+      <div class="slide">
+        <img src="{{ section.settings.image_7 | img_url: 'master' }}" alt="{{ section.settings.title_7 }}">
+        <div class="slide-content">
+          <h2>{{ section.settings.title_7 }}</h2>
+          <p>{{ section.settings.subtitle_7 }}</p>
         </div>
       </div>
     {% endif %}
