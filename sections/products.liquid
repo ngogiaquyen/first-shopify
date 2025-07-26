@@ -33,17 +33,22 @@
 }
 {% endschema %}
 
-{% comment %} Styles for product grid {% endcomment %}
+{% comment %} Styles for product grid with DOMContentLoaded animation {% endcomment %}
 <style>
   .product-grid-container {
     max-width: 1280px;
     margin: 0 auto;
     padding: 40px 20px;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
   }
 
-  
-  .product-grid-container .link{
+  .product-grid-container.visible {
+    opacity: 1;
+  }
+
+  .product-grid-container .link {
     border-radius: 14px;
     border: 1px solid hsla(0, 0%, 99%, .122);
   }
@@ -55,6 +60,14 @@
     margin-bottom: 40px;
     text-align: center;
     letter-spacing: -0.02em;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+
+  .product-grid-container.visible .title {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .product-grid {
@@ -68,8 +81,34 @@
     background: #fff;
     border-radius: 12px;
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease, opacity 0.5s ease-out, transform 0.5s ease-out;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .product-grid-container.visible .product-card:nth-child(1) {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.2s;
+  }
+
+  .product-grid-container.visible .product-card:nth-child(2) {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.3s;
+  }
+
+  .product-grid-container.visible .product-card:nth-child(3) {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.4s;
+  }
+
+  .product-grid-container.visible .product-card:nth-child(4) {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.5s;
   }
 
   .product-card:hover {
@@ -82,11 +121,11 @@
     display: block;
   }
 
-  .image-wrapper{
+  .image-wrapper {
     position: relative;
   }
 
-  .picture-product{
+  .picture-product {
     position: absolute;
     top: 0;
     left: 0;
@@ -94,7 +133,6 @@
 
   .product-card img {
     width: 100%;
-    {% comment %} height: 280px; {% endcomment %}
     aspect-ratio: 1 / 1;
     object-fit: cover;
     border-radius: 12px 12px 0 0;
@@ -111,7 +149,6 @@
     left: 0;
     right: 0;
     bottom: 0;
-    {% comment %} background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 70%, rgba(0, 0, 0, 0.1)); {% endcomment %}
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -121,7 +158,7 @@
     opacity: 1;
   }
 
-  .featured-products-3-column__item-text{
+  .featured-products-3-column__item-text {
     padding: 12px;
   }
 
@@ -137,9 +174,8 @@
     overflow: hidden;
     text-overflow: ellipsis;
     margin-top: 20px;
-    font-family:  Assistant, sans-serif;  
+    font-family: Assistant, sans-serif;
   }
-
 
   .product-prices {
     display: flex;
@@ -177,7 +213,7 @@
   }
 
   .add-to-cart {
-    background: #fff; /* Modern blue instead of black */
+    background: #fff;
     color: #333;
     padding: 10px;
     border-radius: 50%;
@@ -187,12 +223,8 @@
     transition: background 0.3s ease, transform 0.2s ease;
     text-decoration: none;
     position: absolute;
-    bottom: 12px; 
+    bottom: 12px;
     right: 20px;
-  }
-
-  .product-card:hover .add-to-cart {
-    
   }
 
   .add-to-cart:hover {
@@ -250,6 +282,18 @@
 
 {% comment %} Include FontAwesome CDN {% endcomment %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+{% comment %} JavaScript to handle DOMContentLoaded animation {% endcomment %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const productGridContainer = document.querySelector('.product-grid-container');
+    if (productGridContainer) {
+      setTimeout(() => {
+        productGridContainer.classList.add('visible');
+      }, 100); // Slight delay to ensure smooth rendering
+    }
+  });
+</script>
 
 {% comment %} Product grid HTML structure {% endcomment %}
 <div class="product-grid-container">
