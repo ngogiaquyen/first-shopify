@@ -1,7 +1,7 @@
 {% comment %} Including Font Awesome for icons {% endcomment %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-{% comment %} Styles for stats display with title and responsive design {% endcomment %}
+{% comment %} Styles for stats display with title, responsive design, and scroll animation {% endcomment %}
 <style>
     .stats-section {
       width: 100%;
@@ -12,32 +12,56 @@
       text-align: center;
       display: flex;
       flex-direction: column;
+      opacity: 0;
+      transition: opacity 0.5s ease-out;
     }
+
+    .stats-section.visible {
+      opacity: 1;
+    }
+
     .stats-title {
       margin-bottom: 30px;
       text-transform: uppercase;
-          font-size: 36px;
-    font-weight: 500;
-    line-height: 1.1em;
-    color: #2B2B2B;
-    margin-bottom: 12px;
-    font-family: 'Poppins', sans-serif;
+      font-size: 36px;
+      font-weight: 500;
+      line-height: 1.1em;
+      color: #2B2B2B;
+      margin-bottom: 12px;
+      font-family: 'Poppins', sans-serif;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease-out, transform 0.5s ease-out;
     }
 
-    .stats-line{
-        height: 1px;
-        background: #2B2B2B;
-        width: 70%;
-        margin-bottom: 25px;
-        align-self: center;
+    .stats-section.visible .stats-title {
+      opacity: 1;
+      transform: translateY(0);
     }
-    
+
+    .stats-line {
+      height: 1px;
+      background: #2B2B2B;
+      width: 70%;
+      margin-bottom: 25px;
+      align-self: center;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease-out 0.2s, transform 0.5s ease-out 0.2s;
+    }
+
+    .stats-section.visible .stats-line {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     .stats-container {
       display: flex;
       flex-wrap: wrap;
       gap: 20px;
       justify-content: center;
     }
+
     .stat-item {
       flex: 1 1 calc(25% - 20px);
       min-width: 200px;
@@ -46,23 +70,54 @@
       background-color: #f8f8f8;
       border-radius: 8px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease-out, transform 0.5s ease-out;
     }
+
+    .stats-section.visible .stat-item:nth-child(1) {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.3s;
+    }
+
+    .stats-section.visible .stat-item:nth-child(2) {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.4s;
+    }
+
+    .stats-section.visible .stat-item:nth-child(3) {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.5s;
+    }
+
+    .stats-section.visible .stat-item:nth-child(4) {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.6s;
+    }
+
     .stat-icon {
       font-size: 2.5rem;
       color: #2aab46;
       margin-bottom: 10px;
     }
+
     .stat-number {
       font-size: 2rem;
       font-weight: bold;
       color: #333;
       margin: 10px 0;
     }
+
     .stat-description {
       font-size: 1rem;
       color: #666;
       line-height: 1.4;
     }
+
     @media (max-width: 992px) {
       .stats-title {
         font-size: 2rem;
@@ -82,6 +137,7 @@
         font-size: 0.9rem;
       }
     }
+
     @media (max-width: 576px) {
       .stats-title {
         font-size: 1.5rem;
@@ -105,6 +161,24 @@
       }
     }
 </style>
+
+{% comment %} JavaScript to handle scroll animation with Intersection Observer {% endcomment %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const statsSection = document.querySelector('.stats-section');
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
+    observer.observe(statsSection);
+  });
+</script>
 
 {% comment %} HTML structure for displaying stats with title and icons {% endcomment %}
 <div class="stats-section" role="region" aria-label="Statistics section">
