@@ -12,10 +12,9 @@
   .product-section {
     max-width: 1200px;
     margin-top: 64px;
-    margin-right
     padding: 0 1rem;
     display: grid;
-    grid-template-columns: 3fr 2fr; /* Tăng tỷ lệ phần hình ảnh (60%) và giảm phần mô tả (40%) */
+    grid-template-columns: 3fr 2fr;
     gap: 2rem;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     color: #1a202c;
@@ -37,29 +36,39 @@
     object-fit: contain;
     border-radius: 0.5rem;
     background-color: #f7fafc;
-    transition: transform 0.3s ease;
-    max-width: 600px; /* Tăng kích thước tối đa của ảnh chính */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Thêm transition cho hiệu ứng */
+    max-width: 600px;
+    position: relative; /* Để hỗ trợ hiệu ứng zoom */
+    overflow: hidden;
   }
   .product-image-main:hover {
-    transform: scale(1.02);
+    transform: scale(1.05); /* Phóng to nhẹ khi hover */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ khi hover */
   }
   .product-thumbnails {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  max-width: 260px; /* giới hạn chiều rộng để chia 2 hàng nếu mỗi ảnh rộng 60px + gap */
-}
-
-.product-thumbnail {
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
-  border-radius: 0.5rem;
-  border: 2px solid transparent;
-  cursor: pointer;
-  transition: border-color 0.3s ease, transform 0.2s ease;
-}
-
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto auto;
+    gap: 0.75rem;
+    max-height: 140px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.5rem;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .product-thumbnails::-webkit-scrollbar {
+    display: none;
+  }
+  .product-thumbnail {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border-color 0.3s ease, transform 0.2s ease;
+  }
   .product-thumbnail:hover,
   .product-thumbnail.active {
     border-color: #ef4444;
@@ -70,7 +79,7 @@
     gap: 1rem;
   }
   .product-info h1 {
-    font-size: 1.5rem; /* Giảm kích thước tiêu đề sản phẩm */
+    font-size: 1.5rem;
     font-weight: 700;
     color: #1a202c;
     margin: 0;
@@ -81,31 +90,31 @@
     gap: 1rem;
   }
   .product-price .price {
-    font-size: 1.25rem; /* Giảm kích thước giá */
+    font-size: 1.25rem;
     font-weight: 600;
     color: #ef4444;
   }
   .product-price .compare-at-price {
-    font-size: 1rem; /* Giảm kích thước giá so sánh */
+    font-size: 1rem;
     color: #6b7280;
     text-decoration: line-through;
   }
   .product-availability {
-    font-size: 0.75rem; /* Giảm kích thước chữ trạng thái */
+    font-size: 0.75rem;
     color: #15803d;
   }
   .product-rating {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    font-size: 0.75rem; /* Giảm kích thước chữ đánh giá */
+    font-size: 0.75rem;
     color: #d97706;
   }
   .product-rating i {
-    font-size: 0.875rem; /* Giảm kích thước icon sao */
+    font-size: 0.875rem;
   }
   .product-info p.description {
-    font-size: 0.875rem; /* Giảm kích thước chữ mô tả */
+    font-size: 0.875rem;
     line-height: 1.5;
     color: #4a5568;
   }
@@ -124,7 +133,7 @@
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
     min-height: 40px;
-    font-size: 0.8125rem; /* Giảm kích thước chữ nút Buy Now */
+    font-size: 0.8125rem;
   }
   .buy-now-form input[type="submit"]:hover {
     background-color: #2d3748;
@@ -134,7 +143,7 @@
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
-    font-size: 0.75rem; /* Giảm kích thước chữ trust badges */
+    font-size: 0.75rem;
     color: #4a5568;
   }
   .trust-badges a {
@@ -234,16 +243,16 @@
   /* Tablet (768px - 1024px) */
   @media (max-width: 1024px) {
     .product-section {
-      grid-template-columns: 1fr; /* Chuyển về một cột trên tablet */
+      grid-template-columns: 1fr;
       gap: 1.5rem;
     }
     .images-container {
       flex-direction: column;
     }
     .product-thumbnails {
-      flex-direction: row;
-      justify-content: center;
-      width: 100%;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto;
+      max-height: 180px;
     }
     .product-info h1 {
       font-size: 1.25rem;
@@ -255,7 +264,7 @@
       font-size: 0.875rem;
     }
     .product-image-main {
-      max-height: 500px; /* Tăng chiều cao ảnh trên tablet */
+      max-height: 500px;
     }
     .product-thumbnail {
       width: 80px;
@@ -276,10 +285,9 @@
       flex-direction: column;
     }
     .product-thumbnails {
-      flex-direction: row;
-      gap: 0.25rem;
-      justify-content: center;
-      width: 100%;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: auto auto;
+      max-height: 140px;
     }
     .product-info h1 {
       font-size: 1rem;
@@ -294,7 +302,7 @@
       font-size: 0.75rem;
     }
     .product-image-main {
-      max-height: 400px; /* Tăng chiều cao ảnh trên mobile */
+      max-height: 400px;
     }
     .product-thumbnail {
       width: 60px;
@@ -359,7 +367,7 @@
         {% endif %}
       </p>
     {% endif %}
-    <p class="description">{{ product.description | strip_html | truncate: 200 }}</p> <!-- Giảm số ký tự mô tả -->
+    <p class="description">{{ product.description | strip_html | truncate: 200 }}</p>
     {% if section.settings.show_rating %}
       <div class="product-rating">
         <i class="fas fa-star"></i>
@@ -370,7 +378,6 @@
         <span>4.5 (123 reviews)</span>
       </div>
     {% endif %}
-    {% comment %} Buy Now button below description and rating {% endcomment %}
     {% form 'product', product, class: 'buy-now-form', aria-label: 'Buy now form' %}
       {% assign current_variant = product.selected_or_first_available_variant %}
       <input type="hidden" name="id" value="{{ current_variant.id }}">
