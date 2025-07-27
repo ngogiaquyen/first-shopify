@@ -103,7 +103,7 @@
         transition-delay: 0.6s;
     }
 
-    .stat-item:hover, .stat-item.hover {
+    .stat-item:hover {
         background: linear-gradient(135deg, #e6f0fa, #d4e4f7);
         transform: scale(1.05);
         transition: transform 0.3s ease, background 0.3s ease;
@@ -121,7 +121,7 @@
         transition: opacity 0.5s ease;
     }
 
-    .stat-item:hover::before, .stat-item.hover::before {
+    .stat-item:hover::before {
         opacity: 1;
     }
 
@@ -132,7 +132,7 @@
         transition: color 0.3s ease;
     }
 
-    .stat-item:hover .stat-icon, .stat-item.hover .stat-icon {
+    .stat-item:hover .stat-icon {
         color: #1a73e8;
     }
 
@@ -203,157 +203,48 @@
     }
 </style>
 
-{% comment %} JavaScript for scroll animation and auto-hover effect {% endcomment %}
+{% comment %} JavaScript remains unchanged for scroll animation {% endcomment %}
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const statsSection = document.querySelector('.stats-section');
-        const statItems = document.querySelectorAll('.stat-item');
-        let currentIndex = 0;
-        let isManualHover = false;
-        let autoHoverInterval;
-
-        // Function to simulate hover effect
-        const simulateHover = (index) => {
-            if (!isManualHover) {
-                statItems.forEach(item => item.classList.remove('hover'));
-                statItems[index].classList.add('hover');
-            }
-        };
-
-        // Auto hover functionality
-        const startAutoHover = () => {
-            autoHoverInterval = setInterval(() => {
-                if (!isManualHover) {
-                    simulateHover(currentIndex);
-                    currentIndex = (currentIndex + 1) % statItems.length;
-                }
-            }, 2000); // Change every 2 seconds
-        };
-
-        // Intersection Observer for section visibility
-        const observer = new IntersectionObserver((entries) => {
+        const observer = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    startAutoHover(); // Start auto hover when section is visible
                     observer.unobserve(entry.target);
                 }
             });
         }, {
             threshold: 0.1
         });
-
         observer.observe(statsSection);
-
-        // Manual hover handling
-        statItems.forEach(item => {
-            item.addEventListener('mouseenter', () => {
-                isManualHover = true;
-                statItems.forEach(i => i.classList.remove('hover'));
-                item.classList.add('hover');
-                clearInterval(autoHoverInterval);
-            });
-
-            item.addEventListener('mouseleave', () => {
-                isManualHover = false;
-                item.classList.remove('hover');
-                startAutoHover();
-            });
-        });
     });
 </script>
 
-{% comment %} HTML structure with Liquid variables for dynamic content {% endcomment %}
+{% comment %} HTML structure remains unchanged {% endcomment %}
 <div class="stats-section" role="region" aria-label="Statistics section">
-    <h2 class="stats-title">{{ section.settings.title | default: 'The Numbers Behind Our Success' }}</h2>
+    <h2 class="stats-title">The Numbers Behind Our Success</h2>
     <div class="stats-line"></div>
     <div class="stats-container">
-        {% for block in section.blocks %}
-            <div class="stat-item">
-                <i class="fas {{ block.settings.icon }} stat-icon"></i>
-                <div class="stat-number">{{ block.settings.number }}</div>
-                <div class="stat-description">{{ block.settings.description }}</div>
-            </div>
-        {% endfor %}
+        <div class="stat-item">
+            <i class="fas fa-star stat-icon"></i>
+            <div class="stat-number">10 Year</div>
+            <div class="stat-description">Experience</div>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-shield-alt stat-icon"></i>
+            <div class="stat-number">2 Year</div>
+            <div class="stat-description">Warranty</div>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-tools stat-icon"></i>
+            <div class="stat-number">24/7</div>
+            <div class="stat-description">Support</div>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-truck stat-icon"></i>
+            <div class="stat-number">4-7 Days</div>
+            <div class="stat-description">Delivery</div>
+        </div>
     </div>
 </div>
-
-{% schema %}
-{
-    "name": "Stats Section",
-    "settings": [
-        {
-            "type": "text",
-            "id": "title",
-            "label": "Section Title",
-            "default": "The Numbers Behind Our Success"
-        }
-    ],
-    "blocks": [
-        {
-            "type": "stat_item",
-            "name": "Stat Item",
-            "settings": [
-                {
-                    "type": "text",
-                    "id": "icon",
-                    "label": "Font Awesome Icon Class",
-                    "default": "fa-star",
-                    "info": "Enter Font Awesome icon class (e.g., fa-star, fa-shield-alt, fa-tools, fa-truck)"
-                },
-                {
-                    "type": "text",
-                    "id": "number",
-                    "label": "Stat Number",
-                    "default": "10 Year"
-                },
-                {
-                    "type": "text",
-                    "id": "description",
-                    "label": "Stat Description",
-                    "default": "Experience"
-                }
-            ]
-        }
-    ],
-    "presets": [
-        {
-            "name": "Stats Section",
-            "blocks": [
-                {
-                    "type": "stat_item",
-                    "settings": {
-                        "icon": "fa-star",
-                        "number": "10 Year",
-                        "description": "Experience"
-                    }
-                },
-                {
-                    "type": "stat_item",
-                    "settings": {
-                        "icon": "fa-shield-alt",
-                        "number": "2 Year",
-                        "description": "Warranty"
-                    }
-                },
-                {
-                    "type": "stat_item",
-                    "settings": {
-                        "icon": "fa-tools",
-                        "number": "24/7",
-                        "description": "Support"
-                    }
-                },
-                {
-                    "type": "stat_item",
-                    "settings": {
-                        "icon": "fa-truck",
-                        "number": "4-7 Days",
-                        "description": "Delivery"
-                    }
-                }
-            ]
-        }
-    ]
-}
-{% endschema %}
