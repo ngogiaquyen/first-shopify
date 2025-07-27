@@ -82,7 +82,10 @@
       "type": "customer-reviews",
       "settings": {
         "title": "Our customers love our equipment",
-        "avatar_1": "shopify://shop_images/download_2.jpg"
+        "avatar_1": "shopify://shop_images/download_2.jpg",
+        "avatar_2": "shopify://shop_images/Screenshot_2025-07-26_154021.png",
+        "avatar_3": "shopify://shop_images/download_3.jpg",
+        "avatar_4": "shopify://shop_images/download_1.jpg"
       }
     }
   },
