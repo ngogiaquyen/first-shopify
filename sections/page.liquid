@@ -48,10 +48,10 @@
     line-height: 1.6;
     margin-bottom: 1rem;
   }
-  .customer-name .form-group {
+  .form-group {
     margin-bottom: 1rem;
   }
-  .customer-name .form-control {
+  .form-control {
     width: 100%;
     padding: 0.75rem;
     font-size: 1rem;
@@ -59,10 +59,10 @@
     border-radius: 5px;
     color: #4a5568;
   }
-  .customer-name .form-control::placeholder {
+  .form-control::placeholder {
     color: #6c757d;
   }
-  .customer-name textarea.form-control {
+  textarea.form-control {
     resize: vertical;
     min-height: 100px;
   }
@@ -155,7 +155,7 @@
       font-size: 0.95rem;
       padding: 0 0.5rem;
     }
-    .customer-name .form-control {
+    .form-control {
       font-size: 0.95rem;
     }
     .buttons-set .book-submit {
@@ -189,7 +189,7 @@
     .content_ct p {
       font-size: 0.9rem;
     }
-    .customer-name .form-control {
+    .form-control {
       font-size: 0.9rem;
       padding: 0.5rem;
     }
@@ -226,37 +226,43 @@
           </div>
         </div>
         <div class="col-md-6 col-12">
-          <form method="post" action="/postcontact" id="contact" accept-charset="UTF-8">
-            <input name="FormType" type="hidden" value="contact">
-            <input name="utf8" type="hidden" value="true">
-            <input type="hidden" id="Token-ff3f78ddeb1e4b12abd7a3393c92e13a" name="Token" value="03AFcWeA41qxookeAmPWXxa6_f-fYBg-BjBPyKohjmNfDbnq2MoqqEly6ZbIDMkz9-1jVC2PwnHL9ygfgnh4cB2Ddjp4OSAiKKxURG8hUxEScHsdDwCucGd1aCZP46KQ6QMsuMVAhUzFrCDfSGRRpBVGoUWB8KPTJ1XXIR7i1hcs-gvo-ZQtCAE2UM7yVCnihg_bhT2ssIOG9zAE_9n03CVud5Xtj3DvsHWktqodRFvOUVvRQvMzM5pETApJkVWs3SddTuTlNAQEkXAk09purRbj00FcdRukQ_Uwt9CHD2G6kMy7fHz3USRHSsuF--Ew3aIc1OGsH1CS6qAU0xszjmQp-ay6vSRoA7p-_KT_an6Y-NXNCmI0V0PrG6DuOX8Y0C74ReA5bb57JDpZkp7XJkGrmtghar3u6j_Jf1fdMcj966miPoG4onaFp6Ow1EQcfcTcr_NkLCyxRdUkrIO6bxTo2onSdbKw-v-SOjj1pYAUo9eoiplEe3AXF11-74UrtVQB_yKfPzjglkB5tlzLxmoR0NLqo8SxIGhMMjAdyfjE76_DPgzw8_If8QsFzNC4BNwQBWnsZuN6ZfK_vrPKKIQn1dHEYziKDToQsa_mOAhjXed0taKCbo1Ey8GAJUmobCSuoSlZxA3LQ4c2YnBBZjJqc01H6pEBihwv-ItS3ZZmLTTNounC1a2qa5X1TQJkMqSKOYwkvRrdfE5jcovOEuEz6JIqG3fw9QBIx8-r7lUsDqxI5YxR3dMJTRRxZUebdUOaOYQVzX9Ge52LnBZz4dUJ-5sCpJvpGPkvGhPfP_BJatRocDaXbAjK68_9pyriQR0B4mQ81TlFVlfmbgv74EFvMaybKaGtGFxY0ZfBeEnLiDIcCA9Fn5oFy01KWlqLzSrvAnvHlXM_ZxMC-QRVg1r2HxfRVbbaq6pRw4iZ6qrd1uiKoOvp-c4L8QupbIY25W8req1ggJRy3C3K5cASrxWNhYk0CU3euXJ4ymQPFmI4pWVPIYxlkf0tHvsRzV00OMHvNeNb1UOX280CV9IofMFar_7qGDlSoE_n-K2OIp2hBr3irFy7hwZCw">
+          {% form 'contact', id: 'contact', class: 'contact-form' %}
+            {% if form.posted_successfully? %}
+              <p class="form-success">Thank you for your submission! We'll get back to you soon.</p>
+            {% endif %}
+            {% if form.errors %}
+              <div class="form-errors">
+                {% for field in form.errors %}
+                  <p class="error">{{ field }} {{ form.errors.messages[field] }}</p>
+                {% endfor %}
+              </div>
+            {% endif %}
+            <input type="hidden" id="Token-contact-form" name="contact[Token]">
             <script src="https://www.google.com/recaptcha/api.js?render=6Ldtu4IUAAAAAMQzG1gCw3wFlx_GytlZyLrXcsuK"></script>
             <script>
               grecaptcha.ready(function() {
                 grecaptcha.execute("6Ldtu4IUAAAAAMQzG1gCw3wFlx_GytlZyLrXcsuK", {action: "contact"}).then(function(token) {
-                  document.getElementById("Token-ff3f78ddeb1e4b12abd7a3393c92e13a").value = token;
+                  document.getElementById("Token-contact-form").value = token;
                 });
               });
             </script>
-            <input name="form_type" type="hidden" value="contact">
-            <input name="utf8" type="hidden" value="?">
             <div class="customer-name row">
               <div class="col-12 form-group">
-                <input type="text" class="form-control" name="contact[Name]" placeholder="Name*" required="">
+                <input type="text" class="form-control" name="contact[Name]" placeholder="Name *" required>
               </div>   
               <div class="col-12 form-group">
-                <input type="email" class="form-control" name="contact[email]" placeholder="Email *" required="">
+                <input type="email" class="form-control" name="contact[email]" placeholder="Email *" required>
               </div>
-              <label class="d-none">Content<span class="required">*</span></label>
+              <label class="d-none">Message <span class="required">*</span></label>
               <div class="col-12 form-group">
-                <textarea name="contact[Body]" placeholder="Message*" class="form-control" rows="3"></textarea>                        
+                <textarea name="contact[Body]" placeholder="Message *" class="form-control" rows="3" required></textarea>                        
               </div>
             </div>
-            <span class="require d-block mb-3"><em class="required">* </em>Required information</span>
+            <span class="require d-block mb-3"><em class="required">* </em>Required fields</span>
             <div class="buttons-set">
-              <button type="submit" title="Submit" class="book-submit btn btn-primary text-center d-flex align-items-center font-weight-bold subml"> <span> Send </span> </button>
+              <button type="submit" title="Submit" class="book-submit btn btn-primary text-center d-flex align-items-center font-weight-bold subml"> <span>Send</span> </button>
             </div>
-          </form>
+          {% endform %}
         </div>
       </div>
       <div class="google-map mt-4">
@@ -303,7 +309,7 @@
       "type": "text",
       "id": "email",
       "label": "Email Address",
-      "info": "Enter the contact email address (e.g.,sonkoyy9669@gmail.com)"
+      "info": "Enter the contact email address (e.g., sonkoyy9669@gmail.com)"
     },
     {
       "type": "url",
