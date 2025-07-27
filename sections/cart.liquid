@@ -556,21 +556,86 @@
 </style>
 
 <script>
+  // Hàm định dạng tiền tệ của Shopify
+  if (!window.Shopify) window.Shopify = {};
+  Shopify.formatMoney = function(cents, format = "{{ shop.money_format }}") {
+    if (typeof cents === 'string') {
+      cents = cents.replace('.', '');
+    }
+    let value = '';
+    const placeholderRegex = /\{\{\s*(\w+)\s*\}\}/;
+    const formatString = format || '{{ shop.money_format }}';
+
+    function formatWithDelimiters(number, precision = 2, thousands = ',', decimal = '.') {
+      if (isNaN(number) || number == null) {
+        return 0;
+      }
+      number = (number / 100.0).toFixed(precision);
+      const parts = number.split('.');
+      const dollars = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1' + thousands);
+      const centsPart = parts[1] ? decimal + parts[1] : '';
+      return dollars + centsPart;
+    }
+
+    switch (formatString.match(placeholderRegex)[1]) {
+      case 'amount':
+        value = formatWithDelimiters(cents, 2);
+        break;
+      case 'amount_no_decimals':
+        value = formatWithDelimiters(cents, 0);
+        break;
+      case 'amount_with_comma_separator':
+        value = formatWithDelimiters(cents, 2, '.', ',');
+        break;
+      case 'amount_no_decimals_with_comma_separator':
+        value = formatWithDelimiters(cents, 0, '.', ',');
+        break;
+    }
+    return formatString.replace(placeholderRegex, value);
+  };
+
   document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('cart-form');
-    
+
     // Handle quantity changes
     form.querySelectorAll('.quantity-btn').forEach(button => {
-      button.addEventListener('click', () => {
+      button.addEventListener('click', async () => {
         const input = button.parentElement.querySelector('input');
+        const itemId = input.dataset.itemId;
         let quantity = parseInt(input.value);
         quantity = button.classList.contains('plus') ? quantity + 1 : Math.max(1, quantity - 1);
         input.value = quantity;
-        
-        // Trigger form submission for update
-        const updateButton = form.querySelector('.update-btn');
-        if (updateButton) {
-          updateButton.click();
+
+        // Gửi yêu cầu AJAX để cập nhật số lượng
+        try {
+          const response = await fetch('/cart/change.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              id: itemId,
+              quantity: quantity
+            })
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            // Cập nhật tổng giá giỏ hàng trên giao diện
+            const subtotalElement = form.querySelector('.cart-subtotal span');
+            subtotalElement.textContent = Shopify.formatMoney(data.total_price);
+
+            // Cập nhật giá của sản phẩm
+            const itemPriceElement = button.closest('.cart-item').querySelector('.cart-item-price');
+            const item = data.items.find(i => i.key === itemId);
+            if (item) {
+              itemPriceElement.textContent = Shopify.formatMoney(item.final_price);
+            }
+          } else {
+            console.error('Failed to update quantity');
+          }
+        } catch (error) {
+          console.error('Error:', error);
         }
       });
     });
@@ -580,7 +645,7 @@
       button.addEventListener('click', async () => {
         const itemId = button.dataset.itemId;
         try {
-          const response = await fetch(`/cart/change.js`, {
+          const response = await fetch('/cart/change.js', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -590,9 +655,20 @@
               quantity: 0
             })
           });
-          
+
           if (response.ok) {
-            window.location.reload();
+            // Xóa sản phẩm khỏi giao diện
+            button.closest('.cart-item').remove();
+            const data = await response.json();
+            // Cập nhật tổng giá
+            const subtotalElement = form.querySelector('.cart-subtotal span');
+            subtotalElement.textContent = Shopify.formatMoney(data.total_price);
+
+            // Hiển thị thông báo giỏ hàng trống nếu cần
+            if (data.items.length === 0) {
+              const cartItems = form.querySelector('.cart-items');
+              cartItems.innerHTML = '<p class="empty-cart">{{ 'cart.empty' | t }}</p>';
+            }
           } else {
             console.error('Failed to remove item');
           }
