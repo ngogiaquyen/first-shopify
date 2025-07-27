@@ -11,28 +11,7 @@
   "sections": {
     "slideshow": {
       "type": "slideshow",
-      "settings": {
-        "image_1": "shopify://shop_images/snapedit_1753544765084.jpg",
-        "title_1": "Pilates Gear for Every Move",
-        "subtitle_1": "Train strong. Stretch smooth.",
-        "image_2": "shopify://shop_images/snapedit_1753544901604.jpg",
-        "title_2": "Gear Up for Pilates",
-        "subtitle_2": "Balanced. Flexible. You.",
-        "image_3": "shopify://shop_images/1390638.jpg",
-        "title_3": "Move with Purpose",
-        "subtitle_3": "Quality gear for mindful movement.",
-        "image_4": "shopify://shop_images/1390638.jpg",
-        "title_4": "Elevate Your Flow",
-        "subtitle_4": "Essentials for every Pilates session.",
-        "image_5": "shopify://shop_images/1290140.jpg",
-        "title_5": "Find Your Pilates Power",
-        "subtitle_5": "Tools to move, stretch, and thrive.",
-        "image_6": "shopify://shop_images/1390625.jpg",
-        "title_6": "Slide 6",
-        "subtitle_6": "Description for slide 6",
-        "title_7": "Slide 7",
-        "subtitle_7": "Description for slide 7"
-      }
+      "settings": {}
     },
     "achievement": {
       "type": "achievement",
