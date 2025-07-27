@@ -1,7 +1,7 @@
 {% comment %} Including Font Awesome for icons {% endcomment %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-{% comment %} CSS optimized for mobile and tablet with 2 items per row {% endcomment %}
+{% comment %} CSS optimized for mobile and tablet with 2 items per row, no box-shadow {% endcomment %}
 <style>
     .stats-section {
         width: 100%;
@@ -68,26 +68,23 @@
         background: linear-gradient(135deg, #ffffff, #f0f4f8);
         border-radius: 10px;
         border: 1px solid rgba(255, 255, 255, 0.2);
-        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
         position: relative;
         overflow: hidden;
         opacity: 1;
         transform: translateY(0);
-        transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+        transition: background 0.3s ease, transform 0.3s ease;
     }
 
     .stat-item.highlight {
         background: linear-gradient(135deg, #e6f0fa, #d4e4f7);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
         transform: scale(1.05);
-        transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+        transition: background 0.3s ease, transform 0.3s ease;
     }
 
     .stat-item:hover {
         background: linear-gradient(135deg, #e6f0fa, #d4e4f7);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
         transform: scale(1.05);
-        transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+        transition: background 0.3s ease, transform 0.3s ease;
     }
 
     .stat-item::before {
@@ -194,7 +191,7 @@
     }
 </style>
 
-{% comment %} JavaScript for looping highlight effect, disabled on mobile (≤576px) {% endcomment %}
+{% comment %} JavaScript for looping highlight effect, disabled on mobile (≤576px) and tablet (≤992px) {% endcomment %}
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const statsSection = document.querySelector('.stats-section');
@@ -221,14 +218,14 @@
 
         // Function to start or stop the highlight loop based on screen width
         function manageHighlightLoop() {
-            if (window.innerWidth > 576) {
-                // Start or restart the interval for non-mobile devices
+            if (window.innerWidth > 992) {
+                // Start or restart the interval for desktop devices
                 if (!intervalId) {
                     highlightNextItem(); // Highlight the first item immediately
                     intervalId = setInterval(highlightNextItem, 5000);
                 }
             } else {
-                // Stop the interval and remove highlights for mobile devices
+                // Stop the interval and remove highlights for mobile and tablet devices
                 if (intervalId) {
                     clearInterval(intervalId);
                     intervalId = null;
