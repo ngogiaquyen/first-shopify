@@ -65,10 +65,6 @@
         "product_4": "resistance-bands-for-working-elastic-exercice-loop-bands-yoga-starter-set-of-stretch-bands-for-booty-legs-pilates-flexbands"
       }
     },
-    "achievement": {
-      "type": "achievement",
-      "settings": {}
-    },
     "customer-reviews": {
       "type": "customer-reviews",
       "settings": {
@@ -84,6 +80,10 @@
         "avatar_9": "shopify://shop_images/mis.jpg",
         "avatar_10": "shopify://shop_images/gus.jpg"
       }
+    },
+    "achievement": {
+      "type": "achievement",
+      "settings": {}
     }
   },
   "order": [
