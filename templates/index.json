@@ -56,10 +56,6 @@
         "button_label_7": "Visit now"
       }
     },
-    "achievement": {
-      "type": "achievement",
-      "settings": {}
-    },
     "products": {
       "type": "products",
       "settings": {
@@ -68,6 +64,10 @@
         "product_3": "merach-foldable-treadmill-t12b1-incline-quiet-treadmills-double-deck-technology-4-silicone-shock-cushion-heart-rate-monitoring",
         "product_4": "resistance-bands-for-working-elastic-exercice-loop-bands-yoga-starter-set-of-stretch-bands-for-booty-legs-pilates-flexbands"
       }
+    },
+    "achievement": {
+      "type": "achievement",
+      "settings": {}
     },
     "customer-reviews": {
       "type": "customer-reviews",
@@ -88,8 +88,8 @@
   },
   "order": [
     "slideshow",
-    "achievement",
     "products",
+    "achievement",
     "customer-reviews"
   ]
 }
