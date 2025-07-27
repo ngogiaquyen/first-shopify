@@ -45,22 +45,20 @@
     transform: scale(1.02);
   }
   .product-thumbnails {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  max-width: 560px; /* giới hạn chiều rộng để chia 2 hàng nếu mỗi ảnh rộng 60px + gap */
-}
-
-.product-thumbnail {
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
-  border-radius: 0.5rem;
-  border: 2px solid transparent;
-  cursor: pointer;
-  transition: border-color 0.3s ease, transform 0.2s ease;
-}
-
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    max-width: 560px; /* giới hạn chiều rộng để chia 2 hàng nếu mỗi ảnh rộng 60px + gap */
+  }
+  .product-thumbnail {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border-color 0.3s ease, transform 0.2s ease;
+  }
   .product-thumbnail:hover,
   .product-thumbnail.active {
     border-color: #ef4444;
@@ -274,13 +272,18 @@
       gap: 1rem;
     }
     .images-container {
-      flex-direction: column;
+      flex-direction: column; /* Đảm bảo hiển thị theo cột */
     }
     .product-thumbnails {
       flex-direction: row;
       gap: 0.25rem;
       justify-content: center;
       width: 100%;
+      order: 2; /* Đặt thumbnails sau main image */
+    }
+    .product-image-main {
+      max-height: 400px; /* Tăng chiều cao ảnh trên mobile */
+      order: 1; /* Đặt main image trước thumbnails */
     }
     .product-info h1 {
       font-size: 1rem;
@@ -293,9 +296,6 @@
     }
     .product-info p.description {
       font-size: 0.75rem;
-    }
-    .product-image-main {
-      max-height: 400px; /* Tăng chiều cao ảnh trên mobile */
     }
     .product-thumbnail {
       width: 60px;
