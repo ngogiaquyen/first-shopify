@@ -16,26 +16,85 @@
   });
 </script>
 
-{% comment %} Styles for page template with contact information section {% endcomment %}
+{% comment %} Styles for contact page with form, address, and social links {% endcomment %}
 <style>
-  .page-container {
+  .com_info {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  .com_info .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 3rem 1.5rem;
-    width: 100%;
   }
-  .page-title {
+  .page_title {
     font-size: 2.5rem;
     font-weight: 700;
     color: #1a1a1a;
     margin-bottom: 1.5rem;
     text-align: center;
   }
-  .page-content {
+  .rte {
+    background-color: #fff;
+    padding: 3rem;
+    margin: 0 auto;
+    max-width: 100%;
+  }
+  .content_ct p {
     font-size: 1rem;
     color: #4a5568;
     line-height: 1.6;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
+  }
+  .customer-name .form-group {
+    margin-bottom: 1rem;
+  }
+  .customer-name .form-control {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    color: #4a5568;
+  }
+  .customer-name .form-control::placeholder {
+    color: #6c757d;
+  }
+  .customer-name textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+  }
+  .require {
+    font-size: 0.9rem;
+    color: #6c757d;
+  }
+  .require .required {
+    color: #dc3545;
+  }
+  .buttons-set .book-submit {
+    background-color: #2aab46;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    width: 100%;
+    max-width: 200px;
+    justify-content: center;
+  }
+  .buttons-set .book-submit:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+  }
+  .google-map {
+    font-size: 1rem;
+    color: #4a5568;
+    text-align: center;
+    margin-top: 2rem;
   }
   .contact-section {
     margin-top: 2rem;
@@ -79,17 +138,30 @@
     margin-right: 0.5rem;
   }
   @media screen and (max-width: 768px) {
-    .page-container {
-      margin: 20px 0;
+    .com_info .container {
+      margin: 0;
       padding: 2rem 0;
       width: 100%;
       max-width: 100%;
     }
-    .page-title {
+    .rte {
+      padding: 2rem 0.5rem;
+    }
+    .page_title {
       font-size: 2rem;
       padding: 0 0.5rem;
     }
-    .page-content {
+    .content_ct p {
+      font-size: 0.95rem;
+      padding: 0 0.5rem;
+    }
+    .customer-name .form-control {
+      font-size: 0.95rem;
+    }
+    .buttons-set .book-submit {
+      max-width: 100%;
+    }
+    .google-map {
       font-size: 0.95rem;
       padding: 0 0.5rem;
     }
@@ -108,13 +180,24 @@
     }
   }
   @media screen and (max-width: 480px) {
-    .page-container {
+    .com_info .container {
       padding: 1.5rem 0;
     }
-    .page-title {
+    .page_title {
       font-size: 1.5rem;
     }
-    .page-content {
+    .content_ct p {
+      font-size: 0.9rem;
+    }
+    .customer-name .form-control {
+      font-size: 0.9rem;
+      padding: 0.5rem;
+    }
+    .buttons-set .book-submit {
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+    }
+    .google-map {
       font-size: 0.9rem;
     }
     .contact-title {
@@ -130,41 +213,87 @@
   }
 </style>
 
-<h1 class="page-title">{{ page.title }}</h1>
-
-<div class="page-content">
-  {{ page.content }}
-</div>
-
-{% comment %} Contact information section {% endcomment %}
-{% if section.settings.email or section.settings.facebook or section.settings.youtube %}
-  <section class="contact-section">
-    <h2 class="contact-title">Contact Us</h2>
-    <div class="contact-list">
-      {% if section.settings.email %}
-        <div class="contact-item">
-          <a href="mailto:{{ section.settings.email }}" target="_blank" aria-label="Email us at {{ section.settings.email }}">
-            <i class="fas fa-envelope"></i> Email
-          </a>
+<div class="com_info">
+  <div class="container">
+    <h1 class="font-weight-bold text-center pt-3 page_title">
+      {{ page.title }}
+    </h1>
+    <div class="rte m-auto bg-white pt-3 pb-3">
+      <div class="row">
+        <div class="col-md-6 col-12">
+          <div class="content_ct">
+            {{ page.content }}
+          </div>
         </div>
-      {% endif %}
-      {% if section.settings.facebook %}
-        <div class="contact-item">
-          <a href="{{ section.settings.facebook }}" target="_blank" aria-label="Visit our Facebook page">
-            <i class="fab fa-facebook-f"></i> Facebook
-          </a>
+        <div class="col-md-6 col-12">
+          <form method="post" action="/postcontact" id="contact" accept-charset="UTF-8">
+            <input name="FormType" type="hidden" value="contact">
+            <input name="utf8" type="hidden" value="true">
+            <input type="hidden" id="Token-ff3f78ddeb1e4b12abd7a3393c92e13a" name="Token" value="03AFcWeA41qxookeAmPWXxa6_f-fYBg-BjBPyKohjmNfDbnq2MoqqEly6ZbIDMkz9-1jVC2PwnHL9ygfgnh4cB2Ddjp4OSAiKKxURG8hUxEScHsdDwCucGd1aCZP46KQ6QMsuMVAhUzFrCDfSGRRpBVGoUWB8KPTJ1XXIR7i1hcs-gvo-ZQtCAE2UM7yVCnihg_bhT2ssIOG9zAE_9n03CVud5Xtj3DvsHWktqodRFvOUVvRQvMzM5pETApJkVWs3SddTuTlNAQEkXAk09purRbj00FcdRukQ_Uwt9CHD2G6kMy7fHz3USRHSsuF--Ew3aIc1OGsH1CS6qAU0xszjmQp-ay6vSRoA7p-_KT_an6Y-NXNCmI0V0PrG6DuOX8Y0C74ReA5bb57JDpZkp7XJkGrmtghar3u6j_Jf1fdMcj966miPoG4onaFp6Ow1EQcfcTcr_NkLCyxRdUkrIO6bxTo2onSdbKw-v-SOjj1pYAUo9eoiplEe3AXF11-74UrtVQB_yKfPzjglkB5tlzLxmoR0NLqo8SxIGhMMjAdyfjE76_DPgzw8_If8QsFzNC4BNwQBWnsZuN6ZfK_vrPKKIQn1dHEYziKDToQsa_mOAhjXed0taKCbo1Ey8GAJUmobCSuoSlZxA3LQ4c2YnBBZjJqc01H6pEBihwv-ItS3ZZmLTTNounC1a2qa5X1TQJkMqSKOYwkvRrdfE5jcovOEuEz6JIqG3fw9QBIx8-r7lUsDqxI5YxR3dMJTRRxZUebdUOaOYQVzX9Ge52LnBZz4dUJ-5sCpJvpGPkvGhPfP_BJatRocDaXbAjK68_9pyriQR0B4mQ81TlFVlfmbgv74EFvMaybKaGtGFxY0ZfBeEnLiDIcCA9Fn5oFy01KWlqLzSrvAnvHlXM_ZxMC-QRVg1r2HxfRVbbaq6pRw4iZ6qrd1uiKoOvp-c4L8QupbIY25W8req1ggJRy3C3K5cASrxWNhYk0CU3euXJ4ymQPFmI4pWVPIYxlkf0tHvsRzV00OMHvNeNb1UOX280CV9IofMFar_7qGDlSoE_n-K2OIp2hBr3irFy7hwZCw">
+            <script src="https://www.google.com/recaptcha/api.js?render=6Ldtu4IUAAAAAMQzG1gCw3wFlx_GytlZyLrXcsuK"></script>
+            <script>
+              grecaptcha.ready(function() {
+                grecaptcha.execute("6Ldtu4IUAAAAAMQzG1gCw3wFlx_GytlZyLrXcsuK", {action: "contact"}).then(function(token) {
+                  document.getElementById("Token-ff3f78ddeb1e4b12abd7a3393c92e13a").value = token;
+                });
+              });
+            </script>
+            <input name="form_type" type="hidden" value="contact">
+            <input name="utf8" type="hidden" value="?">
+            <div class="customer-name row">
+              <div class="col-12 form-group">
+                <input type="text" class="form-control" name="contact[Name]" placeholder="Họ tên *" required="">
+              </div>   
+              <div class="col-12 form-group">
+                <input type="email" class="form-control" name="contact[email]" placeholder="Email *" required="">
+              </div>
+              <label class="d-none">Nội dung <span class="required">*</span></label>
+              <div class="col-12 form-group">
+                <textarea name="contact[Body]" placeholder="Lời nhắn *" class="form-control" rows="3"></textarea>                        
+              </div>
+            </div>
+            <span class="require d-block mb-3"><em class="required">* </em>Thông tin bắt buộc</span>
+            <div class="buttons-set">
+              <button type="submit" title="Submit" class="book-submit btn btn-primary text-center d-flex align-items-center font-weight-bold subml"> <span> Gửi </span> </button>
+            </div>
+          </form>
         </div>
-      {% endif %}
-      {% if section.settings.youtube %}
-        <div class="contact-item">
-          <a href="{{ section.settings.youtube }}" target="_blank" aria-label="Visit our YouTube channel">
-            <i class="fab fa-youtube"></i> YouTube
-          </a>
-        </div>
+      </div>
+      <div class="google-map mt-4">
+        Việt Trì-Phú Thọ
+      </div>
+      {% comment %} Contact information section for Email, Facebook, YouTube {% endcomment %}
+      {% if section.settings.email or section.settings.facebook or section.settings.youtube %}
+        <section class="contact-section">
+          <h2 class="contact-title">Connect With Us</h2>
+          <div class="contact-list">
+            {% if section.settings.email %}
+              <div class="contact-item">
+                <a href="mailto:{{ section.settings.email }}" target="_blank" aria-label="Email us at {{ section.settings.email }}">
+                  <i class="fas fa-envelope"></i> Email
+                </a>
+              </div>
+            {% endif %}
+            {% if section.settings.facebook %}
+              <div class="contact-item">
+                <a href="{{ section.settings.facebook }}" target="_blank" aria-label="Visit our Facebook page">
+                  <i class="fab fa-facebook-f"></i> Facebook
+                </a>
+              </div>
+            {% endif %}
+            {% if section.settings.youtube %}
+              <div class="contact-item">
+                <a href="{{ section.settings.youtube }}" target="_blank" aria-label="Visit our YouTube channel">
+                  <i class="fab fa-youtube"></i> YouTube
+                </a>
+              </div>
+            {% endif %}
+          </div>
+        </section>
       {% endif %}
     </div>
-  </section>
-{% endif %}
+  </div>
+</div>
 
 {% schema %}
 {
