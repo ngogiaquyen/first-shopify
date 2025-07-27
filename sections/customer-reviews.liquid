@@ -1,392 +1,126 @@
-{% comment %} Including Font Awesome for icons {% endcomment %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-{% comment %} CSS optimized for mobile and tablet with 2 items per row, no box-shadow, with image support {% endcomment %}
-<style>
-    .stats-section {
-        width: 100%;
-        max-width: 1000px;
-        margin: 30px auto;
-        padding: 15px;
-        box-sizing: border-box;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        opacity: 1;
-    }
-
-    .stats-title {
-        margin-bottom: 12px;
-        text-transform: uppercase;
-        font-size: 1.8rem;
-        font-weight: 600;
-        line-height: 1.2em;
-        color: #1A1A1A;
-        font-family: 'Inter', sans-serif;
-        background: linear-gradient(90deg, #2aab46, #1a73e8);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        opacity: 0;
-        transform: translateY(15px);
-        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-    }
-
-    .stats-section.active .stats-title {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    .stats-line {
-        height: 2px;
-        background: linear-gradient(90deg, #2aab46, #1a73e8);
-        width: 60%;
-        margin: 0 auto 15px;
-        opacity: 0;
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: opacity 0.8s ease-out 0.3s, transform 0.8s ease-out 0.3s;
-    }
-
-    .stats-section.active .stats-line {
-        opacity: 1;
-        transform: scaleX(1);
-    }
-
-    .stats-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-        justify-content: center;
-    }
-
-    .stat-item {
-        flex: 1 1 calc(25% - 20px);
-        min-width: 140px;
-        text-align: center;
-        padding: 15px;
-        background: linear-gradient(135deg, #ffffff, #f0f4f8);
-        border-radius: 10px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        position: relative;
-        overflow: hidden;
-        opacity: 1;
-        transform: translateY(0);
-        transition: background 0.3s ease, transform 0.3s ease;
-    }
-
-    .stat-item.highlight {
-        background: linear-gradient(135deg, #e6f0fa, #d4e4f7);
-        transform: scale(1.05);
-        transition: background 0.3s ease, transform 0.3s ease;
-    }
-
-    .stat-item:hover {
-        background: linear-gradient(135deg, #e6f0fa, #d4e4f7);
-        transform: scale(1.05);
-        transition: background 0.3s ease, transform 0.3s ease;
-    }
-
-    .stat-item::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: radial-gradient(circle at 50% 50%, rgba(42, 171, 70, 0.15), transparent 70%);
-        opacity: 0;
-        transition: opacity 0.4s ease;
-    }
-
-    .stat-item:hover::before,
-    .stat-item.highlight::before {
-        opacity: 1;
-    }
-
-    .stat-image {
-        width: 48px;
-        height: 48px;
-        object-fit: cover;
-        border-radius: 8px;
-        margin-bottom: 8px;
-        transition: transform 0.3s ease;
-    }
-
-    .stat-item:hover .stat-image,
-    .stat-item.highlight .stat-image {
-        transform: scale(1.1);
-    }
-
-    .stat-number {
-        font-size: 1.6rem;
-        font-weight: 700;
-        color: #1A1A1A;
-        margin: 6px 0;
-        font-family: 'Inter', sans-serif;
-    }
-
-    .stat-description {
-        font-size: 0.8rem;
-        color: #555;
-        line-height: 1.4;
-        font-family: 'Inter', sans-serif;
-    }
-
-    @media (max-width: 992px) {
-        .stats-section {
-            max-width: 100%;
-            margin: 20px 0;
-            padding: 10px;
-        }
-        .stats-title {
-            font-size: 1.6rem;
-            padding: 0 0.5rem;
-        }
-        .stats-line {
-            width: 80%;
-            margin-bottom: 12px;
-        }
-        .stats-container {
-            gap: 16px;
-            justify-content: space-between;
-        }
-        .stat-item {
-            flex: 0 1 calc(50% - 8px);
-            min-width: 140px;
-            padding: 12px;
-        }
-        .stat-image {
-            width: 40px;
-            height: 40px;
-        }
-        .stat-number {
-            font-size: 1.4rem;
-        }
-        .stat-description {
-            font-size: 0.75rem;
-        }
-    }
-
-    @media (max-width: 576px) {
-        .stats-section {
-            margin: 20px 0;
-            padding: 0;
-            width: 100%;
-            max-width: 100%;
-        }
-        .stats-title {
-            text-align: center;
-            font-size: 1.4rem;
-            margin-bottom: 10px;
-            padding: 0 0.5rem;
-        }
-        .stats-line {
-            width: 90%;
-            margin-bottom: 10px;
-        }
-        .stats-container {
-            gap: 12px;
-            justify-content: space-between;
-        }
-        .stat-item {
-            flex: 0 1 calc(50% - 6px);
-            min-width: 120px;
-            padding: 10px;
-        }
-        .stat-image {
-            width: 36px;
-            height: 36px;
-        }
-        .stat-number {
-            font-size: 1.3rem;
-        }
-        .stat-description {
-            font-size: 0.7rem;
-        }
-    }
-</style>
-
-{% comment %} JavaScript for looping highlight effect, disabled on mobile (≤576px) and tablet (≤992px) {% endcomment %}
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const statsSection = document.querySelector('.stats-section');
-        const statItems = document.querySelectorAll('.stat-item');
-        let currentIndex = 0;
-        let intervalId = null;
-
-        // Activate section title and line immediately
-        statsSection.classList.add('active');
-
-        // Function to reset highlight on all stat items
-        function resetHighlights() {
-            statItems.forEach(item => {
-                item.classList.remove('highlight');
-            });
-        }
-
-        // Function to highlight the next stat item
-        function highlightNextItem() {
-            resetHighlights();
-            statItems[currentIndex].classList.add('highlight');
-            currentIndex = (currentIndex + 1) % statItems.length; // Loop back to 0
-        }
-
-        // Function to start or stop the highlight loop based on screen width
-        function manageHighlightLoop() {
-            if (window.innerWidth > 992) {
-                // Start or restart the interval for desktop devices
-                if (!intervalId) {
-                    highlightNextItem(); // Highlight the first item immediately
-                    intervalId = setInterval(highlightNextItem, 5000);
-                }
-            } else {
-                // Stop the interval and remove highlights for mobile and tablet devices
-                if (intervalId) {
-                    clearInterval(intervalId);
-                    intervalId = null;
-                    resetHighlights();
-                }
-            }
-        }
-
-        // Initial check for screen width
-        manageHighlightLoop();
-
-        // Re-check on window resize
-        window.addEventListener('resize', manageHighlightLoop);
-    });
-</script>
-
-{% comment %} HTML structure for stats section with image support {% endcomment %}
-<div class="stats-section" role="region" aria-label="Statistics section">
-    <h2 class="stats-title">{{ section.settings.title | default: 'The Numbers Behind Our Success' }}</h2>
-    <div class="stats-line"></div>
-    <div class="stats-container">
-        <div class="stat-item">
-            {% if section.settings.image_1 %}
-                <img class="stat-image" src="{{ section.settings.image_1 | img_url: '100x100' }}" alt="{{ section.settings.description_1 | escape }}" loading="lazy">
-            {% else %}
-                <i class="fas fa-star stat-icon"></i>
-            {% endif %}
-            <div class="stat-number">{{ section.settings.number_1 | default: '10 Year' }}</div>
-            <div class="stat-description">{{ section.settings.description_1 | default: 'Experience' }}</div>
-        </div>
-        <div class="stat-item">
-            {% if section.settings.image_2 %}
-                <img class="stat-image" src="{{ section.settings.image_2 | img_url: '100x100' }}" alt="{{ section.settings.description_2 | escape }}" loading="lazy">
-            {% else %}
-                <i class="fas fa-shield-alt stat-icon"></i>
-            {% endif %}
-            <div class="stat-number">{{ section.settings.number_2 | default: '2 Year' }}</div>
-            <div class="stat-description">{{ section.settings.description_2 | default: 'Warranty' }}</div>
-        </div>
-        <div class="stat-item">
-            {% if section.settings.image_3 %}
-                <img class="stat-image" src="{{ section.settings.image_3 | img_url: '100x100' }}" alt="{{ section.settings.description_3 | escape }}" loading="lazy">
-            {% else %}
-                <i class="fas fa-tools stat-icon"></i>
-            {% endif %}
-            <div class="stat-number">{{ section.settings.number_3 | default: '24/7' }}</div>
-            <div class="stat-description">{{ section.settings.description_3 | default: 'Support' }}</div>
-        </div>
-        <div class="stat-item">
-            {% if section.settings.image_4 %}
-                <img class="stat-image" src="{{ section.settings.image_4 | img_url: '100x100' }}" alt="{{ section.settings.description_4 | escape }}" loading="lazy">
-            {% else %}
-                <i class="fas fa-truck stat-icon"></i>
-            {% endif %}
-            <div class="stat-number">{{ section.settings.number_4 | default: '4-7 Days' }}</div>
-            <div class="stat-description">{{ section.settings.description_4 | default: 'Delivery' }}</div>
-        </div>
-    </div>
-</div>
-
-{% comment %} Schema for customizable stats section {% endcomment %}
+{% comment %} Defining schema for Shopify Theme Editor {% endcomment %}
 {% schema %}
 {
-  "name": "Stats Section",
+  "name": "Customer Reviews",
   "settings": [
     {
       "type": "text",
       "id": "title",
       "label": "Section Title",
-      "default": "The Numbers Behind Our Success"
-    },
-    {
-      "type": "image_picker",
-      "id": "image_1",
-      "label": "Image for Stat 1"
-    },
-    {
-      "type": "text",
-      "id": "number_1",
-      "label": "Number for Stat 1",
-      "default": "10 Year"
-    },
-    {
-      "type": "text",
-      "id": "description_1",
-      "label": "Description for Stat 1",
-      "default": "Experience"
-    },
-    {
-      "type": "image_picker",
-      "id": "image_2",
-      "label": "Image for Stat 2"
-    },
-    {
-      "type": "text",
-      "id": "number_2",
-      "label": "Number for Stat 2",
-      "default": "2 Year"
-    },
-    {
-      "type": "text",
-      "id": "description_2",
-      "label": "Description for Stat 2",
-      "default": "Warranty"
-    },
-    {
-      "type": "image_picker",
-      "id": "image_3",
-      "label": "Image for Stat 3"
-    },
-    {
-      "type": "text",
-      "id": "number_3",
-      "label": "Number for Stat 3",
-      "default": "24/7"
-    },
-    {
-      "type": "text",
-      "id": "description_3",
-      "label": "Description for Stat 3",
-      "default": "Support"
-    },
-    {
-      "type": "image_picker",
-      "id": "image_4",
-      "label": "Image for Stat 4"
-    },
-    {
-      "type": "text",
-      "id": "number_4",
-      "label": "Number for Stat 4",
-      "default": "4-7 Days"
-    },
-    {
-      "type": "text",
-      "id": "description_4",
-      "label": "Description for Stat 4",
-      "default": "Delivery"
+      "default": "Our customers love our equipment"
     }
   ],
   "presets": [
     {
-      "name": "Stats Section",
+      "name": "Customer Reviews",
       "category": "Custom"
     }
   ]
 }
 {% endschema %}
+
+{% comment %} Styles for customer reviews section with avatars {% endcomment %}
+<style>
+  .reviews-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+    text-align: center;
+  }
+  .reviews-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: #1a1a1a;
+  }
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    justify-items: center;
+  }
+  .review-card {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    max-width: 350px;
+    transition: transform 0.3s ease-in-out;
+  }
+  .review-card:hover {
+    transform: translateY(-5px);
+  }
+  .review-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .review-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    margin-right: 1rem;
+    overflow: hidden;
+  }
+  .review-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .review-rating {
+    color: #facc15;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .review-text {
+    font-size: 1rem;
+    color: #4a5568;
+    line-height: 1.5;
+  }
+  @media screen and (max-width: 768px) {
+    .reviews-title {
+      font-size: 2rem;
+    }
+    .reviews-grid {
+      grid-template-columns: 1fr;
+    }
+    .review-card {
+      max-width: 100%;
+    }
+  }
+  @media screen and (max-width: 480px) {
+    .reviews-container {
+      padding: 2rem 1rem;
+    }
+    .reviews-title {
+      font-size: 1.5rem;
+    }
+    .review-card {
+      padding: 1rem;
+    }
+    .review-text {
+      font-size: 0.9rem;
+    }
+  }
+</style>
+
+{% comment %} Customer reviews HTML structure {% endcomment %}
+<section class="reviews-container">
+  <h2 class="reviews-title">{{ section.settings.title }}</h2>
+  <div class="reviews-grid">
+    {% assign reviews = "I can do pilates whenever I want, without going out into the weather.|Our reformer has exceeded our expectations. It arrived quickly and the customer service is 5 stars.|Very impressed with the quality of the machine!|Having my own reformer has given me the opportunity to exercise when I want in the privacy of my own home.|So glad I chose this reformer with The Pilates Shop|Love using my machine|Everything I hoped and more!|The convenience of having it at home is brilliant|Love my Refoife.|Tailored workouts like having a personal trainer at home." | split: "|" %}
+    {% for review in reviews %}
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-avatar">
+            <img src="{{ 'avatar-placeholder.jpg' | asset_url }}" alt="Customer Avatar">
+          </div>
+          <div class="review-rating">★★★★★</div>
+        </div>
+        <p class="review-text">{{ review }}</p>
+      </div>
+    {% endfor %}
+  </div>
+</section>
