@@ -12,8 +12,8 @@
   .product-section {
     max-width: 1200px;
     margin-top: 80px;
-    margin-left:55px;
-    margin-bottom:70px;
+    margin-left: 55px;
+    margin-bottom: 70px;
     padding: 0 1rem;
     display: grid;
     grid-template-columns: 3fr 2fr; /* Tăng tỷ lệ phần hình ảnh (60%) và giảm phần mô tả (40%) */
@@ -270,20 +270,30 @@
   @media (max-width: 768px) {
     .product-section {
       gap: 1rem;
+      margin: 0; /* Loại bỏ margin để full màn hình */
+      padding: 0; /* Loại bỏ padding để full màn hình */
+      width: 100%; /* Đảm bảo full chiều rộng */
+      max-width: 100%; /* Đảm bảo không bị giới hạn chiều rộng */
     }
     .images-container {
       flex-direction: column; /* Đảm bảo hiển thị theo cột */
+      width: 100%; /* Full chiều rộng */
     }
     .product-thumbnails {
       flex-direction: row;
       gap: 0.25rem;
       justify-content: center;
-      width: 100%;
+      width: 100%; /* Full chiều rộng */
       order: 2; /* Đặt thumbnails sau main image */
     }
     .product-image-main {
       max-height: 400px; /* Tăng chiều cao ảnh trên mobile */
       order: 1; /* Đặt main image trước thumbnails */
+      width: 100%; /* Full chiều rộng */
+    }
+    .product-info {
+      width: 100%; /* Đảm bảo phần thông tin sản phẩm full chiều rộng */
+      padding: 0 0.5rem; /* Thêm padding nhỏ để nội dung không sát mép */
     }
     .product-info h1 {
       font-size: 1rem;
