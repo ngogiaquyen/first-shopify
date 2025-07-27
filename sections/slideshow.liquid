@@ -244,7 +244,7 @@
 }
 {% endschema %}
 
-{% comment %} Styles for slideshow with zoom animation, top progress bar, responsive design, Buy Now button, secondary image box, overlay, and navigation controls {% endcomment %}
+{% comment %} Styles for slideshow with zoom animation, top progress bar, responsive design, Buy Now button, secondary image box, overlay, and navigation controls optimized for mobile and tablet {% endcomment %}
 <style>
   .slideshow-container {
     min-width: 100vw;
@@ -354,8 +354,8 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 20px;
-    background-color: rgb(251, 69, 69);
+    height: 8px;
+    background-color: rgba(251, 69, 69, 0.5);
     z-index: 1;
   }
   .progress-bar {
@@ -431,39 +431,57 @@
     background-color: #ff0000;
   }
 
+  /* Tablet (max-width: 1024px) */
   @media screen and (max-width: 1024px) {
+    .slideshow-container {
+      height: calc(100vh - 56px);
+      margin-top: 56px;
+    }
     .slide-content {
       flex-direction: column;
       top: auto;
-      bottom: 20%;
+      bottom: 25%;
       left: 5%;
       right: 5%;
       max-width: 90%;
-      align-items: flex-start;
+      align-items: center;
+      text-align: center;
     }
     .slide-text {
-      max-width: 100%;
+      max-width: 80%;
+      margin-bottom: 20px;
     }
     .slide-text h2 {
       font-size: 2rem;
+      margin-bottom: 12px;
     }
     .slide-text p {
       font-size: 1.2rem;
+      margin-bottom: 15px;
     }
     .slide-text .buy-now-button {
       font-size: 1rem;
       padding: 10px 20px;
+      transform: translateX(0);
+    }
+    .slide-text .buy-now-button:hover {
+      transform: scale(1.05);
     }
     .slide-image-box {
-      max-width: 60%;
-      margin-top: 20px;
+      max-width: 50%;
+      margin-top: 0;
     }
     .slide.active {
       transform: scale(1.05);
     }
+    .progress-bar-container {
+      height: 6px;
+    }
     .nav-controls {
       bottom: 15px;
-      left: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      gap: 8px;
     }
     .nav-button {
       width: 35px;
@@ -475,38 +493,48 @@
       height: 10px;
     }
   }
+
+  /* Mobile (max-width: 768px) */
   @media screen and (max-width: 768px) {
     .slideshow-container {
-      height: calc(100vh - 56px);
-      margin-top: 56px;
+      height: calc(100vh - 48px);
+      margin-top: 48px;
     }
     .slide-content {
-      bottom: 10%;
-      left: 5%;
-      right: 5%;
+      bottom: 15%;
+      max-width: 95%;
+      align-items: center;
+    }
+    .slide-text {
       max-width: 90%;
     }
     .slide-text h2 {
       font-size: 1.5rem;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
     .slide-text p {
       font-size: 1rem;
+      margin-bottom: 10px;
     }
     .slide-text .buy-now-button {
       font-size: 0.9rem;
       padding: 8px 16px;
     }
     .slide-image-box {
-      max-width: 80%;
-      margin-top: 15px;
+      max-width: 70%;
+      display: none; /* Hide secondary image on mobile for better space usage */
     }
     .slide.active {
       transform: scale(1.03);
     }
+    .progress-bar-container {
+      height: 5px;
+    }
     .nav-controls {
       bottom: 10px;
-      left: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      gap: 6px;
     }
     .nav-button {
       width: 30px;
@@ -516,6 +544,48 @@
     .dot {
       width: 8px;
       height: 8px;
+    }
+    .dot-container {
+      gap: 6px;
+    }
+  }
+
+  /* Small mobile (max-width: 480px) */
+  @media screen and (max-width: 480px) {
+    .slideshow-container {
+      height: calc(100vh - 40px);
+      margin-top: 40px;
+    }
+    .slide-content {
+      bottom: 10%;
+      max-width: 95%;
+    }
+    .slide-text h2 {
+      font-size: 1.2rem;
+      margin-bottom: 6px;
+    }
+    .slide-text p {
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+    .slide-text .buy-now-button {
+      font-size: 0.8rem;
+      padding: 6px 12px;
+    }
+    .nav-controls {
+      bottom: 8px;
+    }
+    .nav-button {
+      width: 28px;
+      height: 28px;
+      font-size: 14px;
+    }
+    .dot {
+      width: 6px;
+      height: 6px;
+    }
+    .dot-container {
+      gap: 4px;
     }
   }
 </style>
@@ -592,12 +662,12 @@
     for (let i = 0; i < slides.length; i++) {
       slides[i].classList.remove("active");
       slides[i].style.transform = "scale(1)";
-      dots[i].classList.remove("active");
+      if (dots[i]) dots[i].classList.remove("active");
     }
 
     // Show current slide with zoom effect
     slides[slideIndex].classList.add("active");
-    dots[slideIndex].classList.add("active");
+    if (dots[slideIndex]) dots[slideIndex].classList.add("active");
 
     // Reset and start progress bar
     progressBar.style.width = '0';
