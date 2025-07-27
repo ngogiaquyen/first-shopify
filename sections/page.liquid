@@ -5,13 +5,189 @@
   https://shopify.dev/docs/storefronts/themes/architecture/templates/page
 {% endcomment %}
 
-<h1>{{ page.title }}</h1>
+{% comment %} Load Font Awesome for icons {% endcomment %}
+<script>
+  // Load Font Awesome
+  document.addEventListener('DOMContentLoaded', () => {
+    const fontAwesome = document.createElement('link');
+    fontAwesome.rel = 'stylesheet';
+    fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css';
+    document.head.appendChild(fontAwesome);
+  });
+</script>
 
-{{ page.content }}
+{% comment %} Styles for page template with contact information section {% endcomment %}
+<style>
+  .page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+    width: 100%;
+  }
+  .page-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  .page-content {
+    font-size: 1rem;
+    color: #4a5568;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+  .contact-section {
+    margin-top: 2rem;
+    text-align: center;
+  }
+  .contact-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 1.5rem;
+  }
+  .contact-list {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .contact-item a {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    background-color: #2aab46;
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  .contact-item a:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+  }
+  .contact-item i {
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+  }
+  @media screen and (max-width: 768px) {
+    .page-container {
+      margin: 20px 0;
+      padding: 2rem 0;
+      width: 100%;
+      max-width: 100%;
+    }
+    .page-title {
+      font-size: 2rem;
+      padding: 0 0.5rem;
+    }
+    .page-content {
+      font-size: 0.95rem;
+      padding: 0 0.5rem;
+    }
+    .contact-title {
+      font-size: 1.5rem;
+      padding: 0 0.5rem;
+    }
+    .contact-list {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .contact-item a {
+      width: 100%;
+      max-width: 300px;
+      justify-content: center;
+    }
+  }
+  @media screen and (max-width: 480px) {
+    .page-container {
+      padding: 1.5rem 0;
+    }
+    .page-title {
+      font-size: 1.5rem;
+    }
+    .page-content {
+      font-size: 0.9rem;
+    }
+    .contact-title {
+      font-size: 1.3rem;
+    }
+    .contact-item a {
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+    }
+    .contact-item i {
+      font-size: 1rem;
+    }
+  }
+</style>
+
+<h1 class="page-title">{{ page.title }}</h1>
+
+<div class="page-content">
+  {{ page.content }}
+</div>
+
+{% comment %} Contact information section {% endcomment %}
+{% if section.settings.email or section.settings.facebook or section.settings.youtube %}
+  <section class="contact-section">
+    <h2 class="contact-title">Contact Us</h2>
+    <div class="contact-list">
+      {% if section.settings.email %}
+        <div class="contact-item">
+          <a href="mailto:{{ section.settings.email }}" target="_blank" aria-label="Email us at {{ section.settings.email }}">
+            <i class="fas fa-envelope"></i> Email
+          </a>
+        </div>
+      {% endif %}
+      {% if section.settings.facebook %}
+        <div class="contact-item">
+          <a href="{{ section.settings.facebook }}" target="_blank" aria-label="Visit our Facebook page">
+            <i class="fab fa-facebook-f"></i> Facebook
+          </a>
+        </div>
+      {% endif %}
+      {% if section.settings.youtube %}
+        <div class="contact-item">
+          <a href="{{ section.settings.youtube }}" target="_blank" aria-label="Visit our YouTube channel">
+            <i class="fab fa-youtube"></i> YouTube
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </section>
+{% endif %}
 
 {% schema %}
 {
   "name": "t:general.page",
-  "settings": []
+  "settings": [
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email Address",
+      "info": "Enter the contact email address (e.g., contact@example.com)"
+    },
+    {
+      "type": "url",
+      "id": "facebook",
+      "label": "Facebook URL",
+      "info": "Enter the full URL to your Facebook page (e.g., https://facebook.com/yourpage)"
+    },
+    {
+      "type": "url",
+      "id": "youtube",
+      "label": "YouTube URL",
+      "info": "Enter the full URL to your YouTube channel (e.g., https://youtube.com/yourchannel)"
+    }
+  ]
 }
 {% endschema %}
