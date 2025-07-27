@@ -244,7 +244,7 @@
 }
 {% endschema %}
 
-{% comment %} Styles for slideshow with zoom animation, top progress bar, responsive design, Buy Now button, secondary image box, overlay, and navigation controls optimized for mobile and tablet {% endcomment %}
+{% comment %} Styles for slideshow with zoom animation, top progress bar, responsive design, Buy Now button, secondary image box, overlay, navigation controls, and initial appearance effect optimized for mobile and tablet {% endcomment %}
 <style>
   .slideshow-container {
     min-width: 100vw;
@@ -253,13 +253,19 @@
     margin: auto;
     overflow: hidden;
     margin-top: 64px;
+    opacity: 0; /* Initial state for appearance effect */
+    transform: translateY(20px); /* Initial offset for appearance effect */
+    transition: opacity 1s ease-in-out, transform 1s ease-in-out; /* Transition for appearance effect */
+  }
+  .slideshow-container.loaded {
+    opacity: 1; /* Final state for appearance effect */
+    transform: translateY(0); /* Reset offset */
   }
   .slides-wrapper {
     display: flex;
     width: 100%;
     height: 100%;
   }
-
   .slide {
     flex: 0 0 100%;
     width: 100%;
@@ -335,7 +341,6 @@
     opacity: 0;
     transform: translateX(50px);
     transition: opacity 0.8s ease-in-out 0.6s, transform 0.8s ease-in-out 0.6s;
-
   }
   .slide-image-box img {
     width: 100%;
@@ -370,7 +375,6 @@
   .progress-bar.active {
     width: 100%; /* Added !important to prioritize over inline styles */
   }
-
   .slideshow-overlay {
     position: absolute;
     top: 0;
@@ -387,7 +391,6 @@
     );
     z-index: 0;
   }
-
   .nav-controls {
     position: absolute;
     bottom: 20px;
@@ -410,11 +413,10 @@
     transition: background-color 0.3s ease, transform 0.3s ease;
     font-size: 20px;
     color: #fff;
-      padding: 10px;
-      border:1px solid #fcfcfc1f;
+    padding: 10px;
+    border: 1px solid #fcfcfc1f;
   }
-  
-  .nav-button i{
+  .nav-button i {
     font-size: 18px;
   }
   .nav-button:hover {
@@ -428,7 +430,6 @@
     display: flex;
     gap: 8px;
   }
-
   .dot {
     height: 8px;
     width: 12px;
@@ -439,14 +440,11 @@
     transform: scaleX(1);
     transform-origin: center;
   }
-
   .dot.active {
-    background-color:rgb(247, 247, 247);
+    background-color: rgb(247, 247, 247);
     width: 40px; /* Tăng chiều dài */
     border-radius: 20px;
   }
-
-
   /* Tablet (max-width: 1024px) */
   @media screen and (max-width: 1024px) {
     .slideshow-container {
@@ -513,7 +511,6 @@
       margin-bottom: 20px;
     }
   }
-
   /* Mobile (max-width: 768px) */
   @media screen and (max-width: 768px) {
     .slideshow-container {
@@ -528,11 +525,8 @@
       max-width: 100%;
       {% comment %} display: none; /* Hide secondary image on mobile for better space usage */ {% endcomment %}
     }
-    
-    .slide-text{
-      width: 100%
-    }
     .slide-text {
+      width: 100%;
       max-width: 90%;
     }
     .slide-text h2 {
@@ -571,14 +565,11 @@
     .dot-container {
       gap: 6px;
     }
-
-    
     .slide-image-box img {
       width: 100%;
       height: auto;
     }
   }
-
   /* Small mobile (max-width: 480px) */
   @media screen and (max-width: 480px) {
     .slideshow-container {
@@ -588,8 +579,6 @@
     .slide-content {
       max-width: 95%;
     }
-
-
     .slide-text h2 {
       font-size: 1.2rem;
       margin-bottom: 6px;
@@ -669,7 +658,7 @@
   </div>
 </div>
 
-{% comment %} JavaScript for slideshow functionality with zoom, progress bar, and navigation controls {% endcomment %}
+{% comment %} JavaScript for slideshow functionality with zoom, progress bar, navigation controls, and initial appearance effect {% endcomment %}
 <script>
   // Load Font Awesome
   const fontAwesome = document.createElement('link');
@@ -701,9 +690,6 @@
 
     // Reset and start progress bar
     progressBar.style.width = '0';
-    {% comment %} setTimeout(()=>{
-      progressBar.classList.add("active");
-    }, 5000); {% endcomment %}
   }
 
   function nextSlide() {
@@ -752,5 +738,11 @@
     dot.addEventListener("click", () => {
       goToSlide(parseInt(dot.getAttribute("data-slide")));
     });
+  });
+
+  // Trigger initial appearance effect
+  document.addEventListener("DOMContentLoaded", () => {
+    const slideshowContainer = document.querySelector(".slideshow-container");
+    slideshowContainer.classList.add("loaded");
   });
 </script>
