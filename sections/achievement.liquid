@@ -1,7 +1,7 @@
 {% comment %} Including Font Awesome for icons {% endcomment %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-{% comment %} Updated CSS with smaller text and more compact boxes {% endcomment %}
+{% comment %} CSS with smaller text and compact boxes {% endcomment %}
 <style>
     .stats-section {
         width: 100%;
@@ -12,11 +12,6 @@
         text-align: center;
         display: flex;
         flex-direction: column;
-        opacity: 0;
-        transition: opacity 0.8s ease-out;
-    }
-
-    .stats-section.visible {
         opacity: 1;
     }
 
@@ -37,7 +32,7 @@
         transition: opacity 0.8s ease-out, transform 0.8s ease-out;
     }
 
-    .stats-section.visible .stats-title {
+    .stats-section.active .stats-title {
         opacity: 1;
         transform: translateY(0);
     }
@@ -53,7 +48,7 @@
         transition: opacity 0.8s ease-out 0.3s, transform 0.8s ease-out 0.3s;
     }
 
-    .stats-section.visible .stats-line {
+    .stats-section.active .stats-line {
         opacity: 1;
         transform: scaleX(1);
     }
@@ -81,28 +76,9 @@
         transition: opacity 0.6s ease-out, transform 0.6s ease-out, background 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .stats-section.visible .stat-item:nth-child(1) {
+    .stat-item.active {
         opacity: 1;
         transform: translateY(0);
-        transition-delay: 0.4s;
-    }
-
-    .stats-section.visible .stat-item:nth-child(2) {
-        opacity: 1;
-        transform: translateY(0);
-        transition-delay: 0.6s;
-    }
-
-    .stats-section.visible .stat-item:nth-child(3) {
-        opacity: 1;
-        transform: translateY(0);
-        transition-delay: 0.8s;
-    }
-
-    .stats-section.visible .stat-item:nth-child(4) {
-        opacity: 1;
-        transform: translateY(0);
-        transition-delay: 1.0s;
     }
 
     .stat-item:hover {
@@ -207,22 +183,35 @@
     }
 </style>
 
-{% comment %} JavaScript for scroll-based sequential animation {% endcomment %}
+{% comment %} JavaScript for looping sequential activation of stat items {% endcomment %}
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const statsSection = document.querySelector('.stats-section');
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
+        const statItems = document.querySelectorAll('.stat-item');
+        let currentIndex = 0;
+
+        // Initially activate the section title and line
+        statsSection.classList.add('active');
+
+        // Function to reset all stat items
+        function resetStatItems() {
+            statItems.forEach(item => {
+                item.classList.remove('active');
             });
-        }, {
-            threshold: 0.2,
-            rootMargin: '50px'
-        });
-        observer.observe(statsSection);
+        }
+
+        // Function to activate the next stat item
+        function activateNextItem() {
+            resetStatItems();
+            statItems[currentIndex].classList.add('active');
+            currentIndex = (currentIndex + 1) % statItems.length; // Loop back to 0
+        }
+
+        // Activate the first item immediately
+        activateNextItem();
+
+        // Set interval to switch every 5 seconds
+        setInterval(activateNextItem, 5000);
     });
 </script>
 
