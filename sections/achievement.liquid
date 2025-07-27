@@ -1,209 +1,249 @@
 {% comment %} Including Font Awesome for icons {% endcomment %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-{% comment %} Styles for stats display with title, responsive design, and scroll animation {% endcomment %}
+{% comment %} Updated CSS with fluid, modern design and hover effects {% endcomment %}
 <style>
     .stats-section {
-      width: 100%;
-      max-width: 1200px;
-      margin: 40px auto;
-      padding: 20px;
-      box-sizing: border-box;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      opacity: 0;
-      transition: opacity 0.5s ease-out;
+        width: 100%;
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 20px;
+        box-sizing: border-box;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        opacity: 0;
+        transition: opacity 0.6s ease-out;
     }
 
     .stats-section.visible {
-      opacity: 1;
+        opacity: 1;
     }
 
     .stats-title {
-      margin-bottom: 30px;
-      text-transform: uppercase;
-      font-size: 36px;
-      font-weight: 500;
-      line-height: 1.1em;
-      color: #2B2B2B;
-      margin-bottom: 12px;
-      font-family: 'Poppins', sans-serif;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        font-size: 2.5rem;
+        font-weight: 600;
+        line-height: 1.2em;
+        color: #1A1A1A;
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(90deg, #2aab46, #1a73e8);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
     }
 
     .stats-section.visible .stats-title {
-      opacity: 1;
-      transform: translateY(0);
+        opacity: 1;
+        transform: translateY(0);
     }
 
     .stats-line {
-      height: 1px;
-      background: #2B2B2B;
-      width: 70%;
-      margin-bottom: 25px;
-      align-self: center;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.5s ease-out 0.2s, transform 0.5s ease-out 0.2s;
+        height: 2px;
+        background: linear-gradient(90deg, #2aab46, #1a73e8);
+        width: 60%;
+        margin: 0 auto 30px;
+        opacity: 0;
+        transform: scaleX(0);
+        transition: opacity 0.6s ease-out 0.2s, transform 0.6s ease-out 0.2s;
     }
 
     .stats-section.visible .stats-line {
-      opacity: 1;
-      transform: translateY(0);
+        opacity: 1;
+        transform: scaleX(1);
     }
 
     .stats-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
     }
 
     .stat-item {
-      flex: 1 1 calc(25% - 20px);
-      min-width: 200px;
-      text-align: center;
-      padding: 20px;
-      background-color: #f8f8f8;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        flex: 1 1 calc(25% - 20px);
+        min-width: 200px;
+        text-align: center;
+        padding: 25px;
+        background: linear-gradient(135deg, #ffffff, #f0f4f8);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        position: relative;
+        overflow: hidden;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out, background 0.3s ease;
     }
 
     .stats-section.visible .stat-item:nth-child(1) {
-      opacity: 1;
-      transform: translateY(0);
-      transition-delay: 0.3s;
+        opacity: 1;
+        transform: translateY(0);
+        transition-delay: 0.3s;
     }
 
     .stats-section.visible .stat-item:nth-child(2) {
-      opacity: 1;
-      transform: translateY(0);
-      transition-delay: 0.4s;
+        opacity: 1;
+        transform: translateY(0);
+        transition-delay: 0.4s;
     }
 
     .stats-section.visible .stat-item:nth-child(3) {
-      opacity: 1;
-      transform: translateY(0);
-      transition-delay: 0.5s;
+        opacity: 1;
+        transform: translateY(0);
+        transition-delay: 0.5s;
     }
 
     .stats-section.visible .stat-item:nth-child(4) {
-      opacity: 1;
-      transform: translateY(0);
-      transition-delay: 0.6s;
+        opacity: 1;
+        transform: translateY(0);
+        transition-delay: 0.6s;
+    }
+
+    .stat-item:hover {
+        background: linear-gradient(135deg, #e6f0fa, #d4e4f7);
+        transform: scale(1.05);
+        transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    .stat-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 50% 50%, rgba(42, 171, 70, 0.1), transparent 70%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .stat-item:hover::before {
+        opacity: 1;
     }
 
     .stat-icon {
-      font-size: 2.5rem;
-      color: #2aab46;
-      margin-bottom: 10px;
+        font-size: 2.8rem;
+        color: #2aab46;
+        margin-bottom: 12px;
+        transition: color 0.3s ease;
+    }
+
+    .stat-item:hover .stat-icon {
+        color: #1a73e8;
     }
 
     .stat-number {
-      font-size: 2rem;
-      font-weight: bold;
-      color: #333;
-      margin: 10px 0;
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1A1A1A;
+        margin: 10px 0;
+        font-family: 'Inter', sans-serif;
     }
 
     .stat-description {
-      font-size: 1rem;
-      color: #666;
-      line-height: 1.4;
+        font-size: 1rem;
+        color: #555;
+        line-height: 1.5;
+        font-family: 'Inter', sans-serif;
     }
 
     @media (max-width: 992px) {
-      .stats-title {
-        font-size: 2rem;
-      }
-      .stat-item {
-        flex: 1 1 calc(50% - 20px);
-        min-width: 150px;
-        padding: 15px;
-      }
-      .stat-icon {
-        font-size: 2rem;
-      }
-      .stat-number {
-        font-size: 1.8rem;
-      }
-      .stat-description {
-        font-size: 0.9rem;
-      }
+        .stats-title {
+            font-size: 2rem;
+        }
+        .stats-line {
+            width: 70%;
+        }
+        .stat-item {
+            flex: 1 1 calc(50% - 20px);
+            min-width: 160px;
+            padding: 20px;
+        }
+        .stat-icon {
+            font-size: 2.4rem;
+        }
+        .stat-number {
+            font-size: 1.8rem;
+        }
+        .stat-description {
+            font-size: 0.95rem;
+        }
     }
 
     @media (max-width: 576px) {
-      .stats-title {
-        font-size: 1.5rem;
-        margin-bottom: 20px;
-      }
-      .stats-container {
-        gap: 15px;
-      }
-      .stat-item {
-        flex: 1 1 100%;
-        padding: 10px;
-      }
-      .stat-icon {
-        font-size: 1.8rem;
-      }
-      .stat-number {
-        font-size: 1.5rem;
-      }
-      .stat-description {
-        font-size: 0.85rem;
-      }
+        .stats-title {
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+        }
+        .stats-line {
+            width: 80%;
+            margin-bottom: 20px;
+        }
+        .stats-container {
+            gap: 15px;
+        }
+        .stat-item {
+            flex: 1 1 100%;
+            padding: 15px;
+        }
+        .stat-icon {
+            font-size: 2rem;
+        }
+        .stat-number {
+            font-size: 1.6rem;
+        }
+        .stat-description {
+            font-size: 0.9rem;
+        }
     }
 </style>
 
-{% comment %} JavaScript to handle scroll animation with Intersection Observer {% endcomment %}
+{% comment %} JavaScript remains unchanged for scroll animation {% endcomment %}
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const statsSection = document.querySelector('.stats-section');
-    const observer = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, {
-      threshold: 0.1
+    document.addEventListener('DOMContentLoaded', () => {
+        const statsSection = document.querySelector('.stats-section');
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        observer.observe(statsSection);
     });
-    observer.observe(statsSection);
-  });
 </script>
 
-{% comment %} HTML structure for displaying stats with title and icons {% endcomment %}
+{% comment %} HTML structure remains unchanged {% endcomment %}
 <div class="stats-section" role="region" aria-label="Statistics section">
-  <h2 class="stats-title">The Numbers Behind Our Success</h2>
-  <div class="stats-line"></div>
-  <div class="stats-container">
-    <div class="stat-item">
-      <i class="fas fa-star stat-icon"></i>
-      <div class="stat-number">10 Year</div>
-      <div class="stat-description">Experience</div>
+    <h2 class="stats-title">The Numbers Behind Our Success</h2>
+    <div class="stats-line"></div>
+    <div class="stats-container">
+        <div class="stat-item">
+            <i class="fas fa-star stat-icon"></i>
+            <div class="stat-number">10 Year</div>
+            <div class="stat-description">Experience</div>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-shield-alt stat-icon"></i>
+            <div class="stat-number">2 Year</div>
+            <div class="stat-description">Warranty</div>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-tools stat-icon"></i>
+            <div class="stat-number">24/7</div>
+            <div class="stat-description">Support</div>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-truck stat-icon"></i>
+            <div class="stat-number">4-7 Days</div>
+            <div class="stat-description">Delivery</div>
+        </div>
     </div>
-    <div class="stat-item">
-      <i class="fas fa-shield-alt stat-icon"></i>
-      <div class="stat-number">2 Year</div>
-      <div class="stat-description">Warranty</div>
-    </div>
-    <div class="stat-item">
-      <i class="fas fa-tools stat-icon"></i>
-      <div class="stat-number">24/7</div>
-      <div class="stat-description">Support</div>
-    </div>
-    <div class="stat-item">
-      <i class="fas fa-truck stat-icon"></i>
-      <div class="stat-number">4-7 Days</div>
-      <div class="stat-description">Delivery</div>
-    </div>
-  </div>
 </div>
