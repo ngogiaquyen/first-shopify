@@ -194,12 +194,13 @@
     }
 </style>
 
-{% comment %} JavaScript for looping highlight effect on stat items {% endcomment %}
+{% comment %} JavaScript for looping highlight effect, disabled on mobile (≤576px) {% endcomment %}
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const statsSection = document.querySelector('.stats-section');
         const statItems = document.querySelectorAll('.stat-item');
         let currentIndex = 0;
+        let intervalId = null;
 
         // Activate section title and line immediately
         statsSection.classList.add('active');
@@ -218,11 +219,29 @@
             currentIndex = (currentIndex + 1) % statItems.length; // Loop back to 0
         }
 
-        // Highlight the first item immediately
-        highlightNextItem();
+        // Function to start or stop the highlight loop based on screen width
+        function manageHighlightLoop() {
+            if (window.innerWidth > 576) {
+                // Start or restart the interval for non-mobile devices
+                if (!intervalId) {
+                    highlightNextItem(); // Highlight the first item immediately
+                    intervalId = setInterval(highlightNextItem, 5000);
+                }
+            } else {
+                // Stop the interval and remove highlights for mobile devices
+                if (intervalId) {
+                    clearInterval(intervalId);
+                    intervalId = null;
+                    resetHighlights();
+                }
+            }
+        }
 
-        // Set interval to switch highlight every 5 seconds
-        setInterval(highlightNextItem, 5000);
+        // Initial check for screen width
+        manageHighlightLoop();
+
+        // Re-check on window resize
+        window.addEventListener('resize', manageHighlightLoop);
     });
 </script>
 
