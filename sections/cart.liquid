@@ -4,48 +4,46 @@
   https://shopify.dev/docs/storefronts/themes/architecture/templates/cart
 {% endcomment %}
 
-<div class="cart-wrapper">
-  <h1>{{ 'cart.title' | t }}</h1>
+<h1>{{ 'cart.title' | t }}</h1>
 
-  <form action="{{ routes.cart_url }}" method="post" class="cart-form" id="cart-form">
-    <div class="cart-items">
-      {% for item in cart.items %}
-        <div class="cart-item" data-item-id="{{ item.key }}">
-          <div class="cart-item-image">
-            {% render 'image', image: item.image, url: item.url, alt: item.product.title %}
-          </div>
-          <div class="cart-item-details">
-            <p class="cart-item-title"><a href="{{ item.url }}">{{ item.product.title }}</a></p>
-            <p class="cart-item-variant">{{ item.variant.title }}</p>
-            <p class="cart-item-price">{{ item.final_price | money }}</p>
-          </div>
-          <div class="cart-item-quantity">
-            <div class="quantity-selector">
-              <button type="button" class="quantity-btn minus" aria-label="Decrease quantity">-</button>
-              <input type="number" name="updates[]" value="{{ item.quantity }}" min="1" aria-label="Quantity" data-item-id="{{ item.key }}">
-              <button type="button" class="quantity-btn plus" aria-label="Increase quantity">+</button>
-            </div>
-          </div>
-          <div class="cart-item-actions">
-            <button type="button" class="remove-btn" data-item-id="{{ item.key }}">{{ 'cart.remove' | t }}</button>
+<form action="{{ routes.cart_url }}" method="post" class="cart-form" id="cart-form">
+  <div class="cart-items">
+    {% for item in cart.items %}
+      <div class="cart-item" data-item-id="{{ item.key }}">
+        <div class="cart-item-image">
+          {% render 'image', image: item.image, url: item.url, alt: item.product.title %}
+        </div>
+        <div class="cart-item-details">
+          <p class="cart-item-title"><a href="{{ item.url }}">{{ item.product.title }}</a></p>
+          <p class="cart-item-variant">{{ item.variant.title }}</p>
+          <p class="cart-item-price">{{ item.final_price | money }}</p>
+        </div>
+        <div class="cart-item-quantity">
+          <div class="quantity-selector">
+            <button type="button" class="quantity-btn minus" aria-label="Decrease quantity">-</button>
+            <input type="number" name="updates[]" value="{{ item.quantity }}" min="1" aria-label="Quantity" data-item-id="{{ item.key }}">
+            <button type="button" class="quantity-btn plus" aria-label="Increase quantity">+</button>
           </div>
         </div>
-      {% endfor %}
-      {% if cart.items.size == 0 %}
-        <p class="empty-cart">{{ 'cart.empty' | t }}</p>
-      {% endif %}
-    </div>
-    <div class="cart-footer">
-      <div class="cart-subtotal">
-        <p>{{ 'cart.subtotal' | t }}: <span>{{ cart.total_price | money }}</span></p>
+        <div class="cart-item-actions">
+          <button type="button" class="remove-btn" data-item-id="{{ item.key }}">{{ 'cart.remove' | t }}</button>
+        </div>
       </div>
-      <div class="cart-actions">
-        <input type="submit" name="update" value="{{ 'cart.update' | t }}" class="update-btn">
-        <input type="submit" name="checkout" value="{{ 'cart.checkout' | t }}" class="checkout-btn">
-      </div>
+    {% endfor %}
+    {% if cart.items.size == 0 %}
+      <p class="empty-cart">{{ 'cart.empty' | t }}</p>
+    {% endif %}
+  </div>
+  <div class="cart-footer">
+    <div class="cart-subtotal">
+      <p>{{ 'cart.subtotal' | t }}: <span>{{ cart.total_price | money }}</span></p>
     </div>
-  </form>
-</div>
+    <div class="cart-actions">
+      <input type="submit" name="update" value="{{ 'cart.update' | t }}" class="update-btn">
+      <input type="submit" name="checkout" value="{{ 'cart.checkout' | t }}" class="checkout-btn">
+    </div>
+  </div>
+</form>
 
 <style>
   /* General styling for the cart page */
@@ -54,12 +52,6 @@
     background-color: #f5f5f5;
     color: #1a202c;
     margin: 0;
-  }
-
-  .cart-wrapper {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 2rem 1.5rem;
   }
 
   h1 {
@@ -277,10 +269,6 @@
 
   /* Responsive design for mobile */
   @media (max-width: 768px) {
-    .cart-wrapper {
-      padding: 1rem;
-    }
-
     .cart-form {
       padding: 0 1rem;
     }
