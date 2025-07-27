@@ -7,4 +7,13 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
-{}
+{
+  "cart": {
+    "title": "Cart",
+    "subtotal": "Subtotal",
+    "remove": "Remove",
+    "update": "Update",
+    "checkout": "Checkout",
+    "empty": "Your cart is empty"
+  }
+}
