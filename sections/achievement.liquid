@@ -1,7 +1,7 @@
 {% comment %} Including Font Awesome for icons {% endcomment %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-{% comment %} CSS with smaller text, icons, title, and boxes {% endcomment %}
+{% comment %} CSS with smaller text, icons, title, boxes, and increased spacing {% endcomment %}
 <style>
     .stats-section {
         width: 100%;
@@ -56,12 +56,12 @@
     .stats-container {
         display: flex;
         flex-wrap: wrap;
-        gap: 12px;
+        gap: 20px;
         justify-content: center;
     }
 
     .stat-item {
-        flex: 1 1 calc(25% - 12px);
+        flex: 1 1 calc(25% - 20px);
         min-width: 140px;
         text-align: center;
         padding: 15px;
@@ -142,8 +142,11 @@
         .stats-line {
             width: 70%;
         }
+        .stats-container {
+            gap: 16px;
+        }
         .stat-item {
-            flex: 1 1 calc(50% - 12px);
+            flex: 1 1 calc(50% - 16px);
             min-width: 120px;
             padding: 12px;
         }
@@ -169,7 +172,7 @@
             margin-bottom: 12px;
         }
         .stats-container {
-            gap: 8px;
+            gap: 12px;
         }
         .stat-item {
             flex: 1 1 100%;
