@@ -1,13 +1,13 @@
 {% comment %} Including Font Awesome for icons {% endcomment %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-{% comment %} CSS with smaller text, compact boxes, and highlight effect {% endcomment %}
+{% comment %} CSS with smaller text, icons, title, and boxes {% endcomment %}
 <style>
     .stats-section {
         width: 100%;
-        max-width: 1200px;
-        margin: 40px auto;
-        padding: 20px;
+        max-width: 1000px;
+        margin: 30px auto;
+        padding: 15px;
         box-sizing: border-box;
         text-align: center;
         display: flex;
@@ -16,9 +16,9 @@
     }
 
     .stats-title {
-        margin-bottom: 15px;
+        margin-bottom: 12px;
         text-transform: uppercase;
-        font-size: 2rem;
+        font-size: 1.8rem;
         font-weight: 600;
         line-height: 1.2em;
         color: #1A1A1A;
@@ -28,7 +28,7 @@
         background-clip: text;
         color: transparent;
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(15px);
         transition: opacity 0.8s ease-out, transform 0.8s ease-out;
     }
 
@@ -38,10 +38,10 @@
     }
 
     .stats-line {
-        height: 3px;
+        height: 2px;
         background: linear-gradient(90deg, #2aab46, #1a73e8);
         width: 60%;
-        margin: 0 auto 20px;
+        margin: 0 auto 15px;
         opacity: 0;
         transform: scaleX(0);
         transform-origin: left;
@@ -56,19 +56,19 @@
     .stats-container {
         display: flex;
         flex-wrap: wrap;
-        gap: 15px;
+        gap: 12px;
         justify-content: center;
     }
 
     .stat-item {
-        flex: 1 1 calc(25% - 15px);
-        min-width: 160px;
+        flex: 1 1 calc(25% - 12px);
+        min-width: 140px;
         text-align: center;
-        padding: 20px;
+        padding: 15px;
         background: linear-gradient(135deg, #ffffff, #f0f4f8);
-        border-radius: 12px;
+        border-radius: 10px;
         border: 1px solid rgba(255, 255, 255, 0.2);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
         position: relative;
         overflow: hidden;
         opacity: 1;
@@ -78,14 +78,14 @@
 
     .stat-item.highlight {
         background: linear-gradient(135deg, #e6f0fa, #d4e4f7);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
         transform: scale(1.05);
         transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
     }
 
     .stat-item:hover {
         background: linear-gradient(135deg, #e6f0fa, #d4e4f7);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
         transform: scale(1.05);
         transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
     }
@@ -108,9 +108,9 @@
     }
 
     .stat-icon {
-        font-size: 2.5rem;
+        font-size: 2rem;
         color: #2aab46;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
         transition: color 0.3s ease, transform 0.3s ease;
     }
 
@@ -121,15 +121,15 @@
     }
 
     .stat-number {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
         font-weight: 700;
         color: #1A1A1A;
-        margin: 8px 0;
+        margin: 6px 0;
         font-family: 'Inter', sans-serif;
     }
 
     .stat-description {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         color: #555;
         line-height: 1.4;
         font-family: 'Inter', sans-serif;
@@ -137,52 +137,52 @@
 
     @media (max-width: 992px) {
         .stats-title {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
         }
         .stats-line {
             width: 70%;
         }
         .stat-item {
-            flex: 1 1 calc(50% - 15px);
-            min-width: 140px;
-            padding: 15px;
+            flex: 1 1 calc(50% - 12px);
+            min-width: 120px;
+            padding: 12px;
         }
         .stat-icon {
-            font-size: 2.2rem;
+            font-size: 1.8rem;
         }
         .stat-number {
-            font-size: 1.6rem;
+            font-size: 1.4rem;
         }
         .stat-description {
-            font-size: 0.85rem;
+            font-size: 0.75rem;
         }
     }
 
     @media (max-width: 576px) {
         .stats-title {
             text-align: center;
-            font-size: 1.5rem;
-            margin-bottom: 10px;
+            font-size: 1.4rem;
+            margin-bottom: 8px;
         }
         .stats-line {
             width: 80%;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
         .stats-container {
-            gap: 10px;
+            gap: 8px;
         }
         .stat-item {
             flex: 1 1 100%;
-            padding: 12px;
+            padding: 10px;
         }
         .stat-icon {
-            font-size: 2rem;
+            font-size: 1.6rem;
         }
         .stat-number {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
         }
         .stat-description {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
         }
     }
 </style>
