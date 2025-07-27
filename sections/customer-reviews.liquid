@@ -69,7 +69,7 @@
 }
 {% endschema %}
 
-{% comment %} Styles for customer reviews section with avatars {% endcomment %}
+{% comment %} Styles for customer reviews section with scrolling carousel {% endcomment %}
 <style>
   .reviews-container {
     max-width: 1200px;
@@ -84,11 +84,19 @@
     margin-bottom: 2rem;
     color: #1a1a1a;
   }
+  .reviews-carousel {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+  }
   .reviews-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    display: flex;
+    flex-wrap: nowrap;
     gap: 1.5rem;
-    justify-items: center;
+    animation: scroll-left 30s linear infinite;
+  }
+  .reviews-grid.paused {
+    animation-play-state: paused;
   }
   .review-card {
     background: #ffffff;
@@ -96,7 +104,9 @@
     padding: 1.5rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     text-align: left;
+    min-width: 280px;
     max-width: 350px;
+    flex: 0 0 auto;
     transition: transform 0.3s ease-in-out;
   }
   .review-card:hover {
@@ -130,6 +140,14 @@
     color: #4a5568;
     line-height: 1.5;
   }
+  @keyframes scroll-left {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
   @media screen and (max-width: 768px) {
     .reviews-container {
       margin: 20px 0;
@@ -142,9 +160,10 @@
       padding: 0 0.5rem;
     }
     .reviews-grid {
-      grid-template-columns: 1fr;
+      gap: 1rem;
     }
     .review-card {
+      min-width: 240px;
       max-width: 100%;
       padding: 1.2rem;
     }
@@ -163,7 +182,11 @@
     .reviews-title {
       font-size: 1.5rem;
     }
+    .reviews-grid {
+      gap: 0.8rem;
+    }
     .review-card {
+      min-width: 200px;
       padding: 1rem;
     }
     .review-avatar {
@@ -176,27 +199,52 @@
   }
 </style>
 
+{% comment %} JavaScript for carousel duplication and pause-on-hover {% endcomment %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const reviewsGrid = document.querySelector('.reviews-grid');
+    if (!reviewsGrid) return;
+
+    // Duplicate review cards for seamless looping
+    const reviewCards = reviewsGrid.querySelectorAll('.review-card');
+    reviewCards.forEach(card => {
+      const clone = card.cloneNode(true);
+      reviewsGrid.appendChild(clone);
+    });
+
+    // Pause animation on hover
+    reviewsGrid.addEventListener('mouseenter', () => {
+      reviewsGrid.classList.add('paused');
+    });
+    reviewsGrid.addEventListener('mouseleave', () => {
+      reviewsGrid.classList.remove('paused');
+    });
+  });
+</script>
+
 {% comment %} Customer reviews HTML structure {% endcomment %}
 <section class="reviews-container">
   <h2 class="reviews-title">{{ section.settings.title }}</h2>
-  <div class="reviews-grid">
-    {% assign reviews = "I can do pilates whenever I want, without going out into the weather.|Our reformer has exceeded our expectations. It arrived quickly and the customer service is 5 stars.|Very impressed with the quality of the machine!|Having my own reformer has given me the opportunity to exercise when I want in the privacy of my own home.|So glad I chose this reformer with The Pilates Shop|Love using my machine|Everything I hoped and more!|The convenience of having it at home is brilliant|Love my Refoife.|Tailored workouts like having a personal trainer at home." | split: "|" %}
-    {% for review in reviews %}
-      {% assign index = forloop.index %}
-      {% assign avatar_key = "avatar_" | append: index %}
-      <div class="review-card">
-        <div class="review-header">
-          <div class="review-avatar">
-            {% if section.settings[avatar_key] %}
-              <img src="{{ section.settings[avatar_key] | img_url: '100x100' }}" alt="Customer Avatar {{ index }}" loading="lazy">
-            {% else %}
-              <img src="{{ 'avatar-placeholder.jpg' | asset_url }}" alt="Customer Avatar Placeholder" loading="lazy">
-            {% endif %}
+  <div class="reviews-carousel">
+    <div class="reviews-grid">
+      {% assign reviews = "I can do pilates whenever I want, without going out into the weather.|Our reformer has exceeded our expectations. It arrived quickly and the customer service is 5 stars.|Very impressed with the quality of the machine!|Having my own reformer has given me the opportunity to exercise when I want in the privacy of my own home.|So glad I chose this reformer with The Pilates Shop|Love using my machine|Everything I hoped and more!|The convenience of having it at home is brilliant|Love my Refoife.|Tailored workouts like having a personal trainer at home." | split: "|" %}
+      {% for review in reviews %}
+        {% assign index = forloop.index %}
+        {% assign avatar_key = "avatar_" | append: index %}
+        <div class="review-card">
+          <div class="review-header">
+            <div class="review-avatar">
+              {% if section.settings[avatar_key] %}
+                <img src="{{ section.settings[avatar_key] | img_url: '100x100' }}" alt="Customer Avatar {{ index }}" loading="lazy">
+              {% else %}
+                <img src="{{ 'avatar-placeholder.jpg' | asset_url }}" alt="Customer Avatar Placeholder" loading="lazy">
+              {% endif %}
+            </div>
+            <div class="review-rating">★★★★★</div>
           </div>
-          <div class="review-rating">★★★★★</div>
+          <p class="review-text">{{ review }}</p>
         </div>
-        <p class="review-text">{{ review }}</p>
-      </div>
-    {% endfor %}
+      {% endfor %}
+    </div>
   </div>
 </section>
