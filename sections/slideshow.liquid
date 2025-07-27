@@ -26,6 +26,12 @@
       "label": "Button URL 1"
     },
     {
+      "type": "text",
+      "id": "button_label_1",
+      "label": "Button Label 1",
+      "default": "Buy Now"
+    },
+    {
       "type": "image_picker",
       "id": "image_2",
       "label": "Image 2"
@@ -46,6 +52,12 @@
       "type": "url",
       "id": "button_url_2",
       "label": "Button URL 2"
+    },
+    {
+      "type": "text",
+      "id": "button_label_2",
+      "label": "Button Label 2",
+      "default": "Buy Now"
     },
     {
       "type": "image_picker",
@@ -70,6 +82,12 @@
       "label": "Button URL 3"
     },
     {
+      "type": "text",
+      "id": "button_label_3",
+      "label": "Button Label 3",
+      "default": "Buy Now"
+    },
+    {
       "type": "image_picker",
       "id": "image_4",
       "label": "Image 4"
@@ -90,6 +108,12 @@
       "type": "url",
       "id": "button_url_4",
       "label": "Button URL 4"
+    },
+    {
+      "type": "text",
+      "id": "button_label_4",
+      "label": "Button Label 4",
+      "default": "Buy Now"
     },
     {
       "type": "image_picker",
@@ -114,6 +138,12 @@
       "label": "Button URL 5"
     },
     {
+      "type": "text",
+      "id": "button_label_5",
+      "label": "Button Label 5",
+      "default": "Buy Now"
+    },
+    {
       "type": "image_picker",
       "id": "image_6",
       "label": "Image 6"
@@ -136,6 +166,12 @@
       "label": "Button URL 6"
     },
     {
+      "type": "text",
+      "id": "button_label_6",
+      "label": "Button Label 6",
+      "default": "Buy Now"
+    },
+    {
       "type": "image_picker",
       "id": "image_7",
       "label": "Image 7"
@@ -156,6 +192,12 @@
       "type": "url",
       "id": "button_url_7",
       "label": "Button URL 7"
+    },
+    {
+      "type": "text",
+      "id": "button_label_7",
+      "label": "Button Label 7",
+      "default": "Buy Now"
     }
   ],
   "presets": [
@@ -315,7 +357,7 @@
   }
 </style>
 
-{% comment %} Slideshow HTML structure with Buy Now button {% endcomment %}
+{% comment %} Slideshow HTML structure with Buy Now button and customizable label {% endcomment %}
 <div class="slideshow-container">
   <div class="slides-wrapper">
     {% if section.settings.image_1 %}
@@ -324,8 +366,8 @@
         <div class="slide-content">
           <h2>{{ section.settings.title_1 }}</h2>
           <p>{{ section.settings.subtitle_1 }}</p>
-          {% if section.settings.button_url_1 %}
-            <a href="{{ section.settings.button_url_1 }}" class="buy-now-button">Buy Now</a>
+          {% if section.settings.button_url_1 and section.settings.button_label_1 %}
+            <a href="{{ section.settings.button_url_1 }}" class="buy-now-button">{{ section.settings.button_label_1 }}</a>
           {% endif %}
         </div>
       </div>
@@ -336,8 +378,8 @@
         <div class="slide-content">
           <h2>{{ section.settings.title_2 }}</h2>
           <p>{{ section.settings.subtitle_2 }}</p>
-          {% if section.settings.button_url_2 %}
-            <a href="{{ section.settings.button_url_2 }}" class="buy-now-button">Buy Now</a>
+          {% if section.settings.button_url_2 and section.settings.button_label_2 %}
+            <a href="{{ section.settings.button_url_2 }}" class="buy-now-button">{{ section.settings.button_label_2 }}</a>
           {% endif %}
         </div>
       </div>
@@ -348,8 +390,8 @@
         <div class="slide-content">
           <h2>{{ section.settings.title_3 }}</h2>
           <p>{{ section.settings.subtitle_3 }}</p>
-          {% if section.settings.button_url_3 %}
-            <a href="{{ section.settings.button_url_3 }}" class="buy-now-button">Buy Now</a>
+          {% if section.settings.button_url_3 and section.settings.button_label_3 %}
+            <a href="{{ section.settings.button_url_3 }}" class="buy-now-button">{{ section.settings.button_label_3 }}</a>
           {% endif %}
         </div>
       </div>
@@ -360,8 +402,8 @@
         <div class="slide-content">
           <h2>{{ section.settings.title_4 }}</h2>
           <p>{{ section.settings.subtitle_4 }}</p>
-          {% if section.settings.button_url_4 %}
-            <a href="{{ section.settings.button_url_4 }}" class="buy-now-button">Buy Now</a>
+          {% if section.settings.button_url_4 and section.settings.button_label_4 %}
+            <a href="{{ section.settings.button_url_4 }}" class="buy-now-button">{{ section.settings.button_label_4 }}</a>
           {% endif %}
         </div>
       </div>
@@ -372,8 +414,8 @@
         <div class="slide-content">
           <h2>{{ section.settings.title_5 }}</h2>
           <p>{{ section.settings.subtitle_5 }}</p>
-          {% if section.settings.button_url_5 %}
-            <a href="{{ section.settings.button_url_5 }}" class="buy-now-button">Buy Now</a>
+          {% if section.settings.button_url_5 and section.settings.button_label_5 %}
+            <a href="{{ section.settings.button_url_5 }}" class="buy-now-button">{{ section.settings.button_label_5 }}</a>
           {% endif %}
         </div>
       </div>
@@ -384,8 +426,8 @@
         <div class="slide-content">
           <h2>{{ section.settings.title_6 }}</h2>
           <p>{{ section.settings.subtitle_6 }}</p>
-          {% if section.settings.button_url_6 %}
-            <a href="{{ section.settings.button_url_6 }}" class="buy-now-button">Buy Now</a>
+          {% if section.settings.button_url_6 and section.settings.button_label_6 %}
+            <a href="{{ section.settings.button_url_6 }}" class="buy-now-button">{{ section.settings.button_label_6 }}</a>
           {% endif %}
         </div>
       </div>
@@ -396,8 +438,8 @@
         <div class="slide-content">
           <h2>{{ section.settings.title_7 }}</h2>
           <p>{{ section.settings.subtitle_7 }}</p>
-          {% if section.settings.button_url_7 %}
-            <a href="{{ section.settings.button_url_7 }}" class="buy-now-button">Buy Now</a>
+          {% if section.settings.button_url_7 and section.settings.button_label_7 %}
+            <a href="{{ section.settings.button_url_7 }}" class="buy-now-button">{{ section.settings.button_label_7 }}</a>
           {% endif %}
         </div>
       </div>
