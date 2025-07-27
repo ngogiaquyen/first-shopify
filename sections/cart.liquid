@@ -1,36 +1,39 @@
 {% comment %}
   This section is used in the cart template to render /cart page with an
   overview of the items in customer's cart.
-
   https://shopify.dev/docs/storefronts/themes/architecture/templates/cart
 {% endcomment %}
 
 <h1>{{ 'cart.title' | t }}</h1>
 
-<form action="{{ routes.cart_url }}" method="post">
-  <table>
+<form action="{{ routes.cart_url }}" method="post" class="cart-form">
+  <div class="cart-items">
     {% for item in cart.items %}
-      <tr>
-        <td>
+      <div class="cart-item">
+        <div class="cart-item-image">
           {% render 'image', image: item.image, url: item.url %}
-        </td>
-        <td>
-          <p>{{ item.product.title }}</p> <!-- Thông tin sản phẩm nằm đầu tiên -->
-        </td>
-        <td>
-          <input type="text" name="updates[]" value="{{ item.quantity }}"> <!-- Số lượng nằm dưới -->
-        </td>
-        <td>
-          <div>
-            {{ 'cart.remove' | t | link_to: item.url_to_remove }} <!-- Remove nằm trên -->
-            <input type="submit" value="{{ 'cart.update' | t }}"> <!-- Update nằm dưới -->
+        </div>
+        <div class="cart-item-details">
+          <p class="cart-item-title"><a href="{{ item.url }}">{{ item.product.title }}</a></p>
+          <p class="cart-item-price">{{ item.final_price | money }}</p>
+        </div>
+        <div class="cart-item-quantity">
+          <div class="quantity-selector">
+            <button type="button" class="quantity-btn minus" onclick="updateQuantity(this, -1)">-</button>
+            <input type="text" name="updates[]" value="{{ item.quantity }}" readonly>
+            <button type="button" class="quantity-btn plus" onclick="updateQuantity(this, 1)">+</button>
           </div>
-        </td>
-      </tr>
+        </div>
+        <div class="cart-item-actions">
+          <a href="{{ item.url_to_remove }}" class="remove-btn">{{ 'cart.remove' | t }}</a>
+          <input type="submit" value="{{ 'cart.update' | t }}" class="update-btn">
+        </div>
+      </div>
     {% endfor %}
-  </table>
-
-  <input type="submit" name="checkout" value="{{ 'cart.checkout' | t }}">
+  </div>
+  <div class="cart-footer">
+    <input type="submit" name="checkout" value="{{ 'cart.checkout' | t }}" class="checkout-btn">
+  </div>
 </form>
 
 <style>
@@ -39,177 +42,262 @@
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background-color: #f7fafc;
     color: #1a202c;
+    margin: 0;
   }
 
   h1 {
-    font-size: 2rem;
+    font-size: 1.75rem;
     font-weight: 700;
-    margin-bottom: 20px;
+    margin: 20px 0;
     color: #1a202c;
+    text-align: center;
   }
 
-  /* Styling for the cart table */
-  table {
-    width: 100%;
-    border-collapse: collapse;
+  .cart-form {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
     background-color: #ffffff;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    overflow: hidden;
-    margin-top:84px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    padding: 1rem;
   }
 
-  th, td {
-    padding: 15px;
-    text-align: left;
+  .cart-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
     border-bottom: 1px solid #e2e8f0;
   }
 
-  tr:last-child td {
+  .cart-item:last-child {
     border-bottom: none;
   }
-  /* Styling for product image */
-  td:first-child img {
-    max-width: 100px;
-    max-height: 100px;
+
+  .cart-item-image img {
+    max-width: 80px;
+    max-height: 80px;
     object-fit: cover;
-    border-radius: 8px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 6px;
+    transition: transform 0.3s ease;
   }
 
-  td:first-child img:hover {
+  .cart-item-image img:hover {
     transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 
-  /* Styling for product title */
-  td:nth-child(2) p {
-    font-size: 1.1rem;
+  .cart-item-details {
+    flex: 1;
+  }
+
+  .cart-item-title a {
+    font-size: 1rem;
     font-weight: 500;
     color: #2d3748;
-    margin: 0;
-    line-height: 1.5;
+    text-decoration: none;
+    transition: color 0.3s ease;
   }
 
-  /* Styling for quantity input */
-  td:nth-child(3) input[type="text"] {
-    width: 70px;
-    padding: 8px;
-    border: 2px solid #e2e8f0;
+  .cart-item-title a:hover {
+    color: #ed8936;
+  }
+
+  .cart-item-price {
+    font-size: 0.9rem;
+    color: #ed8936;
+    font-weight: 600;
+    margin: 0.25rem 0 0;
+  }
+
+  .cart-item-quantity {
+    display: flex;
+    align-items: center;
+  }
+
+  .quantity-selector {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .quantity-selector input {
+    width: 50px;
+    padding: 0.5rem;
+    border: 1px solid #e2e8f0;
     border-radius: 6px;
-    font-size: 1rem;
+    font-size: 0.9rem;
     text-align: center;
     background-color: #fff;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
   }
 
-  td:nth-child(3) input[type="text"]:focus {
+  .quantity-selector input:focus {
     border-color: #ed8936;
     box-shadow: 0 0 0 3px rgba(237, 137, 54, 0.2);
     outline: none;
   }
 
-  /* Styling for Remove and Update buttons */
-  td:last-child div {
-    display: block; /* Đảm bảo xếp dọc */
+  .quantity-btn {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #e2e8f0;
+    background-color: #f7fafc;
+    color: #1a202c;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
   }
 
-  td:last-child a {
-    display: block;
-    padding: 8px 15px;
-    margin-bottom: 10px;
-    background-color: #ed8936; /* Màu cam nổi bật */
+  .quantity-btn:hover {
+    background-color: #ed8936;
+    color: #ffffff;
+    transform: scale(1.05);
+  }
+
+  .cart-item-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .remove-btn {
+    padding: 0.5rem 1rem;
+    background-color: #e53e3e;
     color: #ffffff;
     text-decoration: none;
     border-radius: 6px;
-    font-size: 0.9rem;
-    text-align: center;
+    font-size: 0.85rem;
     transition: background-color 0.3s ease, transform 0.2s ease;
   }
 
-  td:last-child a:hover {
-    background-color: #dd6b20;
+  .remove-btn:hover {
+    background-color: #c53030;
     transform: translateY(-2px);
   }
 
-  td:last-child input[type="submit"] {
-    display: block;
-    padding: 8px 15px;
-    background-color: #2d3748; /* Màu xám đậm */
+  .update-btn {
+    padding: 0.5rem 1rem;
+    background-color: #2d3748;
     color: #ffffff;
     border: none;
     border-radius: 6px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    width: 100%;
   }
 
-  td:last-child input[type="submit"]:hover {
+  .update-btn:hover {
     background-color: #4a5568;
     transform: translateY(-2px);
   }
 
-  /* Styling for checkout button */
-  input[name="checkout"] {
-    display: block;
-    margin-top: 20px;
-    margin-bottom:20px;
-    padding: 12px 30px;
-    background-color: #ed8936; /* Màu cam nhất quán */
+  .cart-footer {
+    margin-top: 1.5rem;
+    text-align: right;
+  }
+
+  .checkout-btn {
+    padding: 0.75rem 2rem;
+    background-color: #ed8936;
     color: #ffffff;
     border: none;
     border-radius: 6px;
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    width: auto;
   }
 
-  input[name="checkout"]:hover {
+  .checkout-btn:hover {
     background-color: #dd6b20;
     transform: translateY(-2px);
   }
 
-  /* Responsive design */
+  /* Responsive design for mobile */
   @media (max-width: 768px) {
-    table {
-      display: block;
-      overflow-x: auto;
+    .cart-form {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      max-width: 100%;
     }
 
-    th, td {
-      padding: 10px;
+    h1 {
+      font-size: 1.5rem;
+      margin: 10px 0;
+    }
+
+    .cart-items {
+      padding: 0.5rem;
+      box-shadow: none;
+    }
+
+    .cart-item {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 0.75rem;
+    }
+
+    .cart-item-image img {
+      max-width: 60px;
+      max-height: 60px;
+    }
+
+    .cart-item-title a {
       font-size: 0.9rem;
     }
 
-    td:first-child img {
-      max-width: 80px;
-      max-height: 80px;
+    .cart-item-price {
+      font-size: 0.85rem;
     }
 
-    td:nth-child(2) p {
-      font-size: 1rem;
+    .quantity-selector input {
+      width: 40px;
+      padding: 0.4rem;
     }
 
-    td:nth-child(3) input[type="text"] {
-      width: 50px;
-      padding: 6px;
+    .quantity-btn {
+      width: 28px;
+      height: 28px;
+      font-size: 0.9rem;
     }
 
-    td:last-child a,
-    td:last-child input[type="submit"] {
-      padding: 6px 12px;
+    .cart-item-actions {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .remove-btn, .update-btn {
+      padding: 0.4rem 0.8rem;
       font-size: 0.8rem;
     }
 
-    input[name="checkout"] {
-      padding: 10px 25px;
-      font-size: 1rem;
+    .cart-footer {
+      text-align: center;
+    }
+
+    .checkout-btn {
+      width: 100%;
+      padding: 0.6rem;
+      font-size: 0.9rem;
     }
   }
 </style>
+
+<script>
+  function updateQuantity(button, change) {
+    const input = button.parentElement.querySelector('input');
+    let quantity = parseInt(input.value) + change;
+    if (quantity < 1) quantity = 1; // Đảm bảo số lượng không nhỏ hơn 1
+    input.value = quantity;
+  }
+</script>
 
 {% schema %}
 {
