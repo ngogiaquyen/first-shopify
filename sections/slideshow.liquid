@@ -509,6 +509,11 @@
       max-width: 95%;
       align-items: center;
     }
+    .slide-image-box {
+      max-width: 100%;
+      {% comment %} display: none; /* Hide secondary image on mobile for better space usage */ {% endcomment %}
+    }
+    
     .slide-text{
       width: 100%
     }
@@ -526,10 +531,6 @@
     .slide-text .buy-now-button {
       font-size: 0.9rem;
       padding: 8px 16px;
-    }
-    .slide-image-box {
-      max-width: 70%;
-      {% comment %} display: none; /* Hide secondary image on mobile for better space usage */ {% endcomment %}
     }
     .slide.active {
       transform: scale(1.03);
