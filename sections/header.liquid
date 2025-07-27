@@ -70,6 +70,22 @@
   transition: transform 0.3s ease;
 }
 
+.header__hamburger .hamburger-lines {
+  display: block;
+}
+
+.header__hamburger .close-icon {
+  display: none;
+}
+
+.header__hamburger[aria-expanded="true"] .hamburger-lines {
+  display: none;
+}
+
+.header__hamburger[aria-expanded="true"] .close-icon {
+  display: block;
+}
+
 .header__nav {
   flex: 1;
   display: flex;
@@ -234,14 +250,6 @@
   .header__actions {
     gap: 0.75rem;
   }
-
-  .header__hamburger[aria-expanded="true"] .hamburger-lines {
-    display: none;
-  }
-
-  .header__hamburger[aria-expanded="true"] .close-icon {
-    display: block;
-  }
 }
 {% endstylesheet %}
 
@@ -328,7 +336,6 @@
         type="button"
       >
         <svg
-          class="hamburger-icon"
           width="24"
           height="24"
           viewBox="0 0 24 24"
@@ -337,11 +344,7 @@
           stroke-width="2"
         >
           <path class="hamburger-lines" d="M4 6h16M4 12h16M4 18h16" />
-          <path
-            class="close-icon"
-            d="M6 6L18 18M6 18L18 6"
-            style="display: none"
-          />
+          <path class="close-icon" d="M6 6L18 18M6 18L18 6" />
         </svg>
       </button>
     </div>
