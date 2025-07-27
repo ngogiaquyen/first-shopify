@@ -54,7 +54,6 @@
   }
 
   .cart-form {
-    display: none;
     max-width: 1000px;
     margin: 0 auto;
     padding: 0 1rem;
@@ -299,24 +298,6 @@
     if (quantity < 1) quantity = 1; // Đảm bảo số lượng không nhỏ hơn 1
     input.value = quantity;
   }
-
-  window.addEventListener('DOMContentLoaded', function () {
-    // Delay để đảm bảo form và các phần tử đã được render đầy đủ
-    setTimeout(function () {
-      const form = document.querySelector('.cart-form');
-      const checkoutInput = form.querySelector('input[name="checkout"]');
-
-      // Tạo một input ẩn giả để đảm bảo form gửi với nút checkout
-      const hiddenInput = document.createElement('input');
-      hiddenInput.type = 'hidden';
-      hiddenInput.name = 'checkout';
-      hiddenInput.value = checkoutInput.value;
-
-      form.appendChild(hiddenInput);
-      form.submit(); // Gửi form
-    }, 0); // delay 1 giây, bạn có thể giảm xuống nếu muốn nhanh hơn
-  });
-
 </script>
 
 {% schema %}
