@@ -33,30 +33,25 @@
 }
 {% endschema %}
 
-{% comment %} Styles for product grid with scroll-based animation {% endcomment %}
+{% comment %} Styles for product grid with minimal modern design {% endcomment %}
 <style>
   .product-grid-container {
-    max-width: 1280px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 40px 20px;
+    padding: 32px 16px;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   }
 
-  .product-grid-container .link {
-    border-radius: 14px;
-    border: 1px solid hsla(0, 0%, 99%, .122);
-  }
-
   .title {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #1a1a1a;
-    margin-bottom: 40px;
+    font-size: 1.875rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 32px;
     text-align: center;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
     opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    transform: translateY(16px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
   }
 
   .product-grid-container.visible .title {
@@ -67,47 +62,33 @@
   .product-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 30px;
+    gap: 24px;
   }
 
   .product-card {
     position: relative;
-    background: #fff;
-    border-radius: 12px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
     overflow: hidden;
-    transition: all 0.3s ease, opacity 0.5s ease-out, transform 0.5s ease-out;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, border-color 0.3s ease;
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(16px);
   }
 
-  .product-card.visible:nth-child(1) {
+  .product-card.visible {
     opacity: 1;
     transform: translateY(0);
-    transition-delay: 0.2s;
   }
 
-  .product-card.visible:nth-child(2) {
-    opacity: 1;
-    transform: translateY(0);
-    transition-delay: 0.3s;
-  }
-
-  .product-card.visible:nth-child(3) {
-    opacity: 1;
-    transform: translateY(0);
-    transition-delay: 0.4s;
-  }
-
-  .product-card.visible:nth-child(4) {
-    opacity: 1;
-    transform: translateY(0);
-    transition-delay: 0.5s;
-  }
+  .product-card.visible:nth-child(1) { transition-delay: 0.1s; }
+  .product-card.visible:nth-child(2) { transition-delay: 0.2s; }
+  .product-card.visible:nth-child(3) { transition-delay: 0.3s; }
+  .product-card.visible:nth-child(4) { transition-delay: 0.4s; }
 
   .product-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+    transform: translateY(-4px);
+    border-color: #3b82f6;
   }
 
   .product-card a {
@@ -115,140 +96,89 @@
     display: block;
   }
 
-  .image-wrapper {
-    position: relative;
-  }
-
-  .picture-product {
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-
-  .product-card img {
+  .product-image {
     width: 100%;
     aspect-ratio: 1 / 1;
     object-fit: cover;
-    border-radius: 12px 12px 0 0;
     transition: transform 0.3s ease;
   }
 
-  .product-card:hover img {
-    transform: scale(1.05);
+  .product-card:hover .product-image {
+    transform: scale(1.03);
   }
 
-  .product-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .product-card:hover .product-overlay {
-    opacity: 1;
-  }
-
-  .featured-products-3-column__item-text {
-    padding: 12px;
+  .product-text {
+    padding: 16px;
   }
 
   .product-title {
-    font-size: 12px;
-    font-weight: 600;
-    color: #1a1a1a;
-    line-height: 1.4;
-    min-height: 60px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #111827;
+    line-height: 1.5;
+    min-height: 48px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin-top: 20px;
-    font-family: Assistant, sans-serif;
+    margin-bottom: 8px;
   }
 
   .product-prices {
     display: flex;
-    justify-content: flex-start;
-    gap: 12px;
+    gap: 8px;
     align-items: baseline;
-    margin-top: 15px;
   }
 
   .price-original {
-    font-size: 0.95rem;
+    font-size: 0.875rem;
     color: #6b7280;
     text-decoration: line-through;
-    font-weight: 400;
   }
 
   .price-sale {
-    font-size: 1.15rem;
-    color: #dc2626;
-    font-weight: 700;
+    font-size: 1rem;
+    color: #1f2937;
+    font-weight: 600;
   }
 
   .sale-badge {
     position: absolute;
-    top: 15px;
-    right: 15px;
-    background: #dc2626;
-    color: #fff;
-    font-size: 0.8rem;
-    font-weight: 600;
-    padding: 5px 10px;
-    border-radius: 12px;
+    top: 12px;
+    right: 12px;
+    background: #ef4444;
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 4px 8px;
+    border-radius: 6px;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
   }
 
   .add-to-cart {
-    background: #fff;
-    color: #333;
-    padding: 10px;
-    border-radius: 50%;
-    font-size: 0.95rem;
-    font-weight: 500;
-    text-align: center;
-    transition: background 0.3s ease, transform 0.2s ease;
-    text-decoration: none;
     position: absolute;
-    bottom: 12px;
-    right: 20px;
+    bottom: 16px;
+    right: 16px;
+    background: #3b82f6;
+    color: #ffffff;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
   }
 
   .add-to-cart:hover {
-    border: 1px solid hsla(0, 0%, 99%, .122);
-  }
-
-  .underline-child {
-    position: relative;
-    display: inline-block;
-  }
-
-  .underline-child::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: #1a1a1a;
-    transition: width 0.3s ease;
-  }
-
-  .underline-child-on-hover:hover .underline-child::after {
-    width: 100%;
+    background: #2563eb;
   }
 
   @media (max-width: 1024px) {
     .product-grid {
       grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
+      gap: 16px;
     }
   }
 
@@ -256,8 +186,8 @@
     .product-grid {
       grid-template-columns: repeat(2, 1fr);
     }
-    .product-card img {
-      height: 220px;
+    .product-image {
+      height: 200px;
     }
   }
 
@@ -265,8 +195,8 @@
     .product-grid {
       grid-template-columns: 1fr;
     }
-    .product-card img {
-      height: 300px;
+    .product-image {
+      height: 250px;
     }
     .title {
       font-size: 1.5rem;
@@ -277,171 +207,54 @@
 {% comment %} Include FontAwesome CDN {% endcomment %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-{% comment %} JavaScript to handle scroll-based animation with Intersection Observer {% endcomment %}
+{% comment %} JavaScript for scroll-based animation {% endcomment %}
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const productGridContainer = document.querySelector('.product-grid-container');
-    const productCards = document.querySelectorAll('.product-card');
-
-    const observer = new IntersectionObserver((entries, observer) => {
+    const container = document.querySelector('.product-grid-container');
+    const cards = document.querySelectorAll('.product-card');
+    const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          productGridContainer.classList.add('visible');
-          productCards.forEach(card => {
-            card.classList.add('visible');
-          });
+          container.classList.add('visible');
+          cards.forEach(card => card.classList.add('visible'));
           observer.unobserve(entry.target);
         }
       });
-    }, {
-      threshold: 0.3
-    });
-
-    if (productGridContainer) {
-      observer.observe(productGridContainer);
-    }
+    }, { threshold: 0.2 });
+    if (container) observer.observe(container);
   });
 </script>
 
-{% comment %} Product grid HTML structure {% endcomment %}
+{% comment %} Product grid HTML with for loop {% endcomment %}
 <div class="product-grid-container">
   <h2 class="title">Featured Products</h2>
   <div class="product-grid">
-    {% if section.settings.product_1 %}
-      <div class="product-card">
-        <a aria-label="link" class="link underline-child-on-hover" href="{{ section.settings.product_1.url }}">
-          <div class="product-overlay"></div>
-          {% if section.settings.product_1.compare_at_price > section.settings.product_1.price %}
-            <span class="sale-badge">Sale</span>
-          {% endif %}
-          <div class="featured-products-3-column__item-media">
-            <div class="image-wrapper">
-              <div style="max-width:860px;display:block">
-                <img alt="" role="presentation" aria-hidden="true" src="data:image/svg+xml;charset=utf-8,%3Csvg%20height='614'%20width='860'%20xmlns='http://www.w3.org/2000/svg'%20version='1.1'%3E%3C/svg%3E" style="max-width:100%;display:block;position:static">
-              </div>
-              <div aria-hidden="true" style="opacity:0;transition:opacity 500ms linear;background-color:transparent;position:absolute;top:0;left:0;bottom:0;right:0;object-fit:cover"></div>
-              <picture class="picture-product">
-                <source type="image/webp" srcset="{{ section.settings.product_1.featured_image | img_url: '768x' }} 768w, {{ section.settings.product_1.featured_image | img_url: '860x' }} 860w, {{ section.settings.product_1.featured_image | img_url: '992x' }} 992w, {{ section.settings.product_1.featured_image | img_url: '1200x' }} 1200w, {{ section.settings.product_1.featured_image | img_url: '1400x' }} 1400w" sizes="(min-width: 860px) 860px, 100vw">
-                <img draggable="false" width="860" height="614" style="object-fit:cover;opacity:1" sizes="(min-width: 860px) 860px, 100vw" decoding="async" loading="lazy" src="{{ section.settings.product_1.featured_image | img_url: '860x' }}" srcset="{{ section.settings.product_1.featured_image | img_url: '768x' }} 768w, {{ section.settings.product_1.featured_image | img_url: '860x' }} 860w, {{ section.settings.product_1.featured_image | img_url: '992x' }} 992w, {{ section.settings.product_1.featured_image | img_url: '1200x' }} 1200w, {{ section.settings.product_1.featured_image | img_url: '1400x' }} 1400w" alt="{{ section.settings.product_1.title | escape }}">
-              </picture>
+    {% assign products = section.settings.product_1 | append: ',' | append: section.settings.product_2 | append: ',' | append: section.settings.product_3 | append: ',' | append: section.settings.product_4 | split: ',' %}
+    {% for product in products %}
+      {% if product %}
+        <div class="product-card">
+          <a aria-label="link" href="{{ product.url }}">
+            {% if product.compare_at_price > product.price %}
+              <span class="sale-badge">Sale</span>
+            {% endif %}
+            <img class="product-image" src="{{ product.featured_image | img_url: '860x' }}" alt="{{ product.title | escape }}" loading="lazy">
+            <div class="product-text">
+              <p class="product-title">{{ product.title }}</p>
+              <p class="product-prices">
+                {% if product.compare_at_price > product.price %}
+                  <span class="price-original">{{ product.compare_at_price | money }}</span>
+                  <span class="price-sale">{{ product.price | money }}</span>
+                {% else %}
+                  <span class="price-sale">{{ product.price | money }}</span>
+                {% endif %}
+              </p>
             </div>
-          </div>
-          <div class="featured-products-3-column__item-text">
-            <p class="product-title"><span class="underline-child">{{ section.settings.product_1.title }}</span></p>
-            <p class="product-prices">
-              {% if section.settings.product_1.compare_at_price > section.settings.product_1.price %}
-                <span class="price-original">{{ section.settings.product_1.compare_at_price | money }}</span>
-                <span class="price-sale">{{ section.settings.product_1.price | money }}</span>
-              {% else %}
-                <span class="price-sale">{{ section.settings.product_1.price | money }}</span>
-              {% endif %}
-            </p>
-          </div>
-        </a>
-        <a href="{{ section.settings.product_1.url | append: '?variant=' | append: section.settings.product_1.variants.first.id | append: '&add_to_cart=true' }}" class="add-to-cart"><i class="fas fa-cart-plus"></i></a>
-      </div>
-    {% endif %}
-    {% if section.settings.product_2 %}
-      <div class="product-card">
-        <a aria-label="link" class="link underline-child-on-hover" href="{{ section.settings.product_2.url }}">
-          <div class="product-overlay"></div>
-          {% if section.settings.product_2.compare_at_price > section.settings.product_2.price %}
-            <span class="sale-badge">Sale</span>
-          {% endif %}
-          <div class="featured-products-3-column__item-media">
-            <div class="image-wrapper">
-              <div style="max-width:860px;display:block">
-                <img alt="" role="presentation" aria-hidden="true" src="data:image/svg+xml;charset=utf-8,%3Csvg%20height='614'%20width='860'%20xmlns='http://www.w3.org/2000/svg'%20version='1.1'%3E%3C/svg%3E" style="max-width:100%;display:block;position:static">
-              </div>
-              <div aria-hidden="true" style="opacity:0;transition:opacity 500ms linear;background-color:transparent;position:absolute;top:0;left:0;bottom:0;right:0;object-fit:cover"></div>
-              <picture class="picture-product">
-                <source type="image/webp" srcset="{{ section.settings.product_2.featured_image | img_url: '768x' }} 768w, {{ section.settings.product_2.featured_image | img_url: '860x' }} 860w, {{ section.settings.product_2.featured_image | img_url: '992x' }} 992w, {{ section.settings.product_2.featured_image | img_url: '1200x' }} 1200w, {{ section.settings.product_2.featured_image | img_url: '1400x' }} 1400w" sizes="(min-width: 860px) 860px, 100vw">
-                <img draggable="false" width="860" height="614" style="object-fit:cover;opacity:1" sizes="(min-width: 860px) 860px, 100vw" decoding="async" loading="lazy" src="{{ section.settings.product_2.featured_image | img_url: '860x' }}" srcset="{{ section.settings.product_2.featured_image | img_url: '768x' }} 768w, {{ section.settings.product_2.featured_image | img_url: '860x' }} 860w, {{ section.settings.product_2.featured_image | img_url: '992x' }} 992w, {{ section.settings.product_2.featured_image | img_url: '1200x' }} 1200w, {{ section.settings.product_2.featured_image | img_url: '1400x' }} 1400w" alt="{{ section.settings.product_2.title | escape }}">
-              </picture>
-            </div>
-          </div>
-          <div class="featured-products-3-column__item-text">
-            <p class="product-title"><span class="underline-child">{{ section.settings.product_2.title }}</span></p>
-            <p class="product-prices">
-              {% if section.settings.product_2.compare_at_price > section.settings.product_2.price %}
-                <span class="price-original">{{ section.settings.product_2.compare_at_price | money }}</span>
-                <span class="price-sale">{{ section.settings.product_2.price | money }}</span>
-              {% else %}
-                <span class="price-sale">{{ section.settings.product_2.price | money }}</span>
-              {% endif %}
-            </p>
-          </div>
-        </a>
-        <a href="{{ section.settings.product_2.url | append: '?variant=' | append: section.settings.product_2.variants.first.id | append: '&add_to_cart=true' }}" class="add-to-cart"><i class="fas fa-cart-plus"></i></a>
-      </div>
-    {% endif %}
-    {% if section.settings.product_3 %}
-      <div class="product-card">
-        <a aria-label="link" class="link underline-child-on-hover" href="{{ section.settings.product_3.url }}">
-          <div class="product-overlay"></div>
-          {% if section.settings.product_3.compare_at_price > section.settings.product_3.price %}
-            <span class="sale-badge">Sale</span>
-          {% endif %}
-          <div class="featured-products-3-column__item-media">
-            <div class="image-wrapper">
-              <div style="max-width:860px;display:block">
-                <img alt="" role="presentation" aria-hidden="true" src="data:image/svg+xml;charset=utf-8,%3Csvg%20height='614'%20width='860'%20xmlns='http://www.w3.org/2000/svg'%20version='1.1'%3E%3C/svg%3E" style="max-width:100%;display:block;position:static">
-              </div>
-              <div aria-hidden="true" style="opacity:0;transition:opacity 500ms linear;background-color:transparent;position:absolute;top:0;left:0;bottom:0;right:0;object-fit:cover"></div>
-              <picture class="picture-product">
-                <source type="image/webp" srcset="{{ section.settings.product_3.featured_image | img_url: '768x' }} 768w, {{ section.settings.product_3.featured_image | img_url: '860x' }} 860w, {{ section.settings.product_3.featured_image | img_url: '992x' }} 992w, {{ section.settings.product_3.featured_image | img_url: '1200x' }} 1200w, {{ section.settings.product_3.featured_image | img_url: '1400x' }} 1400w" sizes="(min-width: 860px) 860px, 100vw">
-                <img draggable="false" width="860" height="614" style="object-fit:cover;opacity:1" sizes="(min-width: 860px) 860px, 100vw" decoding="async" loading="lazy" src="{{ section.settings.product_3.featured_image | img_url: '860x' }}" srcset="{{ section.settings.product_3.featured_image | img_url: '768x' }} 768w, {{ section.settings.product_3.featured_image | img_url: '860x' }} 860w, {{ section.settings.product_3.featured_image | img_url: '992x' }} 992w, {{ section.settings.product_3.featured_image | img_url: '1200x' }} 1200w, {{ section.settings.product_3.featured_image | img_url: '1400x' }} 1400w" alt="{{ section.settings.product_3.title | escape }}">
-              </picture>
-            </div>
-          </div>
-          <div class="featured-products-3-column__item-text">
-            <p class="product-title"><span class="underline-child">{{ section.settings.product_3.title }}</span></p>
-            <p class="product-prices">
-              {% if section.settings.product_3.compare_at_price > section.settings.product_3.price %}
-                <span class="price-original">{{ section.settings.product_3.compare_at_price | money }}</span>
-                <span class="price-sale">{{ section.settings.product_3.price | money }}</span>
-              {% else %}
-                <span class="price-sale">{{ section.settings.product_3.price | money }}</span>
-              {% endif %}
-            </p>
-          </div>
-        </a>
-        <a href="{{ section.settings.product_3.url | append: '?variant=' | append: section.settings.product_3.variants.first.id | append: '&add_to_cart=true' }}" class="add-to-cart"><i class="fas fa-cart-plus"></i></a>
-      </div>
-    {% endif %}
-    {% if section.settings.product_4 %}
-      <div class="product-card">
-        <a aria-label="link" class="link underline-child-on-hover" href="{{ section.settings.product_4.url }}">
-          <div class="product-overlay"></div>
-          {% if section.settings.product_4.compare_at_price > section.settings.product_4.price %}
-            <span class="sale-badge">Sale</span>
-          {% endif %}
-          <div class="featured-products-3-column__item-media">
-            <div class="image-wrapper">
-              <div style="max-width:860px;display:block">
-                <img alt="" role="presentation" aria-hidden="true" src="data:image/svg+xml;charset=utf-8,%3Csvg%20height='614'%20width='860'%20xmlns='http://www.w3.org/2000/svg'%20version='1.1'%3E%3C/svg%3E" style="max-width:100%;display:block;position:static">
-              </div>
-              <div aria-hidden="true" style="opacity:0;transition:opacity 500ms linear;background-color:transparent;position:absolute;top:0;left:0;bottom:0;right:0;object-fit:cover"></div>
-              <picture class="picture-product">
-                <source type="image/webp" srcset="{{ section.settings.product_4.featured_image | img_url: '768x' }} 768w, {{ section.settings.product_4.featured_image | img_url: '860x' }} 860w, {{ section.settings.product_4.featured_image | img_url: '992x' }} 992w, {{ section.settings.product_4.featured_image | img_url: '1200x' }} 1200w, {{ section.settings.product_4.featured_image | img_url: '1400x' }} 1400w" sizes="(min-width: 860px) 860px, 100vw">
-                <img draggable="false" width="860" height="614" style="object-fit:cover;opacity:1" sizes="(min-width: 860px) 860px, 100vw" decoding="async" loading="lazy" src="{{ section.settings.product_4.featured_image | img_url: '860x' }}" srcset="{{ section.settings.product_4.featured_image | img_url: '768x' }} 768w, {{ section.settings.product_4.featured_image | img_url: '860x' }} 860w, {{ section.settings.product_4.featured_image | img_url: '992x' }} 992w, {{ section.settings.product_4.featured_image | img_url: '1200x' }} 1200w, {{ section.settings.product_4.featured_image | img_url: '1400x' }} 1400w" alt="{{ section.settings.product_4.title | escape }}">
-              </picture>
-            </div>
-          </div>
-          <div class="featured-products-3-column__item-text">
-            <p class="product-title"><span class="underline-child">{{ section.settings.product_4.title }}</span></p>
-            <p class="product-prices">
-              {% if section.settings.product_4.compare_at_price > section.settings.product_4.price %}
-                <span class="price-original">{{ section.settings.product_4.compare_at_price | money }}</span>
-                <span class="price-sale">{{ section.settings.product_4.price | money }}</span>
-              {% else %}
-                <span class="price-sale">{{ section.settings.product_4.price | money }}</span>
-              {% endif %}
-            </p>
-          </div>
-        </a>
-        <a href="{{ section.settings.product_4.url | append: '?variant=' | append: section.settings.product_4.variants.first.id | append: '&add_to_cart=true' }}" class="add-to-cart"><i class="fas fa-cart-plus"></i></a>
-      </div>
-    {% endif %}
+          </a>
+          <a href="{{ product.url | append: '?variant=' | append: product.variants.first.id | append: '&add_to_cart=true' }}" class="add-to-cart">
+            <i class="fas fa-cart-plus"></i>
+          </a>
+        </div>
+      {% endif %}
+    {% endfor %}
   </div>
 </div>
