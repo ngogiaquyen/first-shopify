@@ -1,7 +1,7 @@
 {% comment %} Including Font Awesome for icons {% endcomment %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-{% comment %} CSS with smaller text and compact boxes {% endcomment %}
+{% comment %} CSS with smaller text, compact boxes, and highlight effect {% endcomment %}
 <style>
     .stats-section {
         width: 100%;
@@ -71,21 +71,23 @@
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         position: relative;
         overflow: hidden;
-        opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.6s ease-out, transform 0.6s ease-out, background 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .stat-item.active {
         opacity: 1;
         transform: translateY(0);
+        transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+    .stat-item.highlight {
+        background: linear-gradient(135deg, #e6f0fa, #d4e4f7);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        transform: scale(1.05);
+        transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
     }
 
     .stat-item:hover {
         background: linear-gradient(135deg, #e6f0fa, #d4e4f7);
         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         transform: scale(1.05);
-        transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+        transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
     }
 
     .stat-item::before {
@@ -100,7 +102,8 @@
         transition: opacity 0.4s ease;
     }
 
-    .stat-item:hover::before {
+    .stat-item:hover::before,
+    .stat-item.highlight::before {
         opacity: 1;
     }
 
@@ -111,7 +114,8 @@
         transition: color 0.3s ease, transform 0.3s ease;
     }
 
-    .stat-item:hover .stat-icon {
+    .stat-item:hover .stat-icon,
+    .stat-item.highlight .stat-icon {
         color: #1a73e8;
         transform: scale(1.1);
     }
@@ -183,35 +187,35 @@
     }
 </style>
 
-{% comment %} JavaScript for looping sequential activation of stat items {% endcomment %}
+{% comment %} JavaScript for looping highlight effect on stat items {% endcomment %}
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const statsSection = document.querySelector('.stats-section');
         const statItems = document.querySelectorAll('.stat-item');
         let currentIndex = 0;
 
-        // Initially activate the section title and line
+        // Activate section title and line immediately
         statsSection.classList.add('active');
 
-        // Function to reset all stat items
-        function resetStatItems() {
+        // Function to reset highlight on all stat items
+        function resetHighlights() {
             statItems.forEach(item => {
-                item.classList.remove('active');
+                item.classList.remove('highlight');
             });
         }
 
-        // Function to activate the next stat item
-        function activateNextItem() {
-            resetStatItems();
-            statItems[currentIndex].classList.add('active');
+        // Function to highlight the next stat item
+        function highlightNextItem() {
+            resetHighlights();
+            statItems[currentIndex].classList.add('highlight');
             currentIndex = (currentIndex + 1) % statItems.length; // Loop back to 0
         }
 
-        // Activate the first item immediately
-        activateNextItem();
+        // Highlight the first item immediately
+        highlightNextItem();
 
-        // Set interval to switch every 5 seconds
-        setInterval(activateNextItem, 5000);
+        // Set interval to switch highlight every 5 seconds
+        setInterval(highlightNextItem, 5000);
     });
 </script>
 
