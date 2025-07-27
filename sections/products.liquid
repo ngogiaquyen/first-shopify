@@ -179,7 +179,7 @@
     text-transform: uppercase;
   }
 
-  .add-to-cart {
+  .buy-now {
     position: absolute;
     bottom: 0.75rem;
     right: 0.75rem;
@@ -192,9 +192,10 @@
     justify-content: center;
     border-radius: 50%;
     transition: background-color var(--transition);
+    cursor: pointer;
   }
 
-  .add-to-cart:hover {
+  .buy-now:hover {
     background: #1e40af;
   }
 
@@ -214,6 +215,12 @@
   }
 
   @media (max-width: 768px) {
+    .product-grid-container {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      max-width: 100%;
+    }
     .product-grid {
       grid-template-columns: repeat(2, 1fr);
     }
@@ -222,6 +229,7 @@
     }
     .title {
       font-size: 1.875rem;
+      padding: 0 0.5rem;
     }
   }
 
@@ -293,9 +301,14 @@
               </div>
             </a>
             {% if product.variants.first %}
-              <a href="{{ product.url | append: '?variant=' | append: product.variants.first.id | append: '&add_to_cart=true' }}" class="add-to-cart">
-                <i class="fas fa-cart-plus"></i>
-              </a>
+              <form action="/cart/add" method="post" class="buy-now-form">
+                <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+                <input type="hidden" name="quantity" value="1">
+                <input type="hidden" name="return_to" value="/checkout">
+                <button type="submit" class="buy-now" aria-label="Buy Now {{ product.title | escape }}">
+                  <i class="fas fa-cart-plus"></i>
+                </button>
+              </form>
             {% endif %}
           </div>
         {% endif %}
