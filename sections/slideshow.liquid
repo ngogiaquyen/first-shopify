@@ -268,7 +268,18 @@
     top: 0;
     left: 0;
     opacity: 0;
+    transform: scale(1);
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
     transition: opacity 0.6s ease-in-out, transform 5s ease-in-out;
+    -webkit-transition: opacity 0.6s ease-in-out, -webkit-transform 5s ease-in-out;
+    -moz-transition: opacity 0.6s ease-in-out, -moz-transform 5s ease-in-out;
+  }
+  .slide.active {
+    opacity: 1;
+    transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
   }
   .slide img {
     width: 100%;
@@ -331,7 +342,6 @@
     opacity: 0;
     transform: translateX(50px);
     transition: opacity 0.8s ease-in-out 0.6s, transform 0.8s ease-in-out 0.6s;
-
   }
   .slide-image-box img {
     width: 100%;
@@ -361,12 +371,11 @@
     height: 100%;
     background-color: #ff0000;
     width: 0;
-    transition: width 5s linear !important; /* Added !important to ensure transition isn't overridden */
+    transition: width 5s linear !important;
   }
   .progress-bar.active {
-    width: 100%; /* Added !important to prioritize over inline styles */
+    width: 100%;
   }
-
   .slideshow-overlay {
     position: absolute;
     top: 0;
@@ -383,7 +392,6 @@
     );
     z-index: 0;
   }
-
   .nav-controls {
     position: absolute;
     bottom: 20px;
@@ -406,11 +414,10 @@
     transition: background-color 0.3s ease, transform 0.3s ease;
     font-size: 20px;
     color: #fff;
-      padding: 10px;
-      border:1px solid #fcfcfc1f;
+    padding: 10px;
+    border: 1px solid #fcfcfc1f;
   }
-  
-  .nav-button i{
+  .nav-button i {
     font-size: 18px;
   }
   .nav-button:hover {
@@ -424,7 +431,6 @@
     display: flex;
     gap: 8px;
   }
-
   .dot {
     height: 8px;
     width: 12px;
@@ -435,13 +441,11 @@
     transform: scaleX(1);
     transform-origin: center;
   }
-
   .dot.active {
-    background-color:rgb(247, 247, 247);
-    width: 40px; /* Tăng chiều dài */
+    background-color: rgb(247, 247, 247);
+    width: 40px;
     border-radius: 20px;
   }
-
 
   /* Tablet (max-width: 1024px) */
   @media screen and (max-width: 1024px) {
@@ -486,6 +490,8 @@
     }
     .slide.active {
       transform: scale(1.05);
+      -webkit-transform: scale(1.05);
+      -moz-transform: scale(1.05);
     }
     .progress-bar-container {
       height: 6px;
@@ -524,11 +530,8 @@
       max-width: 100%;
       {% comment %} display: none; /* Hide secondary image on mobile for better space usage */ {% endcomment %}
     }
-    
-    .slide-text{
-      width: 100%
-    }
     .slide-text {
+      width: 100%;
       max-width: 90%;
     }
     .slide-text h2 {
@@ -545,6 +548,8 @@
     }
     .slide.active {
       transform: scale(1.03);
+      -webkit-transform: scale(1.03);
+      -moz-transform: scale(1.03);
     }
     .progress-bar-container {
       height: 5px;
@@ -567,8 +572,6 @@
     .dot-container {
       gap: 6px;
     }
-
-    
     .slide-image-box img {
       width: 100%;
       height: auto;
@@ -584,8 +587,6 @@
     .slide-content {
       max-width: 95%;
     }
-
-
     .slide-text h2 {
       font-size: 1.2rem;
       margin-bottom: 6px;
@@ -614,6 +615,21 @@
       gap: 4px;
     }
   }
+
+  /* Support for prefers-reduced-motion */
+  @media (prefers-reduced-motion: reduce) {
+    .slide, .slide.active {
+      transition: none;
+      transform: scale(1);
+      -webkit-transform: scale(1);
+      -moz-transform: scale(1);
+    }
+    .slide-text h2, .slide-text p, .slide-text .buy-now-button, .slide-image-box {
+      transition: none;
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
 </style>
 
 {% comment %} Slideshow HTML structure with Buy Now button, customizable label, secondary image box, and navigation controls {% endcomment %}
@@ -628,7 +644,7 @@
       {% assign button_label_key = 'button_label_' | append: i %}
       {% if section.settings[image_key] %}
         <div class="slide">
-          <img src="{{ section.settings[image_key] | img_url: 'master' }}" alt="{{ section.settings[title_key] }}">
+          <img src="{{ section.settings[image_key] | img_url: 'master' }}" alt="{{ section.settings[title_key] }}" loading="lazy">
           <div class="slide-content">
             <div class="slide-text">
               <h2>{{ section.settings[title_key] }}</h2>
@@ -639,7 +655,7 @@
             </div>
             {% if section.settings[secondary_image_key] %}
               <div class="slide-image-box">
-                <img src="{{ section.settings[secondary_image_key] | img_url: 'large' }}" alt="Secondary Image {{ i }}">
+                <img src="{{ section.settings[secondary_image_key] | img_url: 'large' }}" alt="Secondary Image {{ i }}" loading="lazy">
               </div>
             {% endif %}
           </div>
@@ -695,11 +711,12 @@
     slides[slideIndex].classList.add("active");
     if (dots[slideIndex]) dots[slideIndex].classList.add("active");
 
+    // Force reflow to ensure transition is applied
+    slides[slideIndex].offsetHeight;
+
     // Reset and start progress bar
     progressBar.style.width = '0';
-    {% comment %} setTimeout(()=>{
-      progressBar.classList.add("active");
-    }, 5000); {% endcomment %}
+    progressBar.classList.add("active");
   }
 
   function nextSlide() {
@@ -730,23 +747,34 @@
     }, 5000);
   }
 
-  // Initialize slideshow
-  showSlides();
-  startProgressBar();
+  // Initialize slideshow when DOM is fully loaded
+  document.addEventListener("DOMContentLoaded", () => {
+    let firstSlideImage = document.querySelector(".slide img");
+    if (firstSlideImage && firstSlideImage.complete) {
+      // Image already loaded
+      showSlides();
+      startProgressBar();
+    } else if (firstSlideImage) {
+      // Wait for the first image to load
+      firstSlideImage.addEventListener("load", () => {
+        showSlides();
+        startProgressBar();
+      });
+    } else {
+      // No images, start slideshow anyway
+      showSlides();
+      startProgressBar();
+    }
 
-  // Event listeners for navigation buttons
-  document.querySelector(".nav-button.prev").addEventListener("click", () => {
-    prevSlide();
-  });
+    // Event listeners for navigation buttons
+    document.querySelector(".nav-button.prev").addEventListener("click", prevSlide);
+    document.querySelector(".nav-button.next").addEventListener("click", nextSlide);
 
-  document.querySelector(".nav-button.next").addEventListener("click", () => {
-    nextSlide();
-  });
-
-  // Event listeners for dots
-  document.querySelectorAll(".dot").forEach(dot => {
-    dot.addEventListener("click", () => {
-      goToSlide(parseInt(dot.getAttribute("data-slide")));
+    // Event listeners for dots
+    document.querySelectorAll(".dot").forEach(dot => {
+      dot.addEventListener("click", () => {
+        goToSlide(parseInt(dot.getAttribute("data-slide")));
+      });
     });
   });
 </script>
