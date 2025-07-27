@@ -700,9 +700,9 @@
 
     // Reset and start progress bar
     progressBar.style.width = '0';
-    setTimeout(()=>{
+    {% comment %} setTimeout(()=>{
       progressBar.classList.add("active");
-    }, 5000);
+    }, 5000); {% endcomment %}
   }
 
   function nextSlide() {
