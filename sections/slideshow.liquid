@@ -250,7 +250,8 @@
     min-width: 100vw;
     height: calc(100vh - 64px);
     position: relative;
-    margin: auto;
+    margin: 0;
+    padding: 0;
     overflow: hidden;
   }
   .slides-wrapper {
@@ -258,7 +259,6 @@
     width: 100%;
     height: 100%;
   }
-
   .slide {
     flex: 0 0 100%;
     width: 100%;
@@ -322,7 +322,7 @@
   .slide-text .buy-now-button {
     display: inline-block;
     padding: 12px 24px;
-    background-color: #ff0000;
+    background-color: #2aab46;
     color: white;
     font-size: 1.2rem;
     font-weight: 600;
@@ -333,7 +333,7 @@
     transition: opacity 0.8s ease-in-out 0.4s, transform 0.8s ease-in-out 0.4s, background-color 0.3s ease, transform 0.3s ease;
   }
   .slide-text .buy-now-button:hover {
-    background-color: #e60000;
+    background-color: #218838;
     transform: translateX(-50px) scale(1.05);
   }
   .slide-image-box {
@@ -363,12 +363,12 @@
     left: 0;
     width: 100%;
     height: 8px;
-    background-color: rgba(251, 69, 69, 0.5);
+    background-color: rgba(42, 171, 70, 0.5);
     z-index: 1;
   }
   .progress-bar {
     height: 100%;
-    background-color: #ff0000;
+    background-color: #2aab46;
     width: 0;
     transition: width 5s linear !important;
   }
@@ -381,8 +381,8 @@
     bottom: 0;
     right: 0;
     left: 0;
-    --tw-gradient-from: red;
-    --tw-gradient-to: color-mix(in oklab, oklch(13% .028 261.692) 80%, transparent);
+    --tw-gradient-from: #2aab46;
+    --tw-gradient-to: color-mix(in oklab, #2aab46 80%, transparent);
     --tw-gradient-position: to top in oklab;
     background-image: linear-gradient(
       var(--tw-gradient-position),
@@ -445,11 +445,12 @@
     width: 40px;
     border-radius: 20px;
   }
-
   /* Tablet (max-width: 1024px) */
   @media screen and (max-width: 1024px) {
     .slideshow-container {
       height: calc(100vh - 56px);
+      margin: 0;
+      padding: 0;
     }
     .slide-content {
       display: flex;
@@ -478,8 +479,10 @@
       font-size: 1rem;
       padding: 10px 20px;
       transform: translateX(0);
+      background-color: #2aab46;
     }
     .slide-text .buy-now-button:hover {
+      background-color: #218838;
       transform: scale(1.05);
     }
     .slide-image-box {
@@ -513,11 +516,14 @@
       margin-bottom: 20px;
     }
   }
-
   /* Mobile (max-width: 768px) */
   @media screen and (max-width: 768px) {
     .slideshow-container {
       height: calc(100vh - 48px);
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      max-width: 100%;
     }
     .slide-content {
       max-width: 95%;
@@ -525,7 +531,6 @@
     }
     .slide-image-box {
       max-width: 100%;
-      {% comment %} display: none; /* Hide secondary image on mobile for better space usage */ {% endcomment %}
     }
     .slide-text {
       width: 100%;
@@ -542,6 +547,10 @@
     .slide-text .buy-now-button {
       font-size: 0.9rem;
       padding: 8px 16px;
+      background-color: #2aab46;
+    }
+    .slide-text .buy-now-button:hover {
+      background-color: #218838;
     }
     .slide.active {
       transform: scale(1.03);
@@ -574,11 +583,12 @@
       height: auto;
     }
   }
-
   /* Small mobile (max-width: 480px) */
   @media screen and (max-width: 480px) {
     .slideshow-container {
       height: calc(100vh - 40px);
+      margin: 0;
+      padding: 0;
     }
     .slide-content {
       max-width: 95%;
@@ -594,6 +604,10 @@
     .slide-text .buy-now-button {
       font-size: 0.8rem;
       padding: 6px 12px;
+      background-color: #2aab46;
+    }
+    .slide-text .buy-now-button:hover {
+      background-color: #218838;
     }
     .nav-controls {
       bottom: 8px;
@@ -611,7 +625,6 @@
       gap: 4px;
     }
   }
-
   /* Support for prefers-reduced-motion */
   @media (prefers-reduced-motion: reduce) {
     .slide, .slide.active {
