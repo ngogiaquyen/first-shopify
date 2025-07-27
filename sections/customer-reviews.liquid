@@ -8,6 +8,56 @@
       "id": "title",
       "label": "Section Title",
       "default": "Our customers love our equipment"
+    },
+    {
+      "type": "image_picker",
+      "id": "avatar_1",
+      "label": "Avatar for Review 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "avatar_2",
+      "label": "Avatar for Review 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "avatar_3",
+      "label": "Avatar for Review 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "avatar_4",
+      "label": "Avatar for Review 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "avatar_5",
+      "label": "Avatar for Review 5"
+    },
+    {
+      "type": "image_picker",
+      "id": "avatar_6",
+      "label": "Avatar for Review 6"
+    },
+    {
+      "type": "image_picker",
+      "id": "avatar_7",
+      "label": "Avatar for Review 7"
+    },
+    {
+      "type": "image_picker",
+      "id": "avatar_8",
+      "label": "Avatar for Review 8"
+    },
+    {
+      "type": "image_picker",
+      "id": "avatar_9",
+      "label": "Avatar for Review 9"
+    },
+    {
+      "type": "image_picker",
+      "id": "avatar_10",
+      "label": "Avatar for Review 10"
     }
   ],
   "presets": [
@@ -26,6 +76,7 @@
     margin: 0 auto;
     padding: 3rem 1.5rem;
     text-align: center;
+    width: 100%;
   }
   .reviews-title {
     font-size: 2.5rem;
@@ -80,25 +131,44 @@
     line-height: 1.5;
   }
   @media screen and (max-width: 768px) {
+    .reviews-container {
+      margin: 20px 0;
+      padding: 2rem 0;
+      width: 100%;
+      max-width: 100%;
+    }
     .reviews-title {
       font-size: 2rem;
+      padding: 0 0.5rem;
     }
     .reviews-grid {
       grid-template-columns: 1fr;
     }
     .review-card {
       max-width: 100%;
+      padding: 1.2rem;
+    }
+    .review-avatar {
+      width: 40px;
+      height: 40px;
+    }
+    .review-text {
+      font-size: 0.95rem;
     }
   }
   @media screen and (max-width: 480px) {
     .reviews-container {
-      padding: 2rem 1rem;
+      padding: 1.5rem 0;
     }
     .reviews-title {
       font-size: 1.5rem;
     }
     .review-card {
       padding: 1rem;
+    }
+    .review-avatar {
+      width: 36px;
+      height: 36px;
     }
     .review-text {
       font-size: 0.9rem;
@@ -112,10 +182,16 @@
   <div class="reviews-grid">
     {% assign reviews = "I can do pilates whenever I want, without going out into the weather.|Our reformer has exceeded our expectations. It arrived quickly and the customer service is 5 stars.|Very impressed with the quality of the machine!|Having my own reformer has given me the opportunity to exercise when I want in the privacy of my own home.|So glad I chose this reformer with The Pilates Shop|Love using my machine|Everything I hoped and more!|The convenience of having it at home is brilliant|Love my Refoife.|Tailored workouts like having a personal trainer at home." | split: "|" %}
     {% for review in reviews %}
+      {% assign index = forloop.index %}
+      {% assign avatar_key = "avatar_" | append: index %}
       <div class="review-card">
         <div class="review-header">
           <div class="review-avatar">
-            <img src="{{ 'avatar-placeholder.jpg' | asset_url }}" alt="Customer Avatar">
+            {% if section.settings[avatar_key] %}
+              <img src="{{ section.settings[avatar_key] | img_url: '100x100' }}" alt="Customer Avatar {{ index }}" loading="lazy">
+            {% else %}
+              <img src="{{ 'avatar-placeholder.jpg' | asset_url }}" alt="Customer Avatar Placeholder" loading="lazy">
+            {% endif %}
           </div>
           <div class="review-rating">★★★★★</div>
         </div>
