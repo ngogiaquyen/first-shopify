@@ -81,7 +81,8 @@
     "customer-reviews": {
       "type": "customer-reviews",
       "settings": {
-        "title": "Our customers love our equipment"
+        "title": "Our customers love our equipment",
+        "avatar_1": "shopify://shop_images/download_2.jpg"
       }
     }
   },
