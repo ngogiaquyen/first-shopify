@@ -7,13 +7,4 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
-{
-  "cart": {
-    "title": "Giỏ hàng",
-    "subtotal": "Tổng phụ",
-    "remove": "Xóa",
-    "update": "Cập nhật",
-    "checkout": "Thanh toán",
-    "empty": "Giỏ hàng của bạn đang trống"
-  }
-}
+{}
