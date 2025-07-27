@@ -12,52 +12,52 @@
     {
       "type": "image_picker",
       "id": "avatar_1",
-      "label": "Avatar for Review 1"
+      "label": "Avatar for Review 1 (Top Row)"
     },
     {
       "type": "image_picker",
       "id": "avatar_2",
-      "label": "Avatar for Review 2"
+      "label": "Avatar for Review 2 (Top Row)"
     },
     {
       "type": "image_picker",
       "id": "avatar_3",
-      "label": "Avatar for Review 3"
+      "label": "Avatar for Review 3 (Top Row)"
     },
     {
       "type": "image_picker",
       "id": "avatar_4",
-      "label": "Avatar for Review 4"
+      "label": "Avatar for Review 4 (Top Row)"
     },
     {
       "type": "image_picker",
       "id": "avatar_5",
-      "label": "Avatar for Review 5"
+      "label": "Avatar for Review 5 (Top Row)"
     },
     {
       "type": "image_picker",
       "id": "avatar_6",
-      "label": "Avatar for Review 6"
+      "label": "Avatar for Review 6 (Bottom Row)"
     },
     {
       "type": "image_picker",
       "id": "avatar_7",
-      "label": "Avatar for Review 7"
+      "label": "Avatar for Review 7 (Bottom Row)"
     },
     {
       "type": "image_picker",
       "id": "avatar_8",
-      "label": "Avatar for Review 8"
+      "label": "Avatar for Review 8 (Bottom Row)"
     },
     {
       "type": "image_picker",
       "id": "avatar_9",
-      "label": "Avatar for Review 9"
+      "label": "Avatar for Review 9 (Bottom Row)"
     },
     {
       "type": "image_picker",
       "id": "avatar_10",
-      "label": "Avatar for Review 10"
+      "label": "Avatar for Review 10 (Bottom Row)"
     }
   ],
   "presets": [
@@ -69,7 +69,7 @@
 }
 {% endschema %}
 
-{% comment %} Styles for customer reviews section with scrolling carousel {% endcomment %}
+{% comment %} Styles for customer reviews section with two-row scrolling carousel {% endcomment %}
 <style>
   .reviews-container {
     max-width: 1200px;
@@ -88,14 +88,22 @@
     overflow: hidden;
     position: relative;
     width: 100%;
+    margin-bottom: 1.5rem;
   }
-  .reviews-grid {
+  .reviews-grid-top {
     display: flex;
     flex-wrap: nowrap;
     gap: 1.5rem;
     animation: scroll-left 30s linear infinite;
   }
-  .reviews-grid.paused {
+  .reviews-grid-bottom {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 1.5rem;
+    animation: scroll-right 30s linear infinite;
+  }
+  .reviews-grid-top.paused,
+  .reviews-grid-bottom.paused {
     animation-play-state: paused;
   }
   .review-card {
@@ -148,6 +156,14 @@
       transform: translateX(-100%);
     }
   }
+  @keyframes scroll-right {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
   @media screen and (max-width: 768px) {
     .reviews-container {
       margin: 20px 0;
@@ -159,7 +175,8 @@
       font-size: 2rem;
       padding: 0 0.5rem;
     }
-    .reviews-grid {
+    .reviews-grid-top,
+    .reviews-grid-bottom {
       gap: 1rem;
     }
     .review-card {
@@ -182,7 +199,8 @@
     .reviews-title {
       font-size: 1.5rem;
     }
-    .reviews-grid {
+    .reviews-grid-top,
+    .reviews-grid-bottom {
       gap: 0.8rem;
     }
     .review-card {
@@ -202,34 +220,66 @@
 {% comment %} JavaScript for carousel duplication and pause-on-hover {% endcomment %}
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const reviewsGrid = document.querySelector('.reviews-grid');
-    if (!reviewsGrid) return;
+    // Function to setup carousel for a given grid
+    function setupCarousel(gridSelector) {
+      const grid = document.querySelector(gridSelector);
+      if (!grid) return;
 
-    // Duplicate review cards for seamless looping
-    const reviewCards = reviewsGrid.querySelectorAll('.review-card');
-    reviewCards.forEach(card => {
-      const clone = card.cloneNode(true);
-      reviewsGrid.appendChild(clone);
-    });
+      // Duplicate review cards for seamless looping
+      const reviewCards = grid.querySelectorAll('.review-card');
+      reviewCards.forEach(card => {
+        const clone = card.cloneNode(true);
+        grid.appendChild(clone);
+      });
 
-    // Pause animation on hover
-    reviewsGrid.addEventListener('mouseenter', () => {
-      reviewsGrid.classList.add('paused');
-    });
-    reviewsGrid.addEventListener('mouseleave', () => {
-      reviewsGrid.classList.remove('paused');
-    });
+      // Pause animation on hover
+      grid.addEventListener('mouseenter', () => {
+        grid.classList.add('paused');
+      });
+      grid.addEventListener('mouseleave', () => {
+        grid.classList.remove('paused');
+      });
+    }
+
+    // Setup both carousels
+    setupCarousel('.reviews-grid-top');
+    setupCarousel('.reviews-grid-bottom');
   });
 </script>
 
-{% comment %} Customer reviews HTML structure {% endcomment %}
+{% comment %} Customer reviews HTML structure with two rows {% endcomment %}
 <section class="reviews-container">
   <h2 class="reviews-title">{{ section.settings.title }}</h2>
+  {% assign reviews = "I can do pilates whenever I want, without going out into the weather.|Our reformer has exceeded our expectations. It arrived quickly and the customer service is 5 stars.|Very impressed with the quality of the machine!|Having my own reformer has given me the opportunity to exercise when I want in the privacy of my own home.|So glad I chose this reformer with The Pilates Shop|Love using my machine|Everything I hoped and more!|The convenience of having it at home is brilliant|Love my Refoife.|Tailored workouts like having a personal trainer at home." | split: "|" %}
+  
+  {% comment %} Top row: Right to Left {% endcomment %}
   <div class="reviews-carousel">
-    <div class="reviews-grid">
-      {% assign reviews = "I can do pilates whenever I want, without going out into the weather.|Our reformer has exceeded our expectations. It arrived quickly and the customer service is 5 stars.|Very impressed with the quality of the machine!|Having my own reformer has given me the opportunity to exercise when I want in the privacy of my own home.|So glad I chose this reformer with The Pilates Shop|Love using my machine|Everything I hoped and more!|The convenience of having it at home is brilliant|Love my Refoife.|Tailored workouts like having a personal trainer at home." | split: "|" %}
-      {% for review in reviews %}
+    <div class="reviews-grid-top">
+      {% for review in reviews limit: 5 %}
         {% assign index = forloop.index %}
+        {% assign avatar_key = "avatar_" | append: index %}
+        <div class="review-card">
+          <div class="review-header">
+            <div class="review-avatar">
+              {% if section.settings[avatar_key] %}
+                <img src="{{ section.settings[avatar_key] | img_url: '100x100' }}" alt="Customer Avatar {{ index }}" loading="lazy">
+              {% else %}
+                <img src="{{ 'avatar-placeholder.jpg' | asset_url }}" alt="Customer Avatar Placeholder" loading="lazy">
+              {% endif %}
+            </div>
+            <div class="review-rating">★★★★★</div>
+          </div>
+          <p class="review-text">{{ review }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% comment %} Bottom row: Left to Right {% endcomment %}
+  <div class="reviews-carousel">
+    <div class="reviews-grid-bottom">
+      {% for review in reviews offset: 5 %}
+        {% assign index = forloop.index0 | plus: 6 %}
         {% assign avatar_key = "avatar_" | append: index %}
         <div class="review-card">
           <div class="review-header">
