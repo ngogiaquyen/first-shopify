@@ -270,32 +270,7 @@
       </div>
       {% comment %} Contact information section for Email, Facebook, YouTube {% endcomment %}
       {% if section.settings.email or section.settings.facebook or section.settings.youtube %}
-        <section class="contact-section">
-          <h2 class="contact-title">Connect With Us</h2>
-          <div class="contact-list">
-            {% if section.settings.email %}
-              <div class="contact-item">
-                <a href="mailto:{{ section.settings.email }}" target="_blank" aria-label="Email us at {{ section.settings.email }}">
-                  <i class="fas fa-envelope"></i> Email
-                </a>
-              </div>
-            {% endif %}
-            {% if section.settings.facebook %}
-              <div class="contact-item">
-                <a href="{{ section.settings.facebook }}" target="_blank" aria-label="Visit our Facebook page">
-                  <i class="fab fa-facebook-f"></i> Facebook
-                </a>
-              </div>
-            {% endif %}
-            {% if section.settings.youtube %}
-              <div class="contact-item">
-                <a href="{{ section.settings.youtube }}" target="_blank" aria-label="Visit our YouTube channel">
-                  <i class="fab fa-youtube"></i> YouTube
-                </a>
-              </div>
-            {% endif %}
-          </div>
-        </section>
+        
       {% endif %}
     </div>
   </div>
