@@ -727,8 +727,8 @@
     clearInterval(progressInterval);
     let progressBar = document.querySelector(".progress-bar");
     progressBar.style.width = '0';
+    progressBar.classList.add("active");
     progressInterval = setInterval(() => {
-      progressBar.classList.add("active");
       nextSlide();
     }, 5000);
   }
