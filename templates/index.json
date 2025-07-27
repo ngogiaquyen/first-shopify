@@ -71,6 +71,7 @@
     },
     "two-column": {
       "type": "two-column",
+      "disabled": true,
       "settings": {
         "image_1": "shopify://shop_images/bannerhome002.jpg",
         "button_url_1": "shopify://collections/all",
