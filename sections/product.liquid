@@ -12,8 +12,8 @@
   .product-section {
     max-width: 1200px;
     margin-top: 80px;
-    margin-left:55px;
-    margin-bottom:70px;
+    margin-left: 55px;
+    margin-bottom: 70px;
     padding: 0 1rem;
     display: grid;
     grid-template-columns: 3fr 2fr; /* Tăng tỷ lệ phần hình ảnh (60%) và giảm phần mô tả (40%) */
@@ -45,22 +45,20 @@
     transform: scale(1.02);
   }
   .product-thumbnails {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  max-width: 560px; /* giới hạn chiều rộng để chia 2 hàng nếu mỗi ảnh rộng 60px + gap */
-}
-
-.product-thumbnail {
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
-  border-radius: 0.5rem;
-  border: 2px solid transparent;
-  cursor: pointer;
-  transition: border-color 0.3s ease, transform 0.2s ease;
-}
-
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    max-width: 560px; /* giới hạn chiều rộng để chia 2 hàng nếu mỗi ảnh rộng 60px + gap */
+  }
+  .product-thumbnail {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border-color 0.3s ease, transform 0.2s ease;
+  }
   .product-thumbnail:hover,
   .product-thumbnail.active {
     border-color: #ef4444;
@@ -239,12 +237,12 @@
       gap: 1.5rem;
     }
     .images-container {
-      flex-direction: column;
+      flex-direction: row; /* Giữ thumbnails bên cạnh ảnh chính trên tablet */
     }
     .product-thumbnails {
-      flex-direction: row;
-      justify-content: center;
-      width: 100%;
+      flex-direction: column;
+      justify-content: flex-start;
+      width: auto;
     }
     .product-info h1 {
       font-size: 1.25rem;
@@ -274,13 +272,15 @@
       gap: 1rem;
     }
     .images-container {
-      flex-direction: column;
+      flex-direction: column; /* Chuyển thumbnails xuống dưới ảnh chính trên mobile */
+      align-items: center;
     }
     .product-thumbnails {
       flex-direction: row;
       gap: 0.25rem;
       justify-content: center;
       width: 100%;
+      margin-top: 0.5rem; /* Thêm khoảng cách giữa ảnh chính và thumbnails */
     }
     .product-info h1 {
       font-size: 1rem;
@@ -322,6 +322,12 @@
   <div class="product-images">
     {% if product.images.size > 0 %}
       <div class="images-container">
+        <img
+          src="{{ product.featured_image | img_url: '800x800' }}"
+          alt="{{ product.title | escape }} - Main Image"
+          class="product-image-main"
+          id="main-image"
+        >
         <div class="product-thumbnails">
           {% for image in product.images %}
             <img
@@ -332,15 +338,9 @@
             >
           {% endfor %}
         </div>
-        <img
-          src="{{ product.featured_image | img_url: '800x800' }}"
-          alt="{{ product.title | escape }} - Main Image"
-          class="product-image-main"
-          id="main-image"
-        >
       </div>
     {% else %}
-      <img src="{{ 'no-image.jpg' | asset_url }}" alt="No image available" class="product-image-main">
+      <img src="{{ 'product-placeholder' | placeholder_svg_tag }}" alt="No image available" class="product-image-main">
     {% endif %}
   </div>
   <div class="product-info">
@@ -360,7 +360,7 @@
         {% endif %}
       </p>
     {% endif %}
-    <p class="description">{{ product.description | strip_html | truncate: 200 }}</p> <!-- Giảm số ký tự mô tả -->
+    <p class="description">{{ product.description | strip_html | truncate: 200 }}</p>
     {% if section.settings.show_rating %}
       <div class="product-rating">
         <i class="fas fa-star"></i>
@@ -385,9 +385,9 @@
     {% endform %}
     {% if section.settings.show_trust_badges %}
       <div class="trust-badges">
-        <div class="trust-badge-item"><i class="fas fa-shipping-fast"></i> Free Shipping</div>
-        <div class="trust-badge-item"><i class="fas fa-lock"></i> Secure Checkout</div>
-        <div class="trust-badge-item"><i class="fas fa-undo"></i> 30-Day Returns</div>
+        <a href="{{ section.settings.trust_badge_1_url }}" class="trust-badge-item"><i class="fas fa-shipping-fast" aria-hidden="true"></i> Free Shipping</a>
+        <a href="{{ section.settings.trust_badge_2_url }}" class="trust-badge-item"><i class="fas fa-lock" aria-hidden="true"></i> Secure Checkout</a>
+        <a href="{{ section.settings.trust_badge_3_url }}" class="trust-badge-item"><i class="fas fa-undo" aria-hidden="true"></i> 30-Day Returns</a>
       </div>
     {% endif %}
   </div>
