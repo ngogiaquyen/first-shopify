@@ -8,17 +8,13 @@
   <h1>{{ collection.title }}</h1>
 
   <div class="collection-filter">
-    <button class="filter-button {% if selected_type == 'all' %}active{% endif %}" data-filter="all">All Products ({{ collection.products.size }})</button>
+    <button class="filter-button {% if selected_type == 'all' %}active{% endif %}" data-filter="all">All Products ({{ collection.products_count }})</button>
     {% assign product_types = collection.products | map: 'type' | uniq | sort %}
-    {% assign type_counts = '' | split: '' %}
-    {% for product in collection.products %}
-      {% assign type = product.type | handleize %}
-      {% assign type_counts = type_counts | push: type %}
-    {% endfor %}
+    {% assign all_products = collection.products %}
     {% for type in product_types %}
       {% if type != blank %}
         {% assign type_handle = type | handleize %}
-        {% assign count = type_counts | where: type_handle | size %}
+        {% assign count = all_products | where: 'type', type | size %}
         <button class="filter-button {% if selected_type == type_handle %}active{% endif %}" data-filter="{{ type_handle }}">{{ type }} ({{ count }})</button>
       {% endif %}
     {% endfor %}
@@ -54,7 +50,7 @@
           <ul class="pagination__list">
             {% if paginate.previous.is_link %}
               <li class="pagination__item">
-                <a href="{{ paginate.previous.url }}&type={{ selected_type | url_encode }}" class="pagination__link pagination__link--prev" aria-label="Previous page">
+                <a href="{{ paginate.previous.url }}?type={{ selected_type | url_encode }}" class="pagination__link pagination__link--prev" aria-label="Previous page">
                   <span>←</span>
                 </a>
               </li>
@@ -62,7 +58,7 @@
             {% for part in paginate.parts %}
               {% if part.is_link %}
                 <li class="pagination__item">
-                  <a href="{{ part.url }}&type={{ selected_type | url_encode }}" class="pagination__link" aria-label="Page {{ part.title }}">{{ part.title }}</a>
+                  <a href="{{ part.url }}?type={{ selected_type | url_encode }}" class="pagination__link" aria-label="Page {{ part.title }}">{{ part.title }}</a>
                 </li>
               {% else %}
                 <li class="pagination__item">
@@ -72,7 +68,7 @@
             {% endfor %}
             {% if paginate.next.is_link %}
               <li class="pagination__item">
-                <a href="{{ paginate.next.url }}&type={{ selected_type | url_encode }}" class="pagination__link pagination__link--next" aria-label="Next page">
+                <a href="{{ paginate.next.url }}?type={{ selected_type | url_encode }}" class="pagination__link pagination__link--next" aria-label="Next page">
                   <span>→</span>
                 </a>
               </li>
