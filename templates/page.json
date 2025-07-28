@@ -13,7 +13,9 @@
       "type": "page",
       "settings": {
         "header_image": "shopify://shop_images/snapedit_1753544765084.jpg",
-        "header_image_2": "shopify://shop_images/snapedit_1753544901604.jpg"
+        "header_image_2": "shopify://shop_images/snapedit_1753544901604.jpg",
+        "header_image_3": "shopify://shop_images/S3db499aebf8140538bb3fb745fefcd99R_37f7a3b4-4ec3-41f2-ac55-4b6872a23e8c.webp",
+        "header_image_4": "shopify://shop_images/S3db494f21abd490c9083e9d0d66373dca.webp"
       }
     }
   },
