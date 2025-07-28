@@ -288,7 +288,7 @@
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.2 });
+    }, { threshold: 0.1 });
     containers.forEach(container => observer.observe(container));
   });
 </script>
