@@ -168,10 +168,16 @@
   font-size: 12px;
 }
 
+.collection-product.hidden {
+  display: none;
+}
+
 .pagination {
   display: flex;
   justify-content: center;
+  align-items: center;
   margin-top: 32px;
+  width: 100%;
 }
 
 .pagination__list {
@@ -180,7 +186,7 @@
   list-style: none;
   padding: 0;
   margin: 0;
-  margin-left: 900px;
+  justify-content: center;
 }
 
 .pagination__item {
@@ -324,7 +330,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
       // Show/hide products based on filter
       products.forEach(product => {
-        if (filterType === 'all' || product.getAttribute('data-product-type') === filterType) {
+        const productType = product.getAttribute('data-product-type');
+        if (filterType === 'all' || productType === filterType) {
           product.classList.remove('hidden');
         } else {
           product.classList.add('hidden');
