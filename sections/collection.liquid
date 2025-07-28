@@ -19,7 +19,7 @@
   </div>
 
   <div class="collection-products" id="product-grid">
-    {% paginate collection.products by 20 %}
+    {% paginate collection.products %}
       {% for product in collection.products %}
         <div class="collection-product" data-product-type="{{ product.type | handleize }}">
           {% if product.featured_image %}
