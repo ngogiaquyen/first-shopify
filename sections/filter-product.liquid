@@ -2,6 +2,25 @@
   Section: Pilates Gear Products
   Hiển thị danh sách sản phẩm có product.type = "Pilates Gear"
 {% endcomment %}
+{% schema %}
+{
+  "name": "Pilates Gear Products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "custom_heading",
+      "label": "Tiêu đề của section",
+      "default": "Pilates Gear Products"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Pilates Gear Products",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
 
 <div class="pilates-gear-section">
   <h2>Pilates Gear Products</h2>
