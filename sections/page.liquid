@@ -160,30 +160,24 @@
           <div class="contact-section">
             <h2 class="contact-title">Contact Information</h2>
             <div class="contact-list">
-              {% if section.settings.email %}
-                <div class="contact-item">
-                  <a href="mailto:{{ section.settings.email }}">
-                    <i class="fas fa-envelope"></i>
-                    {{ section.settings.email }}
-                  </a>
-                </div>
-              {% endif %}
-              {% if section.settings.facebook %}
-                <div class="contact-item">
-                  <a href="{{ section.settings.facebook }}" target="_blank">
-                    <i class="fab fa-facebook-f"></i>
-                    Facebook
-                  </a>
-                </div>
-              {% endif %}
-              {% if section.settings.zalo %}
-                <div class="contact-item">
-                  <a href="{{ section.settings.zalo }}" target="_blank">
-                    <i class="fas fa-comment"></i>
-                    Zalo
-                  </a>
-                </div>
-              {% endif %}
+              <div class="contact-item">
+                <a href="mailto:tientruongvo123@gmail.com">
+                  <i class="fas fa-envelope"></i>
+                  tientruongvo123@gmail.com
+                </a>
+              </div>
+              <div class="contact-item">
+                <a href="https://www.facebook.com/vo.truong.tien.416254/" target="_blank">
+                  <i class="fab fa-facebook-f"></i>
+                  Facebook
+                </a>
+              </div>
+              <div class="contact-item">
+                <a href="https://www.youtube.com/@TradeScalping6789" target="_blank">
+                  <i class="fab fa-youtube"></i>
+                  YouTube
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -195,25 +189,6 @@
 {% schema %}
 {
   "name": "t:general.page",
-  "settings": [
-    {
-      "type": "text",
-      "id": "email",
-      "label": "Email Address",
-      "info": "Enter the contact email address (e.g., tientruongvo123@gmail.com)"
-    },
-    {
-      "type": "url",
-      "id": "facebook",
-      "label": "Facebook URL",
-      "info": "Enter the full URL to your Facebook page (e.g.,https://www.facebook.com/vo.truong.tien.416254/)"
-    },
-    {
-      "type": "url",
-      "id": "zalo",
-      "label": "Zalo URL",
-      "info": "Enter the full URL to your Zalo contact (e.g., https://zalo.me/yourphone)"
-    }
-  ]
+  "settings": []
 }
 {% endschema %}
