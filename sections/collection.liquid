@@ -19,27 +19,25 @@
   </div>
 
   <div class="collection-products" id="product-grid">
-    {% paginate collection.products by 20 %}
-      {% for product in collection.products %}
-        <div class="collection-product" data-product-type="{{ product.type | handleize }}">
-          {% if product.featured_image %}
-            {% render 'image',
-              class: 'collection-product__image',
-              image: product.featured_image,
-              url: product.url,
-              width: 400,
-              height: 400,
-              crop: 'center'
-            %}
-          {% endif %}
-          <div class="collection-product__content">
-            <p>{{ product.title | escape | link_to: product.url }}</p>
-            <p>{{ product.price | money }}</p>
-            <p class="product-type">Type: {{ product.type }}</p>
-          </div>
+    {% for product in collection.products %}
+      <div class="collection-product" data-product-type="{{ product.type | handleize }}">
+        {% if product.featured_image %}
+          {% render 'image',
+            class: 'collection-product__image',
+            image: product.featured_image,
+            url: product.url,
+            width: 400,
+            height: 400,
+            crop: 'center'
+          %}
+        {% endif %}
+        <div class="collection-product__content">
+          <p>{{ product.title | escape | link_to: product.url }}</p>
+          <p>{{ product.price | money }}</p>
+          <p class="product-type">Type: {{ product.type }}</p>
         </div>
-      {% endfor %}
-    {% endpaginate %}
+      </div>
+    {% endfor %}
   </div>
 </div>
 
