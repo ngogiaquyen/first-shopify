@@ -39,7 +39,37 @@
           </div>
         </div>
       {% endfor %}
-      {{ paginate | default_pagination }}
+      {% if paginate.pages > 1 %}
+        <nav class="pagination" role="navigation" aria-label="Pagination">
+          <ul class="pagination__list">
+            {% if paginate.previous.is_link %}
+              <li class="pagination__item">
+                <a href="{{ paginate.previous.url }}" class="pagination__link pagination__link--prev" aria-label="Previous page">
+                  <span>←</span>
+                </a>
+              </li>
+            {% endif %}
+            {% for part in paginate.parts %}
+              {% if part.is_link %}
+                <li class="pagination__item">
+                  <a href="{{ part.url }}" class="pagination__link" aria-label="Page {{ part.title }}">{{ part.title }}</a>
+                </li>
+              {% else %}
+                <li class="pagination__item">
+                  <span class="pagination__link pagination__link--current" aria-current="page">{{ part.title }}</span>
+                </li>
+              {% endif %}
+            {% endfor %}
+            {% if paginate.next.is_link %}
+              <li class="pagination__item">
+                <a href="{{ paginate.next.url }}" class="pagination__link pagination__link--next" aria-label="Next page">
+                  <span>→</span>
+                </a>
+              </li>
+            {% endif %}
+          </ul>
+        </nav>
+      {% endif %}
     {% endpaginate %}
   </div>
 </div>
@@ -138,6 +168,62 @@
   font-size: 12px;
 }
 
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.pagination__list {
+  display: flex;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pagination__item {
+  display: flex;
+  align-items: center;
+}
+
+.pagination__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #111827;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.pagination__link:hover {
+  background: #111827;
+  color: #ffffff;
+  border-color: #111827;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pagination__link--current {
+  background: #111827;
+  color: #ffffff;
+  border-color: #111827;
+  cursor: default;
+}
+
+.pagination__link--prev,
+.pagination__link--next {
+  font-size: 16px;
+  font-weight: 600;
+}
+
 /* Tablet */
 @media (max-width: 768px) {
   .collection-container {
@@ -161,6 +247,17 @@
   .filter-button {
     padding: 8px 16px;
     font-size: 13px;
+  }
+
+  .pagination__link {
+    min-width: 32px;
+    height: 32px;
+    font-size: 13px;
+  }
+
+  .pagination__link--prev,
+  .pagination__link--next {
+    font-size: 14px;
   }
 }
 
@@ -195,6 +292,17 @@
   .filter-button {
     padding: 6px 12px;
     font-size: 12px;
+  }
+
+  .pagination__link {
+    min-width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+
+  .pagination__link--prev,
+  .pagination__link--next {
+    font-size: 13px;
   }
 }
 {% endstylesheet %}
