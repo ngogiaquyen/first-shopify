@@ -29,6 +29,13 @@
     margin: 0 auto;
     padding: 3rem 1.5rem;
   }
+  .page_title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
   .rte {
     background-color: #fff;
     padding: 3rem;
@@ -116,6 +123,10 @@
     .rte {
       padding: 2rem 0.5rem;
     }
+    .page_title {
+      font-size: 2rem;
+      padding: 0 0.5rem;
+    }
     .content_ct p {
       font-size: 0.95rem;
       padding: 0 0.5rem;
@@ -140,6 +151,9 @@
     .com_info .container {
       padding: 1.5rem 0;
     }
+    .page_title {
+      font-size: 1.5rem;
+    }
     .content_ct p {
       font-size: 0.9rem;
     }
@@ -162,7 +176,9 @@
 
 <div class="com_info">
   <div class="container">
-    {% section 'slideshow' %}
+    <h1 class="font-weight-bold text-center pt-3 page_title">
+      {{ page.title }}
+    </h1>
     <div class="rte m-auto bg-white pt-3 pb-3">
       <div class="row">
         <div class="col-md-6 col-12">
@@ -178,24 +194,24 @@
               <input name="utf8" type="hidden" value="✓">
               <div class="customer-name row">
                 <div class="col-12 form-group">
-                  <input type="text" class="form-control" name="contact[name]" placeholder="Họ tên *" required>
+                  <input type="text" class="form-control" name="contact[name]" placeholder="Name *" required>
                 </div>
                 <div class="col-12 form-group">
                   <input type="email" class="form-control" name="contact[email]" placeholder="Email *" required>
                 </div>
                 <div class="col-12 form-group">
-                  <textarea name="contact[body]" placeholder="Lời nhắn *" class="form-control" rows="3" required></textarea>
+                  <textarea name="contact[body]" placeholder="Message *" class="form-control" rows="3" required></textarea>
                 </div>
               </div>
-              <span class="require d-block mb-3"><em class="required">*</em> Thông tin bắt buộc</span>
+              <span class="require d-block mb-3"><em class="required">*</em> Required information</span>
               <div class="buttons-set">
                 <button type="submit" title="Submit" class="book-submit btn btn-primary text-center d-flex align-items-center font-weight-bold">
-                  <span>Gửi</span>
+                  <span>Send</span>
                 </button>
               </div>
             </form>
             <div class="google-map mt-4">
-              136 P.Yên Lãng, Thịnh Quang, Đống Đa, Hà Nội 115000, Việt Nam
+             Room 901, Building A, Wanda Plaza, No. 121, Huaian East Road, Yuhua District, Shijiazhuang City, Hebei Province, China
             </div>
           </div>
         </div>
