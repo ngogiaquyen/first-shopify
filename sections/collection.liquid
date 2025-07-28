@@ -8,7 +8,25 @@
 {% comment %}
   Get the 'type' query parameter from the URL, if present
 {% endcomment %}
-{% assign selected_type = request.query.type | default: 'all' %}
+{% assign selected_type = request.query.type | default: 'all' | downcase %}
+
+{% comment %}
+  Debug: Display selected type and available product types for troubleshooting
+{% endcomment %}
+{% if shop.metafields.debug.enabled %}
+  <div class="debug-info" style="border: 1px solid #ccc; padding: 10px; margin: 10px 0; background: #f9f9f9;">
+    <p><strong>Debug Info:</strong></p>
+    <p>Selected Type: {{ selected_type | escape }}</p>
+    <p>Available Product Types: 
+      {% assign product_types = collection.products | map: 'type' | uniq %}
+      {% for type in product_types %}
+        {% if type != blank %}
+          {{ type | escape }} (handleized: {{ type | handleize | escape }}),
+        {% endif %}
+      {% endfor %}
+    </p>
+  </div>
+{% endif %}
 
 <div class="collection-container">
   <h1>{{ collection.title }}</h1>
@@ -18,7 +36,7 @@
     {% assign product_types = collection.products | map: 'type' | uniq %}
     {% for type in product_types %}
       {% if type != blank %}
-        {% assign type_handleized = type | handleize %}
+        {% assign type_handleized = type | handleize | downcase %}
         <a href="{{ collection.url }}?type={{ type_handleized }}" class="filter-button{% if selected_type == type_handleized %} active{% endif %}" data-filter="{{ type_handleized }}">{{ type }}</a>
       {% endif %}
     {% endfor %}
@@ -28,7 +46,13 @@
     {% paginate collection.products by 20 %}
       {% assign has_products = false %}
       {% for product in collection.products %}
-        {% assign product_type_handleized = product.type | handleize %}
+        {% assign product_type_handleized = product.type | handleize | downcase %}
+        {% comment %}
+          Debug: Log product type for each product to verify matching
+        {% endcomment %}
+        {% if shop.metafields.debug.enabled %}
+          <!-- Product: {{ product.title | escape }}, Type: {{ product.type | escape }}, Handleized: {{ product_type_handleized | escape }} -->
+        {% endif %}
         {% if selected_type == 'all' or product_type_handleized == selected_type %}
           {% assign has_products = true %}
           <div class="collection-product" data-product-type="{{ product_type_handleized }}">
