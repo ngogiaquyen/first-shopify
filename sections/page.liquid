@@ -15,13 +15,14 @@
   });
 </script>
 
-{% comment %} Styles and scripts for contact page with slideshow {% endcomment %}
+{% comment %} Styles and scripts for contact page with enhanced slideshow and layout {% endcomment %}
 <style>
   .com_info {
     width: 100%;
     max-width: 100%;
     margin: 0;
     padding: 0;
+    background-color: #f9fafb;
   }
   .com_info .container {
     max-width: 1200px;
@@ -33,12 +34,12 @@
     width: 100vw;
     margin-left: calc(-50vw + 50%);
     overflow: hidden;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
   }
   .page-slideshow {
     position: relative;
     width: 100%;
-    height: 400px;
+    height: 500px;
   }
   .page-image {
     display: none;
@@ -48,10 +49,11 @@
     position: absolute;
     top: 0;
     left: 0;
-    transition: transform 0.3s ease;
+    transition: opacity 0.5s ease, transform 0.3s ease;
   }
   .page-image.active {
     display: block;
+    opacity: 1;
   }
   .page-image-wrapper:hover .page-image.active {
     transform: scale(1.05);
@@ -62,70 +64,118 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));
     z-index: 1;
+  }
+  .slideshow-controls {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    transform: translateY(-50%);
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 2rem;
+  }
+  .slideshow-btn {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 1rem;
+    cursor: pointer;
+    font-size: 1.5rem;
+    transition: background-color 0.3s ease;
+  }
+  .slideshow-btn:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  .slideshow-dots {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    gap: 0.5rem;
+  }
+  .dot {
+    width: 10px;
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .dot.active {
+    background-color: white;
   }
   .rte {
     background-color: #fff;
     padding: 3rem;
     margin: 0 auto;
-    max-width: 100%;
+    max-width: 800px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
   .content_ct p {
-    font-size: 1rem;
+    font-size: 1.1rem;
     color: #4a5568;
-    line-height: 1.6;
-    margin-bottom: 1rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    text-align: center;
   }
   .contact-section {
     margin-top: 2rem;
     text-align: center;
   }
   .contact-title {
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: #1a1a1a;
-    margin-bottom: 1.5rem;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1a202c;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
   }
   .form-group {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    text-align: left;
   }
   .form-control {
     width: 100%;
-    padding: 0.75rem;
-    font-size: 1rem;
-    border: 1px solid #d1d5db;
-    border-radius: 5px;
-    transition: border-color 0.3s ease;
+    padding: 1rem;
+    font-size: 1.1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
   }
   .form-control:focus {
     outline: none;
-    border-color: #2aab46;
-    box-shadow: 0 0 5px rgba(42, 171, 70, 0.3);
+    border-color: #48bb78;
+    box-shadow: 0 0 8px rgba(72, 187, 120, 0.3);
   }
   .form-control::placeholder {
-    color: #6b7280;
+    color: #a0aec0;
   }
   textarea.form-control {
     resize: vertical;
-    min-height: 100px;
+    min-height: 150px;
   }
   .require {
-    font-size: 0.9rem;
-    color: #6b7280;
+    font-size: 1rem;
+    color: #a0aec0;
     margin-bottom: 1rem;
   }
   .required {
     color: #e53e3e;
   }
   .book-submit {
-    padding: 0.75rem 1.5rem;
-    background-color: #2aab46;
+    padding: 1rem 2.5rem;
+    background-color: #48bb78;
     color: white;
-    font-size: 1rem;
-    font-weight: 500;
+    font-size: 1.2rem;
+    font-weight: 600;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
     display: inline-flex;
@@ -133,24 +183,19 @@
     justify-content: center;
   }
   .book-submit:hover {
-    background-color: #218838;
+    background-color: #38a169;
     transform: scale(1.05);
   }
   .google-map {
     margin-top: 2rem;
-    font-size: 1rem;
+    font-size: 1.1rem;
     color: #4a5568;
     text-align: center;
+    font-style: italic;
   }
   @media screen and (max-width: 768px) {
     .com_info .container {
-      margin: 0;
-      padding: 2rem 0;
-      width: 100%;
-      max-width: 100%;
-    }
-    .rte {
-      padding: 2rem 0.5rem;
+      padding: 1rem 1rem;
     }
     .page-image-wrapper {
       margin-left: calc(-50vw + 50%);
@@ -159,53 +204,42 @@
     .page-slideshow {
       height: 300px;
     }
-    .content_ct p {
-      font-size: 0.95rem;
-      padding: 0 0.5rem;
+    .rte {
+      padding: 2rem;
+      max-width: 100%;
     }
     .contact-title {
-      font-size: 1.5rem;
-      padding: 0 0.5rem;
+      font-size: 2rem;
     }
     .form-control {
-      font-size: 0.95rem;
+      font-size: 1rem;
+      padding: 0.75rem;
     }
     .book-submit {
-      width: 100%;
-      max-width: 300px;
+      padding: 0.75rem 2rem;
+      font-size: 1.1rem;
     }
     .google-map {
-      font-size: 0.95rem;
-      padding: 0 0.5rem;
+      font-size: 1rem;
     }
   }
   @media screen and (max-width: 480px) {
-    .com_info .container {
-      padding: 1.5rem 0;
-    }
-    .page-image-wrapper {
-      margin-left: calc(-50vw + 50%);
-      width: 100vw;
-    }
     .page-slideshow {
       height: 200px;
     }
-    .content_ct p {
-      font-size: 0.9rem;
-    }
     .contact-title {
-      font-size: 1.3rem;
+      font-size: 1.5rem;
     }
     .form-control {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       padding: 0.5rem;
     }
     .book-submit {
-      padding: 0.5rem 1rem;
-      font-size: 0.9rem;
+      padding: 0.5rem 1.5rem;
+      font-size: 1rem;
     }
     .google-map {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
     }
   }
 </style>
@@ -213,6 +247,9 @@
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const slides = document.querySelectorAll('.page-image');
+    const prevBtn = document.createElement('button');
+    const nextBtn = document.createElement('button');
+    const dotsContainer = document.createElement('div');
     let currentSlide = 0;
 
     function showSlide(index) {
@@ -220,6 +257,7 @@
         slide.classList.remove('active');
         if (i === index) slide.classList.add('active');
       });
+      updateDots();
     }
 
     function nextSlide() {
@@ -227,8 +265,46 @@
       showSlide(currentSlide);
     }
 
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+      showSlide(currentSlide);
+    }
+
+    function createControls() {
+      prevBtn.classList.add('slideshow-btn');
+      prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+      nextBtn.classList.add('slideshow-btn');
+      nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+      const controls = document.querySelector('.slideshow-controls');
+      controls.appendChild(prevBtn);
+      controls.appendChild(nextBtn);
+
+      dotsContainer.classList.add('slideshow-dots');
+      slides.forEach((_, i) => {
+        const dot = document.createElement('div');
+        dot.classList.add('dot');
+        dot.addEventListener('click', () => showSlide(i));
+        dotsContainer.appendChild(dot);
+      });
+      document.querySelector('.page-image-wrapper').appendChild(dotsContainer);
+    }
+
+    function updateDots() {
+      const dots = document.querySelectorAll('.dot');
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentSlide);
+      });
+    }
+
     // Chuyển slide tự động mỗi 3 giây
     setInterval(nextSlide, 3000);
+
+    // Thêm điều khiển
+    createControls();
+
+    // Gán sự kiện cho nút
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', nextSlide);
 
     // Hiển thị slide đầu tiên khi tải trang
     showSlide(currentSlide);
@@ -240,6 +316,7 @@
     {% if section.settings.header_image or section.settings.header_image_2 or section.settings.header_image_3 or section.settings.header_image_4 %}
       <div class="page-image-wrapper">
         <div class="page-slideshow">
+          <div class="slideshow-controls"></div>
           {% if section.settings.header_image %}
             <img src="{{ section.settings.header_image | img_url: 'master' }}" alt="Header Image 1" class="page-image" loading="lazy">
           {% endif %}
@@ -256,41 +333,35 @@
         </div>
       </div>
     {% endif %}
-    <div class="rte m-auto bg-white pt-3 pb-3">
-      <div class="row">
-        <div class="col-md-6 col-12">
-          <div class="content_ct">
-            {{ page.content }}
-          </div>
-        </div>
-        <div class="col-md-6 col-12">
-          <div class="contact-section">
-            <h2 class="contact-title">Contact Information</h2>
-            <form method="post" action="/contact#contact_form" id="contact_form" accept-charset="UTF-8">
-              <input name="form_type" type="hidden" value="contact">
-              <input name="utf8" type="hidden" value="✓">
-              <div class="customer-name row">
-                <div class="col-12 form-group">
-                  <input type="text" class="form-control" name="contact[name]" placeholder="Name *" required>
-                </div>
-                <div class="col-12 form-group">
-                  <input type="email" class="form-control" name="contact[email]" placeholder="Email *" required>
-                </div>
-                <div class="col-12 form-group">
-                  <textarea name="contact[body]" placeholder="Message *" class="form-control" rows="3" required></textarea>
-                </div>
-              </div>
-              <span class="require d-block mb-3"><em class="required">*</em> Required information</span>
-              <div class="buttons-set">
-                <button type="submit" title="Submit" class="book-submit btn btn-primary text-center d-flex align-items-center font-weight-bold">
-                  <span>Send</span>
-                </button>
-              </div>
-            </form>
-            <div class="google-map mt-4">
-              Room 901, Building A, Wanda Plaza, No. 121, Huaian East Road, Yuhua District, Shijiazhuang City, Hebei Province, China
+    <div class="rte">
+      <div class="content_ct">
+        {{ page.content }}
+      </div>
+      <div class="contact-section">
+        <h2 class="contact-title">Contact Information</h2>
+        <form method="post" action="/contact#contact_form" id="contact_form" accept-charset="UTF-8">
+          <input name="form_type" type="hidden" value="contact">
+          <input name="utf8" type="hidden" value="✓">
+          <div class="customer-name">
+            <div class="form-group">
+              <input type="text" class="form-control" name="contact[name]" placeholder="Name *" required>
+            </div>
+            <div class="form-group">
+              <input type="email" class="form-control" name="contact[email]" placeholder="Email *" required>
+            </div>
+            <div class="form-group">
+              <textarea name="contact[body]" placeholder="Message *" class="form-control" rows="3" required></textarea>
             </div>
           </div>
+          <span class="require d-block mb-3"><em class="required">*</em> Required information</span>
+          <div class="buttons-set">
+            <button type="submit" title="Submit" class="book-submit">
+              <span>Send</span>
+            </button>
+          </div>
+        </form>
+        <div class="google-map mt-4">
+          Room 901, Building A, Wanda Plaza, No. 121, Huaian East Road, Yuhua District, Shijiazhuang City, Hebei Province, China
         </div>
       </div>
     </div>
