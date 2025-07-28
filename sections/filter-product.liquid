@@ -1,7 +1,7 @@
 {% comment %}
   File này hiển thị tất cả sản phẩm trong Shopify store dưới dạng lưới responsive.
   Bao gồm ảnh sản phẩm, tiêu đề, giá, nút "Thêm vào giỏ", phân trang, và lọc theo loại sản phẩm bằng JavaScript với if-else.
-  Cập nhật để sửa lỗi phân trang không chuyển trang khi bấm nút.
+  Cập nhật để hiển thị tất cả sản phẩm (lên đến 1000) bằng paginate, sửa lỗi phân trang, và giữ lọc client-side.
 {% endcomment %}
 
 {% style %}
@@ -213,6 +213,7 @@
     <p><strong>Collection hiện tại:</strong> {{ collection.title }} (Handle: {{ collection.handle }})</p>
     <p><strong>Tag hiện tại:</strong> {{ current_tags | join: ', ' }}</p>
     <p><strong>Loại sản phẩm có sẵn:</strong> {{ collection.all_types | join: ', ' }}</p>
+    <p><strong>Tổng số sản phẩm:</strong> {{ collection.products_count }}</p>
   </div>
 
   {% comment %} Nút lọc theo loại sản phẩm {% endcomment %}
@@ -241,44 +242,46 @@
   </div>
 
   <div class="products-grid">
-    {% for product in collection.products %}
-      <div class="product-card" data-product-type="{{ product.type | handle }}">
-        <a href="{{ product.url }}" class="product-card__image-link" aria-label="{{ product.title }}">
-          {% if product.featured_image %}
-            <img
-              src="{{ product.featured_image | image_url: width: 300 }}"
-              alt="{{ product.title | escape }}"
-              class="product-card__image"
-              loading="lazy"
-            />
-          {% else %}
-            <img
-              src="{{ 'no-image.svg' | asset_url }}"
-              alt="Không có ảnh"
-              class="product-card__image"
-              loading="lazy"
-            />
-          {% endif %}
-        </a>
-        <div class="product-card__content">
-          <a href="{{ product.url }}" class="product-card__title">{{ product.title }}</a>
-          <div class="product-card__price">
-            {% if product.price_varies %}
-              Từ {{ product.price_min | money }}
+    {% paginate collection.products by 1000 %}
+      {% for product in collection.products %}
+        <div class="product-card" data-product-type="{{ product.type | handle }}">
+          <a href="{{ product.url }}" class="product-card__image-link" aria-label="{{ product.title }}">
+            {% if product.featured_image %}
+              <img
+                src="{{ product.featured_image | image_url: width: 300 }}"
+                alt="{{ product.title | escape }}"
+                class="product-card__image"
+                loading="lazy"
+              />
             {% else %}
-              {{ product.price | money }}
+              <img
+                src="{{ 'no-image.svg' | asset_url }}"
+                alt="Không có ảnh"
+                class="product-card__image"
+                loading="lazy"
+              />
             {% endif %}
+          </a>
+          <div class="product-card__content">
+            <a href="{{ product.url }}" class="product-card__title">{{ product.title }}</a>
+            <div class="product-card__price">
+              {% if product.price_varies %}
+                Từ {{ product.price_min | money }}
+              {% else %}
+                {{ product.price | money }}
+              {% endif %}
+            </div>
+            {% form 'product', product, class: 'product-card__form' %}
+              <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+              <button type="submit" class="product-card__button">Thêm vào giỏ</button>
+            {% endform %}
           </div>
-          {% form 'product', product, class: 'product-card__form' %}
-            <input type="hidden" name="id" value="{{ product.variants.first.id }}">
-            <button type="submit" class="product-card__button">Thêm vào giỏ</button>
-          {% endform %}
         </div>
-      </div>
-    {% endfor %}
-    {% if collection.products.size == 0 %}
-      <p class="error-message">Không tìm thấy sản phẩm nào.</p>
-    {% endif %}
+      {% endfor %}
+      {% if collection.products.size == 0 %}
+        <p class="error-message">Không tìm thấy sản phẩm nào.</p>
+      {% endif %}
+    {% endpaginate %}
   </div>
 
   {% comment %} Phân trang giả lập cho client-side {% endcomment %}
@@ -363,21 +366,20 @@ document.addEventListener('DOMContentLoaded', function() {
       const productType = card.dataset.productType;
       if (filterType === 'all') {
         filteredProducts.push(card);
-        card.classList.remove('hidden');
       } else if (productType === filterType) {
         filteredProducts.push(card);
-        card.classList.remove('hidden');
-      } else {
-        card.classList.add('hidden');
       }
     });
 
-    // Cập nhật hiển thị theo trang
+    // Ẩn tất cả sản phẩm trước khi hiển thị trang hiện tại
+    productCards.forEach(card => {
+      card.classList.add('hidden');
+    });
+
+    // Hiển thị sản phẩm trong trang hiện tại
     filteredProducts.forEach((card, index) => {
       if (index >= (currentPage - 1) * itemsPerPage && index < currentPage * itemsPerPage) {
         card.classList.remove('hidden');
-      } else {
-        card.classList.add('hidden');
       }
     });
 
@@ -407,6 +409,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Khởi tạo với tất cả sản phẩm
   filterProducts('all');
+
+  // Debug số lượng sản phẩm
+  console.log('Tổng số sản phẩm tải được:', productCards.length);
 });
 {% endjavascript %}
 
