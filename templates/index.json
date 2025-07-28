@@ -114,7 +114,9 @@
     },
     "filter-product": {
       "type": "filter-product",
-      "settings": {}
+      "settings": {
+        "collection": ""
+      }
     }
   },
   "order": [
