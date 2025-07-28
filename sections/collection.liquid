@@ -34,7 +34,7 @@
 }
 {% endschema %}
 
-{% comment %} Styles matching the provided sample with renamed classes and consistent image sizes {% endcomment %}
+{% comment %} Styles matching the provided sample with fixes for consistent square images {% endcomment %}
 <style>
   :root {
     --primary-color: #2563eb;
@@ -114,22 +114,29 @@
     transform: translateY(0);
   }
 
-  .shop-products-grid-{{ section.id }} .shop-card.visible:nth-child(1) { transition-delay: 0.1s; }
-  .shop-products-grid-{{ section.id }} .shop-card.visible:nth-child(2) { transition-delay: 0.2s; }
-  .shop-products-grid-{{ section.id }} .shop-card.visible:nth-child(3) { transition-delay: 0.3s; }
-  .shop-products-grid-{{ section.id }} .shop-card.visible:nth-child(4) { transition-delay: 0.4s; }
-
   .shop-products-grid-{{ section.id }} .shop-card:hover {
     transform: translateY(-0.25rem);
     border-color: var(--primary-color);
   }
 
+  .shop-products-grid-{{ section.id }} .shop-image-container {
+    width: 100%;
+    aspect-ratio: 1 / 1; /* Enforce square shape */
+    overflow: hidden;
+    position: relative;
+    background: #f3f4f6; /* Fallback background for missing images */
+  }
+
   .shop-products-grid-{{ section.id }} .shop-image {
     width: 100%;
-    aspect-ratio: 1 / 1; /* Ensures square shape */
+    height: 100%;
     object-fit: cover; /* Crops image to fill container without distortion */
+    object-position: center; /* Centers image */
     display: block;
     transition: transform var(--transition);
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 
   .shop-products-grid-{{ section.id }} .shop-card:hover .shop-image {
@@ -250,6 +257,9 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 1rem;
     }
+    .shop-products-grid-{{ section.id }} .shop-image-container {
+      aspect-ratio: 1 / 1;
+    }
   }
 
   @media (max-width: 768px) {
@@ -266,10 +276,8 @@
       font-size: 1.875rem;
       padding: 0 0.5rem;
     }
-    .shop-products-grid-{{ section.id }} .shop-image {
-      width: 100%;
+    .shop-products-grid-{{ section.id }} .shop-image-container {
       aspect-ratio: 1 / 1;
-      object-fit: cover;
     }
   }
 
@@ -280,10 +288,8 @@
     .shop-products-grid-{{ section.id }} .shop-title {
       font-size: 1.5rem;
     }
-    .shop-products-grid-{{ section.id }} .shop-image {
-      width: 100%;
+    .shop-products-grid-{{ section.id }} .shop-image-container {
       aspect-ratio: 1 / 1;
-      object-fit: cover;
     }
   }
 </style>
@@ -300,9 +306,8 @@
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
-          entry.target.querySelectorAll('.shop-card').forEach((card, index) => {
+          entry.target.querySelectorAll('.shop-card').forEach(card => {
             card.classList.add('visible');
-            card.style.transitionDelay = `${index * 0.1}s`;
           });
           observer.unobserve(entry.target);
         }
@@ -329,11 +334,13 @@
               {% if product.compare_at_price > product.price %}
                 <span class="shop-sale-badge">Sale</span>
               {% endif %}
-              {% if product.featured_image %}
-                <img class="shop-image" src="{{ product.featured_image | img_url: '500x500', crop: 'center' }}" alt="{{ product.title | escape }}" loading="lazy">
-              {% else %}
-                <img class="shop-image" src="{{ 'no-image.jpg' | asset_url }}" alt="No image available" loading="lazy">
-              {% endif %}
+              <div class="shop-image-container">
+                {% if product.featured_image %}
+                  <img class="shop-image" src="{{ product.featured_image | img_url: '500x500', crop: 'center' }}" alt="{{ product.title | escape }}" loading="lazy">
+                {% else %}
+                  <img class="shop-image" src="{{ 'no-image.jpg' | asset_url }}" alt="No image available" loading="lazy">
+                {% endif %}
+              </div>
               <div class="shop-text">
                 <p class="shop-title-text">{{ product.title | default: 'Untitled Product' }}</p>
                 <p class="shop-prices">
