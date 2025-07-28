@@ -1,7 +1,6 @@
 {% comment %}
   This section is used in the collection template to render collection page
   listing all products within a collection with product type filtering.
-  Each product type and "All Products" has its own independent pagination.
   https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
 {% endcomment %}
 
@@ -23,67 +22,61 @@
 
   <div class="collection-products" id="product-grid">
     {% assign selected_type = request.params.type | default: 'all' %}
-    {% assign current_page = paginate.current_page | default: 1 %}
-    {% assign per_page = 20 %}
-    {% assign filtered_products = collection.products %}
-    {% if selected_type != 'all' %}
-      {% assign filtered_products = collection.products | where: 'type', selected_type %}
-    {% endif %}
-    {% assign total_products = filtered_products | size %}
-    {% assign total_pages = total_products | divided_by: per_page | plus: 1 %}
-    {% assign offset = current_page | minus: 1 | times: per_page %}
-    {% assign paginated_products = filtered_products | slice: offset, per_page %}
-    
-    {% for product in paginated_products %}
-      {% assign product_type_handle = product.type | handleize %}
-      <div class="collection-product" data-product-type="{{ product_type_handle }}">
-        {% if product.featured_image %}
-          {% render 'image',
-            class: 'collection-product__image',
-            image: product.featured_image,
-            url: product.url,
-            width: 400,
-            height: 400,
-            crop: 'center'
-          %}
+    {% paginate collection.products by 20 %}
+      {% for product in collection.products %}
+        {% assign product_type_handle = product.type | handleize %}
+        {% if selected_type == 'all' or product_type_handle == selected_type %}
+          <div class="collection-product" data-product-type="{{ product_type_handle }}">
+            {% if product.featured_image %}
+              {% render 'image',
+                class: 'collection-product__image',
+                image: product.featured_image,
+                url: product.url,
+                width: 400,
+                height: 400,
+                crop: 'center'
+              %}
+            {% endif %}
+            <div class="collection-product__content">
+              <p>{{ product.title | escape | link_to: product.url }}</p>
+              <p>{{ product.price | money }}</p>
+              <p class="product-type">Type: {{ product.type }}</p>
+            </div>
+          </div>
         {% endif %}
-        <div class="collection-product__content">
-          <p>{{ product.title | escape | link_to: product.url }}</p>
-          <p>{{ product.price | money }}</p>
-          <p class="product-type">Type: {{ product.type }}</p>
-        </div>
-      </div>
-    {% endfor %}
-
-    {% if total_pages > 1 %}
-      <nav class="pagination" role="navigation" aria-label="Pagination">
-        <ul class="pagination__list">
-          {% if current_page > 1 %}
-            <li class="pagination__item">
-              <a href="?type={{ selected_type | url_encode }}&page={{ current_page | minus: 1 }}" class="pagination__link pagination__link--prev" aria-label="Previous page">
-                <span>←</span>
-              </a>
-            </li>
-          {% endif %}
-          {% for page_num in (1..total_pages) %}
-            <li class="pagination__item">
-              {% if page_num == current_page %}
-                <span class="pagination__link pagination__link--current" aria-current="page">{{ page_num }}</span>
+      {% endfor %}
+      {% if paginate.pages > 1 %}
+        <nav class="pagination" role="navigation" aria-label="Pagination">
+          <ul class="pagination__list">
+            {% if paginate.previous.is_link %}
+              <li class="pagination__item">
+                <a href="{{ paginate.previous.url }}?type={{ selected_type | url_encode }}" class="pagination__link pagination__link--prev" aria-label="Previous page">
+                  <span>←</span>
+                </a>
+              </li>
+            {% endif %}
+            {% for part in paginate.parts %}
+              {% if part.is_link %}
+                <li class="pagination__item">
+                  <a href="{{ part.url }}?type={{ selected_type | url_encode }}" class="pagination__link" aria-label="Page {{ part.title }}">{{ part.title }}</a>
+                </li>
               {% else %}
-                <a href="?type={{ selected_type | url_encode }}&page={{ page_num }}" class="pagination__link" aria-label="Page {{ page_num }}">{{ page_num }}</a>
+                <li class="pagination__item">
+                  <span class="pagination__link pagination__link--current" aria-current="page">{{ part.title }}</span>
+                </li>
               {% endif %}
-            </li>
-          {% endfor %}
-          {% if current_page < total_pages %}
-            <li class="pagination__item">
-              <a href="?type={{ selected_type | url_encode }}&page={{ current_page | plus: 1 }}" class="pagination__link pagination__link--next" aria-label="Next page">
-                <span>→</span>
-              </a>
-            </li>
-          {% endif %}
-        </ul>
-      </nav>
-    {% endif %}
+            {% endfor %}
+            {% if paginate.next.is_link %}
+              <li class="pagination__item">
+                <a href="{{ paginate.next.url }}?type={{ selected_type | url_encode }}" class="pagination__link pagination__link--next" aria-label="Next page">
+                  <span>→</span>
+                </a>
+              </li>
+            {% endif %}
+          </ul>
+        </nav>
+      {% endif %}
+    {% endpaginate %}
   </div>
 </div>
 
