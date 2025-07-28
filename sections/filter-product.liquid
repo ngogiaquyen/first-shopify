@@ -1,0 +1,5 @@
+{% for product in collections.all.products %}
+  {% if product.type == "Pilates Gear" %}
+    <p>{{ product.title }}</p>
+  {% endif %}
+{% endfor %}
