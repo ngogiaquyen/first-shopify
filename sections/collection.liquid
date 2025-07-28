@@ -202,8 +202,11 @@
 
 {% javascript %}
 document.addEventListener('DOMContentLoaded', function() {
-  const filterButtons = document.querySelectorAll('.filter-button');
+  // Log the number of products to the console
   const products = document.querySelectorAll('.collection-product');
+  console.log('Total number of products:', products.length);
+
+  const filterButtons = document.querySelectorAll('.filter-button');
 
   filterButtons.forEach(button => {
     button.addEventListener('click', function() {
