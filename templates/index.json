@@ -58,11 +58,20 @@
     },
     "products": {
       "type": "products",
-      "settings": {}
+      "settings": {
+        "grid_title": "Gears",
+        "title_color": "#1f2937",
+        "product_1": "1200-mg-calcium-citrate-and-calcium-carbonate-blend-with-1000-iu-vitamin-d3-bone-health-supplement-for-adultssupplements",
+        "product_2": "1pc-horizontal-bar-pull-up-power-band-adjustable-training-assistance-band-elastic-band-mens-and-womens-indoor-home-fitness",
+        "product_3": "1pc-horizontal-bar-pull-up-power-band-adjustable-training-assistance-band-elastic-band-mens-and-womens-indoor-home-fitness",
+        "product_4": "18-womens-fitness-equipment-accessories-pilates-balls-stretching-straps-magic-rings-yoga-rings-for-fitness"
+      }
     },
     "products_RAVrLx": {
       "type": "products",
       "settings": {
+        "grid_title": "ádfasdfasdf",
+        "title_color": "#1f2937",
         "product_1": "1200-mg-calcium-citrate-and-calcium-carbonate-blend-with-1000-iu-vitamin-d3-bone-health-supplement-for-adultssupplements",
         "product_2": "18-womens-fitness-equipment-accessories-pilates-balls-stretching-straps-magic-rings-yoga-rings-for-fitness",
         "product_3": "creatine-monohydrate-3000-mg-build-muscle-improve-athletic-performance-fitness-energy-generation-adult-nutritional-supplement",
