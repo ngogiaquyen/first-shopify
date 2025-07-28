@@ -1,5 +1,47 @@
-{% for product in collections.all.products %}
-  {% if product.type == "Pilates Gear" %}
-    <p>{{ product.title }}</p>
-  {% endif %}
-{% endfor %}
+{% comment %}
+  Section: Pilates Gear Products
+  Hiển thị danh sách sản phẩm có product.type = "Pilates Gear"
+{% endcomment %}
+
+<div class="pilates-gear-section">
+  <h2>Pilates Gear Products</h2>
+
+  <div class="product-grid">
+    {% assign found = false %}
+
+    {% for product in collections.all.products %}
+      {% if product.type == "Pilates Gear" %}
+        {% assign found = true %}
+        <div class="product-item">
+          <a href="{{ product.url }}">
+            <img src="{{ product.featured_image | img_url: 'medium' }}" alt="{{ product.title }}">
+            <p>{{ product.title }}</p>
+            <p>{{ product.price | money }}</p>
+          </a>
+        </div>
+      {% endif %}
+    {% endfor %}
+
+    {% unless found %}
+      <p>Hiện tại chưa có sản phẩm nào thuộc loại "Pilates Gear".</p>
+    {% endunless %}
+  </div>
+</div>
+
+<style>
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+  }
+  .product-item {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+  }
+  .product-item img {
+    max-width: 100%;
+    height: auto;
+  }
+</style>
