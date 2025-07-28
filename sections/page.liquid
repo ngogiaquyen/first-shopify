@@ -16,7 +16,7 @@
   });
 </script>
 
-{% comment %} Styles for contact page with form, address, and social links {% endcomment %}
+{% comment %} Styles for contact page with content and contact information {% endcomment %}
 <style>
   .com_info {
     width: 100%;
@@ -47,54 +47,6 @@
     color: #4a5568;
     line-height: 1.6;
     margin-bottom: 1rem;
-  }
-  .form-group {
-    margin-bottom: 1rem;
-  }
-  .form-control {
-    width: 100%;
-    padding: 0.75rem;
-    font-size: 1rem;
-    border: 1px solid #ced4da;
-    border-radius: 5px;
-    color: #4a5568;
-  }
-  .form-control::placeholder {
-    color: #6c757d;
-  }
-  textarea.form-control {
-    resize: vertical;
-    min-height: 100px;
-  }
-  .require {
-    font-size: 0.9rem;
-    color: #6c757d;
-  }
-  .require .required {
-    color: #dc3545;
-  }
-  .buttons-set .book-submit {
-    background-color: #2aab46;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    font-weight: 600;
-    color: #fff;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    width: 100%;
-    max-width: 200px;
-    justify-content: center;
-  }
-  .buttons-set .book-submit:hover {
-    background-color: #218838;
-    transform: scale(1.05);
-  }
-  .google-map {
-    font-size: 1rem;
-    color: #4a5568;
-    text-align: center;
-    margin-top: 2rem;
   }
   .contact-section {
     margin-top: 2rem;
@@ -155,16 +107,6 @@
       font-size: 0.95rem;
       padding: 0 0.5rem;
     }
-    .form-control {
-      font-size: 0.95rem;
-    }
-    .buttons-set .book-submit {
-      max-width: 100%;
-    }
-    .google-map {
-      font-size: 0.95rem;
-      padding: 0 0.5rem;
-    }
     .contact-title {
       font-size: 1.5rem;
       padding: 0 0.5rem;
@@ -187,17 +129,6 @@
       font-size: 1.5rem;
     }
     .content_ct p {
-      font-size: 0.9rem;
-    }
-    .form-control {
-      font-size: 0.9rem;
-      padding: 0.5rem;
-    }
-    .buttons-set .book-submit {
-      padding: 0.5rem 1rem;
-      font-size: 0.9rem;
-    }
-    .google-map {
       font-size: 0.9rem;
     }
     .contact-title {
@@ -226,43 +157,35 @@
           </div>
         </div>
         <div class="col-md-6 col-12">
-          {% form 'contact', id: 'contact', class: 'contact-form' %}
-            {% if form.posted_successfully? %}
-              <p class="form-success">Thank you for your submission! We'll get back to you soon.</p>
-            {% endif %}
-            {% if form.errors %}
-              <div class="form-errors">
-                {% for field in form.errors %}
-                  <p class="error">{{ field }} {{ form.errors.messages[field] }}</p>
-                {% endfor %}
-              </div>
-            {% endif %}
-            <input type="hidden" id="Token-contact-form" name="contact[Token]">
-            <script src="https://www.google.com/recaptcha/api.js?render=6Ldtu4IUAAAAAMQzG1gCw3wFlx_GytlZyLrXcsuK"></script>
-            <script>
-              grecaptcha.ready(function() {
-                grecaptcha.execute("6Ldtu4IUAAAAAMQzG1gCw3wFlx_GytlZyLrXcsuK", {action: "contact"}).then(function(token) {
-                  document.getElementById("Token-contact-form").value = token;
-                });
-              });
-            </script>
-            <div class="customer-name row">
-              <div class="col-12 form-group">
-                <input type="text" class="form-control" name="contact[Name]" placeholder="Name *" required>
-              </div>   
-              <div class="col-12 form-group">
-                <input type="email" class="form-control" name="contact[email]" placeholder="Email *" required>
-              </div>
-              <label class="d-none">Message <span class="required">*</span></label>
-              <div class="col-12 form-group">
-                <textarea name="contact[Body]" placeholder="Message *" class="form-control" rows="3" required></textarea>                        
-              </div>
+          <div class="contact-section">
+            <h2 class="contact-title">Contact Information</h2>
+            <div class="contact-list">
+              {% if section.settings.email %}
+                <div class="contact-item">
+                  <a href="mailto:{{ section.settings.email }}">
+                    <i class="fas fa-envelope"></i>
+                    {{ section.settings.email }}
+                  </a>
+                </div>
+              {% endif %}
+              {% if section.settings.facebook %}
+                <div class="contact-item">
+                  <a href="{{ section.settings.facebook }}" target="_blank">
+                    <i class="fab fa-facebook-f"></i>
+                    Facebook
+                  </a>
+                </div>
+              {% endif %}
+              {% if section.settings.zalo %}
+                <div class="contact-item">
+                  <a href="{{ section.settings.zalo }}" target="_blank">
+                    <i class="fas fa-comment"></i>
+                    Zalo
+                  </a>
+                </div>
+              {% endif %}
             </div>
-            <span class="require d-block mb-3"><em class="required">* </em>Required fields</span>
-            <div class="buttons-set">
-              <button type="submit" title="Submit" class="book-submit btn btn-primary text-center d-flex align-items-center font-weight-bold subml"> <span>Send</span> </button>
-            </div>
-          {% endform %}
+          </div>
         </div>
       </div>
     </div>
@@ -287,9 +210,9 @@
     },
     {
       "type": "url",
-      "id": "youtube",
-      "label": "YouTube URL",
-      "info": "Enter the full URL to your YouTube channel (e.g., https://youtube.com/yourchannel)"
+      "id": "zalo",
+      "label": "Zalo URL",
+      "info": "Enter the full URL to your Zalo contact (e.g., https://zalo.me/yourphone)"
     }
   ]
 }
