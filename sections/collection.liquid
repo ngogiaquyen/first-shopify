@@ -22,12 +22,8 @@
 
   <div class="collection-products" id="product-grid">
     {% assign selected_type = request.params.type | default: 'all' %}
-    {% assign filtered_products = collection.products %}
-    {% if selected_type != 'all' %}
-      {% assign filtered_products = collection.products | where: 'type', selected_type %}
-    {% endif %}
-    {% paginate filtered_products by 20 %}
-      {% for product in paginate.collection %}
+    {% paginate collection.products by 20 %}
+      {% for product in collection.products %}
         {% assign product_type_handle = product.type | handleize %}
         {% if selected_type == 'all' or product_type_handle == selected_type %}
           <div class="collection-product" data-product-type="{{ product_type_handle }}">
