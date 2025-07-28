@@ -111,6 +111,10 @@
         "avatar_9": "shopify://shop_images/mis.jpg",
         "avatar_10": "shopify://shop_images/gus.jpg"
       }
+    },
+    "filter-product": {
+      "type": "filter-product",
+      "settings": {}
     }
   },
   "order": [
@@ -119,6 +123,7 @@
     "products_9REDDx",
     "products_jTF4Ta",
     "achievement",
-    "customer-reviews"
+    "customer-reviews",
+    "filter-product"
   ]
 }
