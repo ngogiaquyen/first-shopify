@@ -30,10 +30,12 @@
   }
   .page-image {
     display: block;
-    max-width: 100%;
+    width: 100vw;
     height: auto;
-    margin: 0 auto 1.5rem;
+    margin-left: calc(-50vw + 50%);
+    margin-bottom: 1.5rem;
     padding-top: 1rem;
+    object-fit: cover;
   }
   .rte {
     background-color: #fff;
@@ -123,7 +125,9 @@
       padding: 2rem 0.5rem;
     }
     .page-image {
-      padding: 0 0.5rem;
+      padding: 0;
+      margin-left: calc(-50vw + 50%);
+      width: 100vw;
     }
     .content_ct p {
       font-size: 0.95rem;
@@ -172,7 +176,7 @@
 <div class="com_info">
   <div class="container">
     {% if section.settings.header_image %}
-      <img src="{{ section.settings.header_image | img_url: 'large' }}" alt="Header Image" class="page-image" loading="lazy">
+      <img src="{{ section.settings.header_image | img_url: 'master' }}" alt="Header Image" class="page-image" loading="lazy">
     {% endif %}
     <div class="rte m-auto bg-white pt-3 pb-3">
       <div class="row">
