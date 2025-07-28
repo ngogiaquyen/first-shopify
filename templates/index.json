@@ -78,6 +78,18 @@
         "product_4": "daitea-ashwagandha-gummies-for-men-and-women-enhance-immunity-relieve-mood-enhance-vitality-health-food-vitamin-d-suppleme"
       }
     },
+    "products_VEAYgg": {
+      "type": "products",
+      "name": "Product Grid",
+      "settings": {
+        "grid_title": "thực tphaapr",
+        "title_color": "#1f2937",
+        "product_1": "3-pack-us-local-womens-tie-dye-spring-summer-fitness-yoga-gym-shorts-trendy-active-wear-shorts-wide-band-waist",
+        "product_2": "2025-compression-t-shirt-men-summer-sportswear-running-t-shirt-elastic-quick-dry-sport-tops-tee-athletic-gym-workout-shirts-men",
+        "product_3": "2025mens-running-shorts-2-in-1-breathable-sport-pants-quick-dry-workout-training-fitness-jogging-shorts-summer-beach-men-shorts",
+        "product_4": "2025-compression-t-shirt-men-summer-sportswear-running-t-shirt-elastic-quick-dry-sport-tops-tee-athletic-gym-workout-shirts-men"
+      }
+    },
     "achievement": {
       "type": "achievement",
       "settings": {}
@@ -103,6 +115,7 @@
     "slideshow",
     "products",
     "products_RAVrLx",
+    "products_VEAYgg",
     "achievement",
     "customer-reviews"
   ]
