@@ -55,14 +55,14 @@
     --transition: 0.3s ease;
   }
 
-  .product-grid-container {
+  .product-grid-container-{{ section.id }} {
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem 1rem;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   }
 
-  .title {
+  .product-grid-container-{{ section.id }} .title {
     font-size: 2.25rem;
     font-weight: 700;
     color: {{ section.settings.title_color | default: '#1f2937' }};
@@ -77,12 +77,12 @@
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
-  .title a {
+  .product-grid-container-{{ section.id }} .title a {
     color: {{ section.settings.title_color | default: '#2563eb' }};
     text-decoration: none;
   }
 
-  .title::after {
+  .product-grid-container-{{ section.id }} .title::after {
     content: '';
     position: absolute;
     bottom: -0.5rem;
@@ -93,18 +93,18 @@
     border-radius: 2px;
   }
 
-  .product-grid-container.visible .title {
+  .product-grid-container-{{ section.id }}.visible .title {
     opacity: 1;
     transform: translateY(0);
   }
 
-  .product-grid {
+  .product-grid-container-{{ section.id }} .product-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1.5rem;
   }
 
-  .product-card {
+  .product-grid-container-{{ section.id }} .product-card {
     position: relative;
     border: 1px solid var(--border-color);
     border-radius: 0.5rem;
@@ -115,27 +115,27 @@
     transition: opacity var(--transition), transform var(--transition), border-color var(--transition);
   }
 
-  .product-card a,
-  .product-card a:focus {
+  .product-grid-container-{{ section.id }} .product-card a,
+  .product-grid-container-{{ section.id }} .product-card a:focus {
     text-decoration: none;
   }
 
-  .product-card.visible {
+  .product-grid-container-{{ section.id }} .product-card.visible {
     opacity: 1;
     transform: translateY(0);
   }
 
-  .product-card.visible:nth-child(1) { transition-delay: 0.1s; }
-  .product-card.visible:nth-child(2) { transition-delay: 0.2s; }
-  .product-card.visible:nth-child(3) { transition-delay: 0.3s; }
-  .product-card.visible:nth-child(4) { transition-delay: 0.4s; }
+  .product-grid-container-{{ section.id }} .product-card.visible:nth-child(1) { transition-delay: 0.1s; }
+  .product-grid-container-{{ section.id }} .product-card.visible:nth-child(2) { transition-delay: 0.2s; }
+  .product-grid-container-{{ section.id }} .product-card.visible:nth-child(3) { transition-delay: 0.3s; }
+  .product-grid-container-{{ section.id }} .product-card.visible:nth-child(4) { transition-delay: 0.4s; }
 
-  .product-card:hover {
+  .product-grid-container-{{ section.id }} .product-card:hover {
     transform: translateY(-0.25rem);
     border-color: var(--primary-color);
   }
 
-  .product-image {
+  .product-grid-container-{{ section.id }} .product-image {
     width: 100%;
     aspect-ratio: 1 / 1; /* Ensures square shape */
     object-fit: cover; /* Crops image to fill container without distortion */
@@ -143,15 +143,15 @@
     transition: transform var(--transition);
   }
 
-  .product-card:hover .product-image {
+  .product-grid-container-{{ section.id }} .product-card:hover .product-image {
     transform: scale(1.03);
   }
 
-  .product-text {
+  .product-grid-container-{{ section.id }} .product-text {
     padding: 1rem;
   }
 
-  .product-title {
+  .product-grid-container-{{ section.id }} .product-title {
     font-size: 0.875rem;
     font-weight: 500;
     color: var(--text-color);
@@ -165,25 +165,25 @@
     margin-bottom: 0.5rem;
   }
 
-  .product-prices {
+  .product-grid-container-{{ section.id }} .product-prices {
     display: flex;
     gap: 0.5rem;
     align-items: baseline;
   }
 
-  .price-original {
+  .product-grid-container-{{ section.id }} .price-original {
     font-size: 0.875rem;
     color: #6b7280;
     text-decoration: line-through;
   }
 
-  .price-sale {
+  .product-grid-container-{{ section.id }} .price-sale {
     font-size: 1rem;
     color: var(--text-color);
     font-weight: 600;
   }
 
-  .sale-badge {
+  .product-grid-container-{{ section.id }} .sale-badge {
     position: absolute;
     top: 0.75rem;
     right: 0.75rem;
@@ -196,7 +196,7 @@
     text-transform: uppercase;
   }
 
-  .buy-now {
+  .product-grid-container-{{ section.id }} .buy-now {
     position: absolute;
     bottom: 0;
     right: 0;
@@ -214,14 +214,14 @@
     font-size: 1.25rem; /* Adjust icon/text size if needed */
   }
 
-  .buy-now:hover {
+  .product-grid-container-{{ section.id }} .buy-now:hover {
     background: #f5f5f5; /* Light gray hover for subtle feedback */
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
     transform: translateY(-2px); /* Slight lift effect */
     color: #007bff; /* Blue accent for icon/text on hover */
   }
 
-  .no-products {
+  .product-grid-container-{{ section.id }} .no-products {
     text-align: center;
     color: #6b7280;
     font-size: 1rem;
@@ -230,27 +230,27 @@
   }
 
   @media (max-width: 1024px) {
-    .product-grid {
+    .product-grid-container-{{ section.id }} .product-grid {
       grid-template-columns: repeat(3, 1fr);
       gap: 1rem;
     }
   }
 
   @media (max-width: 768px) {
-    .product-grid-container {
+    .product-grid-container-{{ section.id }} {
       margin: 0;
       padding: 1rem; /* Add padding on both sides for mobile */
       width: 100%;
       max-width: 100%;
     }
-    .product-grid {
+    .product-grid-container-{{ section.id }} .product-grid {
       grid-template-columns: repeat(2, 1fr);
     }
-    .title {
+    .product-grid-container-{{ section.id }} .title {
       font-size: 1.875rem;
       padding: 0 0.5rem;
     }
-    .product-image {
+    .product-grid-container-{{ section.id }} .product-image {
       width: 100%;
       aspect-ratio: 1 / 1; /* Reinforce square shape */
       object-fit: cover;
@@ -258,13 +258,13 @@
   }
 
   @media (max-width: 480px) {
-    .product-grid {
+    .product-grid-container-{{ section.id }} .product-grid {
       grid-template-columns: 1fr;
     }
-    .title {
+    .product-grid-container-{{ section.id }} .title {
       font-size: 1.5rem;
     }
-    .product-image {
+    .product-grid-container-{{ section.id }} .product-image {
       width: 100%;
       aspect-ratio: 1 / 1; /* Reinforce square shape */
       object-fit: cover;
@@ -278,23 +278,23 @@
 {% comment %} JavaScript for scroll-based animation {% endcomment %}
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const container = document.querySelector('.product-grid-container');
-    if (!container) return;
+    const containers = document.querySelectorAll('[class*="product-grid-container-"]');
+    if (!containers.length) return;
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          container.classList.add('visible');
-          document.querySelectorAll('.product-card').forEach(card => card.classList.add('visible'));
+          entry.target.classList.add('visible');
+          entry.target.querySelectorAll('.product-card').forEach(card => card.classList.add('visible'));
           observer.unobserve(entry.target);
         }
       });
     }, { threshold: 0.2 });
-    observer.observe(container);
+    containers.forEach(container => observer.observe(container));
   });
 </script>
 
 {% comment %} Product grid HTML with for loop and error handling {% endcomment %}
-<div class="product-grid-container">
+<div class="product-grid-container-{{ section.id }}">
   {% if section.settings.grid_title != blank %}
     <h2 class="title"><a href="#">{{ section.settings.grid_title | escape }}</a></h2>
   {% endif %}
