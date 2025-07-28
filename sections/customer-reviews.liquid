@@ -12,52 +12,52 @@
     {
       "type": "image_picker",
       "id": "avatar_1",
-      "label": "Avatar for Review 1 (Top Row)"
+      "label": "Avatar for Review 1"
     },
     {
       "type": "image_picker",
       "id": "avatar_2",
-      "label": "Avatar for Review 2 (Top Row)"
+      "label": "Avatar for Review 2"
     },
     {
       "type": "image_picker",
       "id": "avatar_3",
-      "label": "Avatar for Review 3 (Top Row)"
+      "label": "Avatar for Review 3"
     },
     {
       "type": "image_picker",
       "id": "avatar_4",
-      "label": "Avatar for Review 4 (Top Row)"
+      "label": "Avatar for Review 4"
     },
     {
       "type": "image_picker",
       "id": "avatar_5",
-      "label": "Avatar for Review 5 (Top Row)"
+      "label": "Avatar for Review 5"
     },
     {
       "type": "image_picker",
       "id": "avatar_6",
-      "label": "Avatar for Review 6 (Bottom Row)"
+      "label": "Avatar for Review 6"
     },
     {
       "type": "image_picker",
       "id": "avatar_7",
-      "label": "Avatar for Review 7 (Bottom Row)"
+      "label": "Avatar for Review 7"
     },
     {
       "type": "image_picker",
       "id": "avatar_8",
-      "label": "Avatar for Review 8 (Bottom Row)"
+      "label": "Avatar for Review 8"
     },
     {
       "type": "image_picker",
       "id": "avatar_9",
-      "label": "Avatar for Review 9 (Bottom Row)"
+      "label": "Avatar for Review 9"
     },
     {
       "type": "image_picker",
       "id": "avatar_10",
-      "label": "Avatar for Review 10 (Bottom Row)"
+      "label": "Avatar for Review 10"
     }
   ],
   "presets": [
@@ -69,7 +69,7 @@
 }
 {% endschema %}
 
-{% comment %} Styles for customer reviews section with two-row scrolling carousel {% endcomment %}
+{% comment %} Styles for 3D rotating Earth with orbiting reviews {% endcomment %}
 <style>
   .reviews-container {
     max-width: 1200px;
@@ -77,6 +77,7 @@
     padding: 3rem 1.5rem;
     text-align: center;
     width: 100%;
+    perspective: 1000px;
   }
   .reviews-title {
     font-size: 2.5rem;
@@ -84,56 +85,59 @@
     margin-bottom: 2rem;
     color: #1a1a1a;
   }
-  .reviews-carousel {
-    overflow: hidden;
+  .earth-container {
     position: relative;
+    width: 300px;
+    height: 300px;
+    margin: 0 auto;
+    transform-style: preserve-3d;
+  }
+  .earth {
     width: 100%;
-    margin-bottom: 1.5rem;
+    height: 100%;
+    background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/The_Earth_seen_from_Apollo_17.jpg/300px-The_Earth_seen_from_Apollo_17.jpg') no-repeat center;
+    background-size: cover;
+    border-radius: 50%;
+    animation: rotate-earth 20s linear infinite;
+    transform-style: preserve-3d;
   }
-  .reviews-grid-top {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 1.5rem;
-    animation: scroll-left 30s linear infinite;
-    margin:30px 0px;
-  }
-  .reviews-grid-bottom {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 1.5rem;
-    animation: scroll-right 30s linear infinite;
-    margin-bottom:32px;
-  }
-  .reviews-grid-top.paused,
-  .reviews-grid-bottom.paused {
-    animation-play-state: paused;
+  .orbit-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    animation: orbit 30s linear infinite;
   }
   .review-card {
-  background: #ffffff;
-  border-radius: 24px;
-  padding: 1.5rem;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  text-align: left;
-  min-width: 280px;
-  max-width: 350px;
-  flex: 0 0 auto;
-  transition: transform 0.3s ease-in-out;
-}
-
+    position: absolute;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 200px;
+    text-align: left;
+    transition: transform 0.3s ease-in-out;
+  }
   .review-card:hover {
-    transform: translateY(-5px);
+    transform: scale(1.05);
+  }
+  .earth-container:hover .earth,
+  .earth-container:hover .orbit-container {
+    animation-play-state: paused;
   }
   .review-header {
     display: flex;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
   }
   .review-avatar {
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     background: #e2e8f0;
-    margin-right: 1rem;
+    margin-right: 0.75rem;
     overflow: hidden;
   }
   .review-avatar img {
@@ -143,56 +147,51 @@
   }
   .review-rating {
     color: #facc15;
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
   }
   .review-text {
-    font-size: 1rem;
+    font-size: 0.9rem;
     color: #4a5568;
-    line-height: 1.5;
+    line-height: 1.4;
   }
-  @keyframes scroll-left {
-    0% {
-      transform: translateX(0);
+  @keyframes rotate-earth {
+    from {
+      transform: rotateY(0deg);
     }
-    100% {
-      transform: translateX(-100%);
+    to {
+      transform: rotateY(360deg);
     }
   }
-  @keyframes scroll-right {
-    0% {
-      transform: translateX(-100%);
+  @keyframes orbit {
+    from {
+      transform: rotateY(0deg);
     }
-    100% {
-      transform: translateX(0);
+    to {
+      transform: rotateY(360deg);
     }
   }
   @media screen and (max-width: 768px) {
     .reviews-container {
-      margin: 20px 0;
       padding: 2rem 0;
-      width: 100%;
-      max-width: 100%;
     }
     .reviews-title {
       font-size: 2rem;
-      padding: 0 0.5rem;
     }
-    .reviews-grid-top,
-    .reviews-grid-bottom {
-      gap: 1rem;
+    .earth-container {
+      width: 250px;
+      height: 250px;
     }
     .review-card {
-      min-width: 240px;
-      max-width: 100%;
-      padding: 1.2rem;
+      width: 180px;
+      padding: 0.8rem;
     }
     .review-avatar {
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
     }
     .review-text {
-      font-size: 0.95rem;
+      font-size: 0.85rem;
     }
   }
   @media screen and (max-width: 480px) {
@@ -202,87 +201,51 @@
     .reviews-title {
       font-size: 1.5rem;
     }
-    .reviews-grid-top,
-    .reviews-grid-bottom {
-      gap: 0.8rem;
+    .earth-container {
+      width: 200px;
+      height: 200px;
     }
     .review-card {
-      min-width: 200px;
-      padding: 1rem;
+      width: 150px;
+      padding: 0.6rem;
     }
     .review-avatar {
-      width: 36px;
-      height: 36px;
+      width: 32px;
+      height: 32px;
     }
     .review-text {
-      font-size: 0.9rem;
+      font-size: 0.8rem;
     }
   }
 </style>
 
-{% comment %} JavaScript for carousel duplication and pause-on-hover {% endcomment %}
+{% comment %} JavaScript for positioning review cards in orbit {% endcomment %}
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    // Function to setup carousel for a given grid
-    function setupCarousel(gridSelector) {
-      const grid = document.querySelector(gridSelector);
-      if (!grid) return;
+    const orbitContainer = document.querySelector('.orbit-container');
+    const reviewCards = document.querySelectorAll('.review-card');
+    const radius = 200; // Orbit radius in pixels
+    const angleStep = 360 / reviewCards.length;
 
-      // Duplicate review cards for seamless looping
-      const reviewCards = grid.querySelectorAll('.review-card');
-      reviewCards.forEach(card => {
-        const clone = card.cloneNode(true);
-        grid.appendChild(clone);
-      });
-
-      // Pause animation on hover
-      grid.addEventListener('mouseenter', () => {
-        grid.classList.add('paused');
-      });
-      grid.addEventListener('mouseleave', () => {
-        grid.classList.remove('paused');
-      });
-    }
-
-    // Setup both carousels
-    setupCarousel('.reviews-grid-top');
-    setupCarousel('.reviews-grid-bottom');
+    reviewCards.forEach((card, index) => {
+      const angle = index * angleStep;
+      const rad = angle * (Math.PI / 180);
+      const x = radius * Math.cos(rad);
+      const z = radius * Math.sin(rad);
+      card.style.transform = `translateX(${x}px) translateZ(${z}px)`;
+    });
   });
 </script>
 
-{% comment %} Customer reviews HTML structure with two rows {% endcomment %}
+{% comment %} HTML structure for rotating Earth with orbiting reviews {% endcomment %}
 <section class="reviews-container">
   <h2 class="reviews-title">{{ section.settings.title }}</h2>
-  {% assign reviews = "I can do pilates whenever I want, without going out into the weather.|Our reformer has exceeded our expectations. It arrived quickly and the customer service is 5 stars.|Very impressed with the quality of the machine!|Having my own reformer has given me the opportunity to exercise when I want in the privacy of my own home.|So glad I chose this reformer with The Pilates Shop|Love using my machine|Everything I hoped and more!|The convenience of having it at home is brilliant|Love my Refoife.|Tailored workouts like having a personal trainer at home." | split: "|" %}
-  
-  {% comment %} Top row: Right to Left {% endcomment %}
-  <div class="reviews-carousel">
-    <div class="reviews-grid-top">
-      {% for review in reviews limit: 5 %}
+  <div class="earth-container">
+    <div class="earth"></div>
+    <div class="orbit-container">
+      {% assign reviews = "I can do pilates whenever I want, without going out into the weather.|Our reformer has exceeded our expectations. It arrived quickly and the customer service is 5 stars.|Very impressed with the quality of the machine!|Having my own reformer has given me the opportunity to exercise when I want in the privacy of my own home.|So glad I chose this reformer with The Pilates Shop|Love using my machine|Everything I hoped and more!|The convenience of having it at home is brilliant|Love my Refoife.|Tailored workouts like having a personal trainer at home." | split: "|" %}
+      {% for review in reviews %}
         {% assign index = forloop.index %}
-        {% assign avatar_key = "avatar_" | append: index %}
-        <div class="review-card">
-          <div class="review-header">
-            <div class="review-avatar">
-              {% if section.settings[avatar_key] %}
-                <img src="{{ section.settings[avatar_key] | img_url: '100x100' }}" alt="Customer Avatar {{ index }}" loading="lazy">
-              {% else %}
-                <img src="{{ 'avatar-placeholder.jpg' | asset_url }}" alt="Customer Avatar Placeholder" loading="lazy">
-              {% endif %}
-            </div>
-            <div class="review-rating">★★★★★</div>
-          </div>
-          <p class="review-text">{{ review }}</p>
-        </div>
-      {% endfor %}
-    </div>
-  </div>
-
-  {% comment %} Bottom row: Left to Right {% endcomment %}
-  <div class="reviews-carousel">
-    <div class="reviews-grid-bottom">
-      {% for review in reviews offset: 5 %}
-        {% assign index = forloop.index0 | plus: 6 %}
         {% assign avatar_key = "avatar_" | append: index %}
         <div class="review-card">
           <div class="review-header">
