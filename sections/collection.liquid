@@ -1,5 +1,5 @@
 {% comment %}
-  This template displays all products in the Shopify store with product type filtering and pagination.
+  This template displays all products in the Shopify store with product type filtering, without pagination.
   Assumes a collection named "all" exists or uses search.products for all products.
   https://shopify.dev/docs/storefronts/themes/architecture/templates
 {% endcomment %}
@@ -7,7 +7,7 @@
 <div class="collection-container" role="main">
   <h1 class="collection-title">Tất cả sản phẩm</h1>
 
-  {% comment %} Sử dụng search.products để lấy tất cả sản phẩm hoặc một collection 'all' nếu có {% endcomment %}
+  {% comment %} Sử dụng search.products hoặc collections.all.products để lấy tất cả sản phẩm {% endcomment %}
   {% assign products = search.products | default: collections.all.products %}
   
   {% if products.size > 0 %}
@@ -22,67 +22,33 @@
     </div>
 
     <div class="collection-products" id="product-grid" role="grid">
-      {% paginate products by section.settings.products_per_page %}
-        {% for product in products %}
-          <div class="collection-product" data-product-type="{{ product.type | handleize }}" role="gridcell">
-            {% if product.featured_image %}
-              {% render 'image',
-                class: 'collection-product__image',
-                image: product.featured_image,
-                url: product.url,
-                width: 400,
-                height: 400,
-                crop: 'center',
-                loading: 'lazy',
-                alt: product.title | escape
-              %}
-            {% else %}
-              <div class="collection-product__image placeholder">
-                <span>Không có hình ảnh</span>
-              </div>
-            {% endif %}
-            <div class="collection-product__content">
-              <h2 class="product-title">
-                <a href="{{ product.url }}" aria-label="{{ product.title | escape }}">{{ product.title | escape }}</a>
-              </h2>
-              <p class="product-price">{{ product.price | money }}</p>
-              <p class="product-type">Loại: {{ product.type | escape }}</p>
+      {% for product in products %}
+        <div class="collection-product" data-product-type="{{ product.type | handleize }}" role="gridcell">
+          {% if product.featured_image %}
+            {% render 'image',
+              class: 'collection-product__image',
+              image: product.featured_image,
+              url: product.url,
+              width: 400,
+              height: 400,
+              crop: 'center',
+              loading: 'lazy',
+              alt: product.title | escape
+            %}
+          {% else %}
+            <div class="collection-product__image placeholder">
+              <span>Không có hình ảnh</span>
             </div>
+          {% endif %}
+          <div class="collection-product__content">
+            <h2 class="product-title">
+              <a href="{{ product.url }}" aria-label="{{ product.title | escape }}">{{ product.title | escape }}</a>
+            </h2>
+            <p class="product-price">{{ product.price | money }}</p>
+            <p class="product-type">Loại: {{ product.type | escape }}</p>
           </div>
-        {% endfor %}
-        
-        {% if paginate.pages > 1 %}
-          <nav class="pagination" role="navigation" aria-label="Phân trang">
-            <ul class="pagination__list">
-              {% if paginate.previous.is_link %}
-                <li class="pagination__item">
-                  <a href="{{ paginate.previous.url }}" class="pagination__link pagination__link--prev" aria-label="Trang trước">
-                    <span>←</span>
-                  </a>
-                </li>
-              {% endif %}
-              {% for part in paginate.parts %}
-                {% if part.is_link %}
-                  <li class="pagination__item">
-                    <a href="{{ part.url }}" class="pagination__link" aria-label="Trang {{ part.title }}">{{ part.title }}</a>
-                  </li>
-                {% else %}
-                  <li class="pagination__item">
-                    <span class="pagination__link pagination__link--current" aria-current="page">{{ part.title }}</span>
-                  </li>
-                {% endif %}
-              {% endfor %}
-              {% if paginate.next.is_link %}
-                <li class="pagination__item">
-                  <a href="{{ paginate.next.url }}" class="pagination__link pagination__link--next" aria-label="Trang sau">
-                    <span>→</span>
-                  </a>
-                </li>
-              {% endif %}
-            </ul>
-          </nav>
-        {% endif %}
-      {% endpaginate %}
+        </div>
+      {% endfor %}
     </div>
   {% else %}
     <div class="collection-empty" role="alert">
@@ -221,48 +187,6 @@
   font-size: 16px;
 }
 
-.pagination {
-  display: flex;
-  justify-content: center;
-  margin-top: 32px;
-}
-
-.pagination__list {
-  display: flex;
-  gap: 8px;
-  list-style: none;
-  padding: 0;
-}
-
-.pagination__link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 36px;
-  height: 36px;
-  padding: 0 10px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  background: #ffffff;
-  color: #111827;
-  font-size: 14px;
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
-
-.pagination__link:hover:not(.pagination__link--current) {
-  background: #111827;
-  color: #ffffff;
-  border-color: #111827;
-}
-
-.pagination__link--current {
-  background: #111827;
-  color: #ffffff;
-  border-color: #111827;
-  cursor: default;
-}
-
 @media (max-width: 768px) {
   .collection-container {
     padding: 16px 12px;
@@ -351,16 +275,6 @@ document.addEventListener('DOMContentLoaded', () => {
 {% schema %}
 {
   "name": "Tất cả sản phẩm",
-  "settings": [
-    {
-      "type": "range",
-      "id": "products_per_page",
-      "min": 12,
-      "max": 100,
-      "step": 4,
-      "default": 20,
-      "label": "Số sản phẩm mỗi trang"
-    }
-  ]
+  "settings": []
 }
 {% endschema %}
