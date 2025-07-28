@@ -108,24 +108,8 @@
     font-weight: 700;
     color: #ffffff;
     margin-bottom: 1.25rem;
-    position: relative;
-    display: inline-block; /* Matches text width */
     text-transform: uppercase;
     letter-spacing: 0.05em;
-  }
-  footer h5::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 0;
-    width: 100%; /* Matches text width due to inline-block */
-    height: 3px;
-    background: linear-gradient(to right, #3b82f6, #10b981);
-    transition: transform 0.4s ease;
-    transform-origin: left;
-  }
-  footer h5:hover::after {
-    transform: scaleX(1.1) translateX(4px); /* Slight stretch and shift */
   }
   footer p {
     font-size: 0.9375rem;
@@ -250,28 +234,11 @@
   .legal-links a {
     color: #e2e8f0;
     text-decoration: none;
-    position: relative;
-    display: inline-block; /* Matches text width */
     transition: color 0.3s ease;
     padding: 0.375rem 0;
   }
-  .legal-links a::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 100%; /* Matches text width */
-    height: 1px;
-    background: #3b82f6;
-    transition: transform 0.3s ease;
-    transform: scaleX(0);
-    transform-origin: left;
-  }
   .legal-links a:hover {
     color: #3b82f6;
-  }
-  .legal-links a:hover::after {
-    transform: scaleX(1); /* Expands to text width */
   }
   footer a:focus, footer button:focus {
     outline: 2px solid #3b82f6;
