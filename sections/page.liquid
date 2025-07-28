@@ -7,7 +7,6 @@
 
 {% comment %} Load Font Awesome for icons {% endcomment %}
 <script>
-  // Load Font Awesome
   document.addEventListener('DOMContentLoaded', () => {
     const fontAwesome = document.createElement('link');
     fontAwesome.rel = 'stylesheet';
@@ -29,12 +28,12 @@
     margin: 0 auto;
     padding: 3rem 1.5rem;
   }
-  .page_title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #1a1a1a;
-    margin-bottom: 1.5rem;
-    text-align: center;
+  .page-image {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto 1.5rem;
+    padding-top: 1rem;
   }
   .rte {
     background-color: #fff;
@@ -123,8 +122,7 @@
     .rte {
       padding: 2rem 0.5rem;
     }
-    .page_title {
-      font-size: 2rem;
+    .page-image {
       padding: 0 0.5rem;
     }
     .content_ct p {
@@ -151,9 +149,6 @@
     .com_info .container {
       padding: 1.5rem 0;
     }
-    .page_title {
-      font-size: 1.5rem;
-    }
     .content_ct p {
       font-size: 0.9rem;
     }
@@ -176,9 +171,9 @@
 
 <div class="com_info">
   <div class="container">
-    <h1 class="font-weight-bold text-center pt-3 page_title">
-      {{ page.title }}
-    </h1>
+    {% if section.settings.header_image %}
+      <img src="{{ section.settings.header_image | img_url: 'large' }}" alt="Header Image" class="page-image" loading="lazy">
+    {% endif %}
     <div class="rte m-auto bg-white pt-3 pb-3">
       <div class="row">
         <div class="col-md-6 col-12">
@@ -211,7 +206,7 @@
               </div>
             </form>
             <div class="google-map mt-4">
-             Room 901, Building A, Wanda Plaza, No. 121, Huaian East Road, Yuhua District, Shijiazhuang City, Hebei Province, China
+              Room 901, Building A, Wanda Plaza, No. 121, Huaian East Road, Yuhua District, Shijiazhuang City, Hebei Province, China
             </div>
           </div>
         </div>
@@ -223,6 +218,12 @@
 {% schema %}
 {
   "name": "t:general.page",
-  "settings": []
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "header_image",
+      "label": "Header Image"
+    }
+  ]
 }
 {% endschema %}
