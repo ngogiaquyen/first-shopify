@@ -34,7 +34,7 @@
 }
 {% endschema %}
 
-{% comment %} Styles matching the provided sample for a minimal and modern product grid {% endcomment %}
+{% comment %} Styles matching the provided sample with renamed classes and consistent image sizes {% endcomment %}
 <style>
   :root {
     --primary-color: #2563eb;
@@ -44,14 +44,14 @@
     --transition: 0.3s ease;
   }
 
-  .all-products-grid-container-{{ section.id }} {
+  .shop-products-grid-{{ section.id }} {
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem 1rem;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   }
 
-  .all-products-grid-container-{{ section.id }} .title {
+  .shop-products-grid-{{ section.id }} .shop-title {
     font-size: 2.25rem;
     font-weight: 700;
     color: {{ section.settings.title_color | default: '#1f2937' }};
@@ -66,12 +66,12 @@
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
-  .all-products-grid-container-{{ section.id }} .title a {
+  .shop-products-grid-{{ section.id }} .shop-title a {
     color: {{ section.settings.title_color | default: '#2563eb' }};
     text-decoration: none;
   }
 
-  .all-products-grid-container-{{ section.id }} .title::after {
+  .shop-products-grid-{{ section.id }} .shop-title::after {
     content: '';
     position: absolute;
     bottom: -0.5rem;
@@ -82,18 +82,18 @@
     border-radius: 2px;
   }
 
-  .all-products-grid-container-{{ section.id }}.visible .title {
+  .shop-products-grid-{{ section.id }}.visible .shop-title {
     opacity: 1;
     transform: translateY(0);
   }
 
-  .all-products-grid-container-{{ section.id }} .product-grid {
+  .shop-products-grid-{{ section.id }} .shop-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1.5rem;
   }
 
-  .all-products-grid-container-{{ section.id }} .product-card {
+  .shop-products-grid-{{ section.id }} .shop-card {
     position: relative;
     border: 1px solid var(--border-color);
     border-radius: 0.5rem;
@@ -104,27 +104,27 @@
     transition: opacity var(--transition), transform var(--transition), border-color var(--transition);
   }
 
-  .all-products-grid-container-{{ section.id }} .product-card a,
-  .all-products-grid-container-{{ section.id }} .product-card a:focus {
+  .shop-products-grid-{{ section.id }} .shop-card a,
+  .shop-products-grid-{{ section.id }} .shop-card a:focus {
     text-decoration: none;
   }
 
-  .all-products-grid-container-{{ section.id }} .product-card.visible {
+  .shop-products-grid-{{ section.id }} .shop-card.visible {
     opacity: 1;
     transform: translateY(0);
   }
 
-  .all-products-grid-container-{{ section.id }} .product-card.visible:nth-child(1) { transition-delay: 0.1s; }
-  .all-products-grid-container-{{ section.id }} .product-card.visible:nth-child(2) { transition-delay: 0.2s; }
-  .all-products-grid-container-{{ section.id }} .product-card.visible:nth-child(3) { transition-delay: 0.3s; }
-  .all-products-grid-container-{{ section.id }} .product-card.visible:nth-child(4) { transition-delay: 0.4s; }
+  .shop-products-grid-{{ section.id }} .shop-card.visible:nth-child(1) { transition-delay: 0.1s; }
+  .shop-products-grid-{{ section.id }} .shop-card.visible:nth-child(2) { transition-delay: 0.2s; }
+  .shop-products-grid-{{ section.id }} .shop-card.visible:nth-child(3) { transition-delay: 0.3s; }
+  .shop-products-grid-{{ section.id }} .shop-card.visible:nth-child(4) { transition-delay: 0.4s; }
 
-  .all-products-grid-container-{{ section.id }} .product-card:hover {
+  .shop-products-grid-{{ section.id }} .shop-card:hover {
     transform: translateY(-0.25rem);
     border-color: var(--primary-color);
   }
 
-  .all-products-grid-container-{{ section.id }} .product-image {
+  .shop-products-grid-{{ section.id }} .shop-image {
     width: 100%;
     aspect-ratio: 1 / 1; /* Ensures square shape */
     object-fit: cover; /* Crops image to fill container without distortion */
@@ -132,15 +132,15 @@
     transition: transform var(--transition);
   }
 
-  .all-products-grid-container-{{ section.id }} .product-card:hover .product-image {
+  .shop-products-grid-{{ section.id }} .shop-card:hover .shop-image {
     transform: scale(1.03);
   }
 
-  .all-products-grid-container-{{ section.id }} .product-text {
+  .shop-products-grid-{{ section.id }} .shop-text {
     padding: 1rem;
   }
 
-  .all-products-grid-container-{{ section.id }} .product-title {
+  .shop-products-grid-{{ section.id }} .shop-title-text {
     font-size: 0.875rem;
     font-weight: 500;
     color: var(--text-color);
@@ -154,25 +154,25 @@
     margin-bottom: 0.5rem;
   }
 
-  .all-products-grid-container-{{ section.id }} .product-prices {
+  .shop-products-grid-{{ section.id }} .shop-prices {
     display: flex;
     gap: 0.5rem;
     align-items: baseline;
   }
 
-  .all-products-grid-container-{{ section.id }} .price-original {
+  .shop-products-grid-{{ section.id }} .shop-price-original {
     font-size: 0.875rem;
     color: #6b7280;
     text-decoration: line-through;
   }
 
-  .all-products-grid-container-{{ section.id }} .price-sale {
+  .shop-products-grid-{{ section.id }} .shop-price-sale {
     font-size: 1rem;
     color: var(--text-color);
     font-weight: 600;
   }
 
-  .all-products-grid-container-{{ section.id }} .sale-badge {
+  .shop-products-grid-{{ section.id }} .shop-sale-badge {
     position: absolute;
     top: 0.75rem;
     right: 0.75rem;
@@ -185,7 +185,7 @@
     text-transform: uppercase;
   }
 
-  .all-products-grid-container-{{ section.id }} .buy-now {
+  .shop-products-grid-{{ section.id }} .shop-buy-now {
     position: absolute;
     bottom: 0;
     right: 0;
@@ -203,14 +203,14 @@
     font-size: 1.25rem;
   }
 
-  .all-products-grid-container-{{ section.id }} .buy-now:hover {
+  .shop-products-grid-{{ section.id }} .shop-buy-now:hover {
     background: #f5f5f5;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
     transform: translateY(-2px);
     color: #007bff;
   }
 
-  .all-products-grid-container-{{ section.id }} .no-products {
+  .shop-products-grid-{{ section.id }} .shop-no-products {
     text-align: center;
     color: #6b7280;
     font-size: 1rem;
@@ -218,14 +218,14 @@
     grid-column: 1 / -1;
   }
 
-  .all-products-grid-container-{{ section.id }} .pagination {
+  .shop-products-grid-{{ section.id }} .shop-pagination {
     display: flex;
     justify-content: center;
     gap: 0.5rem;
     margin-top: 2rem;
   }
 
-  .all-products-grid-container-{{ section.id }} .pagination a {
+  .shop-products-grid-{{ section.id }} .shop-pagination a {
     padding: 0.5rem 1rem;
     border: 1px solid var(--border-color);
     border-radius: 0.375rem;
@@ -234,39 +234,39 @@
     transition: background-color var(--transition);
   }
 
-  .all-products-grid-container-{{ section.id }} .pagination a:hover {
+  .shop-products-grid-{{ section.id }} .shop-pagination a:hover {
     background-color: var(--primary-color);
     color: #ffffff;
   }
 
-  .all-products-grid-container-{{ section.id }} .pagination .current {
+  .shop-products-grid-{{ section.id }} .shop-pagination .current {
     background-color: var(--primary-color);
     color: #ffffff;
     border-color: var(--primary-color);
   }
 
   @media (max-width: 1024px) {
-    .all-products-grid-container-{{ section.id }} .product-grid {
+    .shop-products-grid-{{ section.id }} .shop-grid {
       grid-template-columns: repeat(3, 1fr);
       gap: 1rem;
     }
   }
 
   @media (max-width: 768px) {
-    .all-products-grid-container-{{ section.id }} {
+    .shop-products-grid-{{ section.id }} {
       margin: 0;
       padding: 1rem;
       width: 100%;
       max-width: 100%;
     }
-    .all-products-grid-container-{{ section.id }} .product-grid {
+    .shop-products-grid-{{ section.id }} .shop-grid {
       grid-template-columns: repeat(2, 1fr);
     }
-    .all-products-grid-container-{{ section.id }} .title {
+    .shop-products-grid-{{ section.id }} .shop-title {
       font-size: 1.875rem;
       padding: 0 0.5rem;
     }
-    .all-products-grid-container-{{ section.id }} .product-image {
+    .shop-products-grid-{{ section.id }} .shop-image {
       width: 100%;
       aspect-ratio: 1 / 1;
       object-fit: cover;
@@ -274,13 +274,13 @@
   }
 
   @media (max-width: 480px) {
-    .all-products-grid-container-{{ section.id }} .product-grid {
+    .shop-products-grid-{{ section.id }} .shop-grid {
       grid-template-columns: 1fr;
     }
-    .all-products-grid-container-{{ section.id }} .title {
+    .shop-products-grid-{{ section.id }} .shop-title {
       font-size: 1.5rem;
     }
-    .all-products-grid-container-{{ section.id }} .product-image {
+    .shop-products-grid-{{ section.id }} .shop-image {
       width: 100%;
       aspect-ratio: 1 / 1;
       object-fit: cover;
@@ -291,16 +291,16 @@
 {% comment %} Include FontAwesome CDN {% endcomment %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-{% comment %} JavaScript for scroll-based animation {% endcomment %}
+{% comment %} JavaScript for scroll-based animation, updated for new class names {% endcomment %}
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const containers = document.querySelectorAll('[class*="all-products-grid-container-"]');
+    const containers = document.querySelectorAll('[class*="shop-products-grid-"]');
     if (!containers.length) return;
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
-          entry.target.querySelectorAll('.product-card').forEach((card, index) => {
+          entry.target.querySelectorAll('.shop-card').forEach((card, index) => {
             card.classList.add('visible');
             card.style.transitionDelay = `${index * 0.1}s`;
           });
@@ -312,46 +312,46 @@
   });
 </script>
 
-{% comment %} All products grid HTML with pagination {% endcomment %}
-<div class="all-products-grid-container-{{ section.id }}">
+{% comment %} All products grid HTML with pagination, updated for new class names {% endcomment %}
+<div class="shop-products-grid-{{ section.id }}">
   {% if section.settings.grid_title != blank %}
-    <h2 class="title"><a href="/collections/all">{{ section.settings.grid_title | escape }}</a></h2>
+    <h2 class="shop-title"><a href="/collections/all">{{ section.settings.grid_title | escape }}</a></h2>
   {% endif %}
-  <div class="product-grid">
+  <div class="shop-grid">
     {% assign products_per_page = section.settings.products_per_page | default: 24 %}
     {% paginate collections.all.products by products_per_page %}
       {% assign has_products = false %}
       {% for product in collections.all.products %}
         {% if product.available %}
           {% assign has_products = true %}
-          <div class="product-card">
+          <div class="shop-card">
             <a aria-label="{{ product.title | escape }}" href="{{ product.url }}">
               {% if product.compare_at_price > product.price %}
-                <span class="sale-badge">Sale</span>
+                <span class="shop-sale-badge">Sale</span>
               {% endif %}
               {% if product.featured_image %}
-                <img class="product-image" src="{{ product.featured_image | img_url: '500x500' }}" alt="{{ product.title | escape }}" loading="lazy">
+                <img class="shop-image" src="{{ product.featured_image | img_url: '500x500', crop: 'center' }}" alt="{{ product.title | escape }}" loading="lazy">
               {% else %}
-                <img class="product-image" src="{{ 'no-image.jpg' | asset_url }}" alt="No image available" loading="lazy">
+                <img class="shop-image" src="{{ 'no-image.jpg' | asset_url }}" alt="No image available" loading="lazy">
               {% endif %}
-              <div class="product-text">
-                <p class="product-title">{{ product.title | default: 'Untitled Product' }}</p>
-                <p class="product-prices">
+              <div class="shop-text">
+                <p class="shop-title-text">{{ product.title | default: 'Untitled Product' }}</p>
+                <p class="shop-prices">
                   {% if product.compare_at_price > product.price %}
-                    <span class="price-original">{{ product.compare_at_price | money }}</span>
-                    <span class="price-sale">{{ product.price | money }}</span>
+                    <span class="shop-price-original">{{ product.compare_at_price | money }}</span>
+                    <span class="shop-price-sale">{{ product.price | money }}</span>
                   {% else %}
-                    <span class="price-sale">{{ product.price | money | default: 'N/A' }}</span>
+                    <span class="shop-price-sale">{{ product.price | money | default: 'N/A' }}</span>
                   {% endif %}
                 </p>
               </div>
             </a>
             {% if product.variants.first %}
-              <form action="/cart/add" method="post" class="buy-now-form">
+              <form action="/cart/add" method="post" class="shop-buy-now-form">
                 <input type="hidden" name="id" value="{{ product.variants.first.id }}">
                 <input type="hidden" name="quantity" value="1">
                 <input type="hidden" name="return_to" value="/checkout">
-                <button type="submit" class="buy-now" aria-label="Buy Now {{ product.title | escape }}" title="Add to Cart">
+                <button type="submit" class="shop-buy-now" aria-label="Buy Now {{ product.title | escape }}" title="Add to Cart">
                   <i class="fas fa-cart-plus"></i>
                 </button>
               </form>
@@ -360,10 +360,10 @@
         {% endif %}
       {% endfor %}
       {% unless has_products %}
-        <p class="no-products">No products available in your store. Please add products to your Shopify store.</p>
+        <p class="shop-no-products">No products available in your store. Please add products to your Shopify store.</p>
       {% endunless %}
       {% if paginate.pages > 1 %}
-        <div class="pagination">
+        <div class="shop-pagination">
           {% if paginate.previous.is_link %}
             <a href="{{ paginate.previous.url }}" aria-label="Previous page">Previous</a>
           {% endif %}
@@ -397,7 +397,7 @@
                 "@type": "Product",
                 "name": "{{ product.title | escape }}",
                 "url": "{{ shop.url }}{{ product.url }}",
-                "image": "{{ product.featured_image | img_url: '500x500' }}",
+                "image": "{{ product.featured_image | img_url: '500x500', crop: 'center' }}",
                 "offers": {
                   "@type": "Offer",
                   "priceCurrency": "{{ shop.currency }}",
