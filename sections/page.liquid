@@ -58,36 +58,60 @@
     color: #1a1a1a;
     margin-bottom: 1.5rem;
   }
-  .contact-list {
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-    flex-wrap: wrap;
+  .form-group {
+    margin-bottom: 1rem;
   }
-  .contact-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+  .form-control {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    transition: border-color 0.3s ease;
   }
-  .contact-item a {
-    display: inline-flex;
-    align-items: center;
+  .form-control:focus {
+    outline: none;
+    border-color: #2aab46;
+    box-shadow: 0 0 5px rgba(42, 171, 70, 0.3);
+  }
+  .form-control::placeholder {
+    color: #6b7280;
+  }
+  textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+  }
+  .require {
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin-bottom: 1rem;
+  }
+  .required {
+    color: #e53e3e;
+  }
+  .book-submit {
     padding: 0.75rem 1.5rem;
     background-color: #2aab46;
     color: white;
     font-size: 1rem;
     font-weight: 500;
-    text-decoration: none;
+    border: none;
     border-radius: 5px;
+    cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
-  .contact-item a:hover {
+  .book-submit:hover {
     background-color: #218838;
     transform: scale(1.05);
   }
-  .contact-item i {
-    font-size: 1.2rem;
-    margin-right: 0.5rem;
+  .google-map {
+    margin-top: 2rem;
+    font-size: 1rem;
+    color: #4a5568;
+    text-align: center;
   }
   @media screen and (max-width: 768px) {
     .com_info .container {
@@ -111,14 +135,16 @@
       font-size: 1.5rem;
       padding: 0 0.5rem;
     }
-    .contact-list {
-      flex-direction: column;
-      gap: 1rem;
+    .form-control {
+      font-size: 0.95rem;
     }
-    .contact-item a {
+    .book-submit {
       width: 100%;
       max-width: 300px;
-      justify-content: center;
+    }
+    .google-map {
+      font-size: 0.95rem;
+      padding: 0 0.5rem;
     }
   }
   @media screen and (max-width: 480px) {
@@ -134,12 +160,16 @@
     .contact-title {
       font-size: 1.3rem;
     }
-    .contact-item a {
+    .form-control {
+      font-size: 0.9rem;
+      padding: 0.5rem;
+    }
+    .book-submit {
       padding: 0.5rem 1rem;
       font-size: 0.9rem;
     }
-    .contact-item i {
-      font-size: 1rem;
+    .google-map {
+      font-size: 0.9rem;
     }
   }
 </style>
@@ -159,26 +189,29 @@
         <div class="col-md-6 col-12">
           <div class="contact-section">
             <h2 class="contact-title">Contact Information</h2>
-            <div class="contact-list">
-              <div class="contact-item">
-                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=tientruongvo123@gmail.com" target="_blank">
-                  <i class="fas fa-envelope"></i>
-                  tientruongvo123@gmail.com
-                </a>
+            <form method="post" action="/contact#contact_form" id="contact_form" accept-charset="UTF-8">
+              <input name="form_type" type="hidden" value="contact">
+              <input name="utf8" type="hidden" value="✓">
+              <div class="customer-name row">
+                <div class="col-12 form-group">
+                  <input type="text" class="form-control" name="contact[name]" placeholder="Họ tên *" required>
+                </div>
+                <div class="col-12 form-group">
+                  <input type="email" class="form-control" name="contact[email]" placeholder="Email *" required>
+                </div>
+                <div class="col-12 form-group">
+                  <textarea name="contact[body]" placeholder="Lời nhắn *" class="form-control" rows="3" required></textarea>
+                </div>
               </div>
-              <div class="contact-item">
-                <a href="https://www.facebook.com/vo.truong.tien.416254/" target="_blank">
-                  <i class="fab fa-facebook-f"></i>
-                  Facebook
-
-                </a>
+              <span class="require d-block mb-3"><em class="required">*</em> Thông tin bắt buộc</span>
+              <div class="buttons-set">
+                <button type="submit" title="Submit" class="book-submit btn btn-primary text-center d-flex align-items-center font-weight-bold">
+                  <span>Gửi</span>
+                </button>
               </div>
-              <div class="contact-item">
-                <a href="https://www.youtube.com/@TradeScalping6789" target="_blank">
-                  <i class="fab fa-youtube"></i>
-                  YouTube
-                </a>
-              </div>
+            </form>
+            <div class="google-map mt-4">
+             Room 901, Building A, Wanda Plaza, No. 121, Huaian East Road, Yuhua District, Shijiazhuang City, Hebei Province, China
             </div>
           </div>
         </div>
