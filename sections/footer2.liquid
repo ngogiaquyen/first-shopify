@@ -1,3 +1,77 @@
+{% comment %} Defining schema for Shopify Theme Editor {% endcomment %}
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "text",
+      "id": "company_name",
+      "label": "Company Name",
+      "default": "Dustrium"
+    },
+    {
+      "type": "textarea",
+      "id": "address",
+      "label": "Company Address",
+      "default": "Room 901, Building A, Wanda Plaza, No. 121, Huaian East Road, Yuhua District, Shijiazhuang City, Hebei Province, China"
+    },
+    {
+      "type": "text",
+      "id": "email_url",
+      "label": "Email URL",
+      "default": "mailto:support@dustrium.com"
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_url",
+      "label": "WhatsApp URL",
+      "default": "https://wa.me/18231139331"
+    },
+    {
+      "type": "text",
+      "id": "facebook_url",
+      "label": "Facebook URL",
+      "default": "https://www.facebook.com/JoyMaRaetin"
+    },
+    {
+      "type": "text",
+      "id": "linkedin_url",
+      "label": "LinkedIn URL",
+      "default": "https://linkedin.com"
+    },
+    {
+      "type": "text",
+      "id": "youtube_url",
+      "label": "YouTube URL",
+      "default": "https://www.youtube.com/@TradeScalping6789"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_title",
+      "label": "Newsletter Title",
+      "default": "Join Our Fitness Community"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_description",
+      "label": "Newsletter Description",
+      "default": "Get workout tips, exclusive offers, and the latest on gym equipment and supplements."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
+
 {% comment %} Load Font Awesome for icons {% endcomment %}
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
@@ -290,3 +364,92 @@
     }
   }
 </style>
+
+{% comment %} Footer HTML structure {% endcomment %}
+<footer>
+  <div class="footer-container">
+    <div class="footer-columns">
+      {% comment %} Company Info {% endcomment %}
+      <div class="footer-column">
+        {% if section.settings.logo %}
+          <div class="footer-logo">
+            <img src="{{ section.settings.logo | img_url: '150x' }}" alt="{{ section.settings.company_name | escape }} Logo" loading="lazy">
+          </div>
+        {% endif %}
+        <p>{{ section.settings.address | escape }}</p>
+        <div class="social-icons">
+          {% if section.settings.email_url %}
+            <a href="{{ section.settings.email_url | escape }}" target="_blank" rel="noopener" aria-label="Email">
+              <i class="fas fa-envelope"></i>
+            </a>
+          {% endif %}
+          {% if section.settings.whatsapp_url %}
+            <a href="{{ section.settings.whatsapp_url | escape }}" target="_blank" rel="noopener" aria-label="WhatsApp">
+              <i class="fab fa-whatsapp"></i>
+            </a>
+          {% endif %}
+          {% if section.settings.facebook_url %}
+            <a href="{{ section.settings.facebook_url | escape }}" target="_blank" rel="noopener" aria-label="Facebook">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+          {% endif %}
+          {% if section.settings.linkedin_url %}
+            <a href="{{ section.settings.linkedin_url | escape }}" target="_blank" rel="noopener" aria-label="LinkedIn">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+          {% endif %}
+          {% if section.settings.youtube_url %}
+            <a href="{{ section.settings.youtube_url | escape }}" target="_blank" rel="noopener" aria-label="YouTube">
+              <i class="fab fa-youtube"></i>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+
+      {% comment %} Shop Links {% endcomment %}
+      <div class="footer-column">
+        <h5>Shop</h5>
+        <ul class="footer-links">
+          <li><a href="/collections/treadmills"><i class="fas fa-square-full"></i>Treadmills</a></li>
+          <li><a href="/collections/dumbbells"><i class="fas fa-square-full"></i>Dumbbells</a></li>
+          <li><a href="/collections/resistance-bands"><i class="fas fa-square-full"></i>Resistance Bands</a></li>
+          <li><a href="/collections/protein-powders"><i class="fas fa-square-full"></i>Protein Powders</a></li>
+          <li><a href="/collections/pre-workouts"><i class="fas fa-square-full"></i>Pre-Workouts</a></li>
+        </ul>
+      </div>
+
+      {% comment %} About Us Links {% endcomment %}
+      <div class="footer-column">
+        <h5>About Us</h5>
+        <ul class="footer-links">
+          <li><a href="/pages/our-mission"><i class="fas fa-square-full"></i>Our Mission</a></li>
+          <li><a href="/pages/why-shop-with-us"><i class="fas fa-square-full"></i>Why Shop With Us</a></li>
+          <li><a href="/pages/fitness-tips"><i class="fas fa-square-full"></i>Fitness Tips</a></li>
+          <li><a href="/pages/faqs"><i class="fas fa-square-full"></i>FAQs</a></li>
+        </ul>
+      </div>
+
+      {% comment %} Newsletter Signup {% endcomment %}
+      <div class="footer-column">
+        <h5>{{ section.settings.newsletter_title | escape }}</h5>
+        <p>{{ section.settings.newsletter_description | escape }}</p>
+        <form class="newsletter-form" method="post" action="/contact#newsletter" aria-label="Newsletter Signup">
+          <input type="hidden" name="form_id" value="newsletter_form">
+          <input type="text" name="contact[name]" id="newsletter-name" placeholder="Name" required>
+          <input type="email" name="contact[email]" id="newsletter-email" placeholder="Email" required>
+          <button type="submit">Sign Up</button>
+        </form>
+      </div>
+    </div>
+
+    {% comment %} Copyright and Legal Links {% endcomment %}
+    <div class="legal-section">
+      <p>Copyright &copy; 2025 {{ section.settings.company_name | escape }}, All rights reserved. Powered by <a href="https://moxcreative.com" target="_blank" rel="noopener">MoxCreative</a>.</p>
+      <div class="legal-links">
+        <a href="/pages/terms-of-use">Terms of Use</a>
+        <a href="/pages/privacy-policy">Privacy Policy</a>
+        <a href="/pages/cookie-policy">Cookie Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
