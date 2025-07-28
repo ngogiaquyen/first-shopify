@@ -15,7 +15,7 @@
   });
 </script>
 
-{% comment %} Styles for contact page with content, contact information, and enhanced image {% endcomment %}
+{% comment %} Styles and scripts for contact page with slideshow {% endcomment %}
 <style>
   .com_info {
     width: 100%;
@@ -35,15 +35,26 @@
     overflow: hidden;
     margin-bottom: 1.5rem;
   }
-  .page-image {
-    display: block;
+  .page-slideshow {
+    position: relative;
     width: 100%;
-    height: 400px; /* Chiều cao cố định, có thể điều chỉnh */
+    height: 400px;
+  }
+  .page-image {
+    display: none;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
     transition: transform 0.3s ease;
   }
-  .page-image-wrapper:hover .page-image {
-    transform: scale(1.05); /* Zoom nhẹ khi hover */
+  .page-image.active {
+    display: block;
+  }
+  .page-image-wrapper:hover .page-image.active {
+    transform: scale(1.05);
   }
   .page-image-overlay {
     position: absolute;
@@ -51,7 +62,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0)); /* Hiệu ứng mờ từ trên xuống */
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
     z-index: 1;
   }
   .rte {
@@ -145,8 +156,8 @@
       margin-left: calc(-50vw + 50%);
       width: 100vw;
     }
-    .page-image {
-      height: 300px; /* Giảm chiều cao trên tablet */
+    .page-slideshow {
+      height: 300px;
     }
     .content_ct p {
       font-size: 0.95rem;
@@ -176,8 +187,8 @@
       margin-left: calc(-50vw + 50%);
       width: 100vw;
     }
-    .page-image {
-      height: 200px; /* Giảm chiều cao trên mobile */
+    .page-slideshow {
+      height: 200px;
     }
     .content_ct p {
       font-size: 0.9rem;
@@ -199,12 +210,50 @@
   }
 </style>
 
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const slides = document.querySelectorAll('.page-image');
+    let currentSlide = 0;
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.remove('active');
+        if (i === index) slide.classList.add('active');
+      });
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }
+
+    // Chuyển slide tự động mỗi 3 giây
+    setInterval(nextSlide, 3000);
+
+    // Hiển thị slide đầu tiên khi tải trang
+    showSlide(currentSlide);
+  });
+</script>
+
 <div class="com_info">
   <div class="container">
-    {% if section.settings.header_image %}
+    {% if section.settings.header_image or section.settings.header_image_2 or section.settings.header_image_3 or section.settings.header_image_4 %}
       <div class="page-image-wrapper">
-        <img src="{{ section.settings.header_image | img_url: 'master' }}" alt="Header Image" class="page-image" loading="lazy">
-        <div class="page-image-overlay"></div>
+        <div class="page-slideshow">
+          {% if section.settings.header_image %}
+            <img src="{{ section.settings.header_image | img_url: 'master' }}" alt="Header Image 1" class="page-image" loading="lazy">
+          {% endif %}
+          {% if section.settings.header_image_2 %}
+            <img src="{{ section.settings.header_image_2 | img_url: 'master' }}" alt="Header Image 2" class="page-image" loading="lazy">
+          {% endif %}
+          {% if section.settings.header_image_3 %}
+            <img src="{{ section.settings.header_image_3 | img_url: 'master' }}" alt="Header Image 3" class="page-image" loading="lazy">
+          {% endif %}
+          {% if section.settings.header_image_4 %}
+            <img src="{{ section.settings.header_image_4 | img_url: 'master' }}" alt="Header Image 4" class="page-image" loading="lazy">
+          {% endif %}
+          <div class="page-image-overlay"></div>
+        </div>
       </div>
     {% endif %}
     <div class="rte m-auto bg-white pt-3 pb-3">
@@ -255,7 +304,22 @@
     {
       "type": "image_picker",
       "id": "header_image",
-      "label": "Header Image"
+      "label": "Header Image 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "header_image_2",
+      "label": "Header Image 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "header_image_3",
+      "label": "Header Image 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "header_image_4",
+      "label": "Header Image 4"
     }
   ]
 }
