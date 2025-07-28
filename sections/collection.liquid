@@ -1,16 +1,19 @@
 {% comment %}
-  This section is used in the collection template to render collection page
-  listing all products within a collection with product type filtering.
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
+  This template displays all products in the Shopify store with product type filtering and pagination.
+  Assumes a collection named "all" exists or uses search.products for all products.
+  https://shopify.dev/docs/storefronts/themes/architecture/templates
 {% endcomment %}
 
 <div class="collection-container" role="main">
-  <h1 class="collection-title">{{ collection.title | escape }}</h1>
+  <h1 class="collection-title">Tất cả sản phẩm</h1>
 
-  {% if collection.products.size > 0 %}
-    <div class="collection-filter" role="navigation" aria-label="Product type filter">
-      <button class="filter-button active" data-filter="all" aria-pressed="true">Tất cả sản phẩm</button>
-      {% assign product_types = collection.products | map: 'type' | uniq | sort %}
+  {% comment %} Sử dụng search.products để lấy tất cả sản phẩm hoặc một collection 'all' nếu có {% endcomment %}
+  {% assign products = search.products | default: collections.all.products %}
+  
+  {% if products.size > 0 %}
+    <div class="collection-filter" role="navigation" aria-label="Bộ lọc theo loại sản phẩm">
+      <button class="filter-button active" data-filter="all" aria-pressed="true">Tất cả</button>
+      {% assign product_types = products | map: 'type' | uniq | sort %}
       {% for type in product_types %}
         {% if type != blank %}
           <button class="filter-button" data-filter="{{ type | handleize }}" aria-pressed="false">{{ type | escape }}</button>
@@ -19,8 +22,8 @@
     </div>
 
     <div class="collection-products" id="product-grid" role="grid">
-      {% paginate collection.products by 20 %}
-        {% for product in collection.products %}
+      {% paginate products by section.settings.products_per_page %}
+        {% for product in products %}
           <div class="collection-product" data-product-type="{{ product.type | handleize }}" role="gridcell">
             {% if product.featured_image %}
               {% render 'image',
@@ -83,7 +86,7 @@
     </div>
   {% else %}
     <div class="collection-empty" role="alert">
-      <p>Không có sản phẩm nào trong bộ sưu tập này.</p>
+      <p>Không tìm thấy sản phẩm nào.</p>
     </div>
   {% endif %}
 </div>
@@ -309,14 +312,12 @@ document.addEventListener('DOMContentLoaded', () => {
   let activeFilter = 'all';
 
   const updateFilters = (button, filterType) => {
-    // Update button states
     filterButtons.forEach(btn => {
       const isActive = btn === button;
       btn.classList.toggle('active', isActive);
       btn.setAttribute('aria-pressed', isActive.toString());
     });
 
-    // Optimize product filtering with requestAnimationFrame
     requestAnimationFrame(() => {
       products.forEach(product => {
         const productType = product.getAttribute('data-product-type');
@@ -336,7 +337,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Accessibility: Handle keyboard navigation
   filterButtons.forEach(button => {
     button.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
@@ -350,7 +350,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 {% schema %}
 {
-  "name": "Bộ sưu tập",
+  "name": "Tất cả sản phẩm",
   "settings": [
     {
       "type": "range",
