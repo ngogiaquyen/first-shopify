@@ -1,7 +1,6 @@
 {% comment %}
   This section is used in the collection template to render collection page
-  listing all products within a collection with product type filtering.
-
+  listing all products within a collection with product type filtering via top filter buttons and bottom navigation.
   https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
 {% endcomment %}
 
@@ -72,6 +71,21 @@
       {% endif %}
     {% endpaginate %}
   </div>
+
+  <nav class="type-nav" role="navigation" aria-label="Product Type Navigation">
+    <ul class="type-nav__list">
+      <li class="type-nav__item">
+        <button class="type-nav__button active" data-filter="all">All Products</button>
+      </li>
+      {% for type in product_types %}
+        {% if type != blank %}
+          <li class="type-nav__item">
+            <button class="type-nav__button" data-filter="{{ type | handleize }}">{{ type }}</button>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </nav>
 </div>
 
 {% stylesheet %}
@@ -97,7 +111,7 @@
   justify-content: flex-start;
 }
 
-.filter-button {
+.filter-button, .type-nav__button {
   padding: 10px 20px;
   border: 1px solid #d1d5db;
   background: #ffffff;
@@ -109,8 +123,8 @@
   transition: all 0.2s ease;
 }
 
-.filter-button.active,
-.filter-button:hover {
+.filter-button.active, .filter-button:hover,
+.type-nav__button.active, .type-nav__button:hover {
   background: #111827;
   color: #ffffff;
   border-color: #111827;
@@ -231,6 +245,27 @@
   font-weight: 600;
 }
 
+.type-nav {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.type-nav__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  justify-content: center;
+}
+
+.type-nav__item {
+  display: flex;
+  align-items: center;
+}
+
 /* Tablet */
 @media (max-width: 768px) {
   .collection-container {
@@ -251,7 +286,7 @@
     padding: 12px;
   }
 
-  .filter-button {
+  .filter-button, .type-nav__button {
     padding: 8px 16px;
     font-size: 13px;
   }
@@ -296,7 +331,7 @@
     font-size: 11px;
   }
 
-  .filter-button {
+  .filter-button, .type-nav__button {
     padding: 6px 12px;
     font-size: 12px;
   }
@@ -316,7 +351,7 @@
 
 {% javascript %}
 document.addEventListener('DOMContentLoaded', function() {
-  const filterButtons = document.querySelectorAll('.filter-button');
+  const filterButtons = document.querySelectorAll('.filter-button, .type-nav__button');
   const products = document.querySelectorAll('.collection-product');
 
   filterButtons.forEach(button => {
@@ -337,6 +372,9 @@ document.addEventListener('DOMContentLoaded', function() {
           product.classList.add('hidden');
         }
       });
+
+      // Scroll to top of product grid for better UX
+      document.getElementById('product-grid').scrollIntoView({ behavior: 'smooth' });
     });
   });
 });
