@@ -65,7 +65,7 @@
   .title {
     font-size: 2.25rem;
     font-weight: 700;
-    color:  #1f2937;
+    color: {{ section.settings.title_color | default: '#1f2937' }};
     text-align: left;
     margin-bottom: 2.5rem;
     position: relative;
@@ -77,11 +77,10 @@
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
-  .title a{
-    color:var(--primary-color);
+  .title a {
+    color: {{ section.settings.title_color | default: '#2563eb' }};
     text-decoration: none;
   }
-  
 
   .title::after {
     content: '';
@@ -296,7 +295,9 @@
 
 {% comment %} Product grid HTML with for loop and error handling {% endcomment %}
 <div class="product-grid-container">
-  <h2 class="title"><a href="#">{{ section.settings.grid_title | escape }}</a></h2>
+  {% if section.settings.grid_title != blank %}
+    <h2 class="title"><a href="#">{{ section.settings.grid_title | escape }}</a></h2>
+  {% endif %}
   <div class="product-grid">
     {% assign product_handles = section.settings.product_1 | append: ',' | append: section.settings.product_2 | append: ',' | append: section.settings.product_3 | append: ',' | append: section.settings.product_4 | split: ',' %}
     {% assign has_products = false %}
