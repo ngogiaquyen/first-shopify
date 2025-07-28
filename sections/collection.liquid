@@ -1,7 +1,7 @@
 {% comment %}
-  This template displays all products in the Shopify store with product type filtering, without pagination.
-  Assumes a collection named "all" exists or uses search.products for all products.
-  https://shopify.dev/docs/storefronts/themes/architecture/templates
+This template displays products with pagination and product type filtering.
+Assumes a collection named "all" exists or uses search.products for all products.
+https://shopify.dev/docs/storefronts/themes/architecture/templates
 {% endcomment %}
 
 <div class="collection-container" role="main">
@@ -9,11 +9,12 @@
 
   {% comment %} Sử dụng search.products hoặc collections.all.products để lấy tất cả sản phẩm {% endcomment %}
   {% assign products = search.products | default: collections.all.products %}
-  
-  {% if products.size > 0 %}
+  {% assign products_per_page = 12 %}
+  {% paginate products by products_per_page %}
+    {% assign product_types = products | map: 'type' | uniq | sort %}
+    
     <div class="collection-filter" role="navigation" aria-label="Bộ lọc theo loại sản phẩm">
       <button class="filter-button active" data-filter="all" aria-pressed="true">Tất cả</button>
-      {% assign product_types = products | map: 'type' | uniq | sort %}
       {% for type in product_types %}
         {% if type != blank %}
           <button class="filter-button" data-filter="{{ type | handleize }}" aria-pressed="false">{{ type | escape }}</button>
@@ -21,40 +22,80 @@
       {% endfor %}
     </div>
 
-    <div class="collection-products" id="product-grid" role="grid">
-      {% for product in products %}
-        <div class="collection-product" data-product-type="{{ product.type | handleize }}" role="gridcell">
-          {% if product.featured_image %}
-            {% render 'image',
-              class: 'collection-product__image',
-              image: product.featured_image,
-              url: product.url,
-              width: 400,
-              height: 400,
-              crop: 'center',
-              loading: 'lazy',
-              alt: product.title | escape
-            %}
-          {% else %}
-            <div class="collection-product__image placeholder">
-              <span>Không có hình ảnh</span>
+    {% if paginate.collection.size > 0 %}
+      <div class="collection-products" id="product-grid" role="grid">
+        {% for product in paginate.collection %}
+          <div class="collection-product" data-product-type="{{ product.type | handleize }}" role="gridcell">
+            {% if product.featured_image %}
+              {% render 'image',
+                class: 'collection-product__image',
+                image: product.featured_image,
+                url: product.url,
+                width: 400,
+                height: 400,
+                crop: 'center',
+                loading: 'lazy',
+                alt: product.title | escape
+              %}
+            {% else %}
+              <div class="collection-product__image placeholder">
+                <span>Không có hình ảnh</span>
+              </div>
+            {% endif %}
+            <div class="collection-product__content">
+              <h2 class="product-title">
+                <a href="{{ product.url }}" aria-label="{{ product.title | escape }}">{{ product.title | escape }}</a>
+              </h2>
+              <p class="product-price">{{ product.price | money }}</p>
+              <p class="product-type">Loại: {{ product.type | escape }}</p>
             </div>
-          {% endif %}
-          <div class="collection-product__content">
-            <h2 class="product-title">
-              <a href="{{ product.url }}" aria-label="{{ product.title | escape }}">{{ product.title | escape }}</a>
-            </h2>
-            <p class="product-price">{{ product.price | money }}</p>
-            <p class="product-type">Loại: {{ product.type | escape }}</p>
           </div>
-        </div>
-      {% endfor %}
-    </div>
-  {% else %}
-    <div class="collection-empty" role="alert">
-      <p>Không tìm thấy sản phẩm nào.</p>
-    </div>
-  {% endif %}
+        {% endfor %}
+      </div>
+
+      {% if paginate.pages > 1 %}
+        <nav class="pagination" role="navigation" aria-label="Phân trang sản phẩm">
+          <ul class="pagination-list">
+            {% if paginate.previous.is_link %}
+              <li class="pagination-item">
+                <a href="{{ paginate.previous.url }}" class="pagination-link" aria-label="Trang trước">Trước</a>
+              </li>
+            {% else %}
+              <li class="pagination-item disabled">
+                <span class="pagination-link" aria-disabled="true">Trước</span>
+              </li>
+            {% endif %}
+
+            {% for part in paginate.parts %}
+              {% if part.is_link %}
+                <li class="pagination-item">
+                  <a href="{{ part.url }}" class="pagination-link" aria-label="Trang {{ part.title }}">{{ part.title }}</a>
+                </li>
+              {% else %}
+                <li class="pagination-item {% if part.title == paginate.current_page %}active{% endif %}">
+                  <span class="pagination-link" aria-current="{% if part.title == paginate.current_page %}page{% endif %}">{{ part.title }}</span>
+                </li>
+              {% endif %}
+            {% endfor %}
+
+            {% if paginate.next.is_link %}
+              <li class="pagination-item">
+                <a href="{{ paginate.next.url }}" class="pagination-link" aria-label="Trang sau">Sau</a>
+              </li>
+            {% else %}
+              <li class="pagination-item disabled">
+                <span class="pagination-link" aria-disabled="true">Sau</span>
+              </li>
+            {% endif %}
+          </ul>
+        </nav>
+      {% endif %}
+    {% else %}
+      <div class="collection-empty" role="alert">
+        <p>Không tìm thấy sản phẩm nào.</p>
+      </div>
+    {% endif %}
+  {% endpaginate %}
 </div>
 
 {% stylesheet %}
@@ -187,6 +228,50 @@
   font-size: 16px;
 }
 
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.pagination-list {
+  display: flex;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+}
+
+.pagination-item {
+  display: inline-flex;
+}
+
+.pagination-link {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  color: #111827;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.pagination-link:hover:not([aria-disabled="true"]) {
+  background: #111827;
+  color: #ffffff;
+  border-color: #111827;
+}
+
+.pagination-item.active .pagination-link {
+  background: #111827;
+  color: #ffffff;
+  border-color: #111827;
+}
+
+.pagination-item.disabled .pagination-link {
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
 @media (max-width: 768px) {
   .collection-container {
     padding: 16px 12px;
@@ -224,6 +309,11 @@
 
   .product-price,
   .product-type {
+    font-size: 12px;
+  }
+
+  .pagination-link {
+    padding: 6px 10px;
     font-size: 12px;
   }
 }
@@ -275,6 +365,16 @@ document.addEventListener('DOMContentLoaded', () => {
 {% schema %}
 {
   "name": "Tất cả sản phẩm",
-  "settings": []
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 6,
+      "max": 24,
+      "step": 6,
+      "default": 12,
+      "label": "Số sản phẩm mỗi trang"
+    }
+  ]
 }
 {% endschema %}
