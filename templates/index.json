@@ -56,10 +56,6 @@
         "button_label_7": "Visit now"
       }
     },
-    "achievement": {
-      "type": "achievement",
-      "settings": {}
-    },
     "products_A3VtML": {
       "type": "products",
       "name": "Product Grid",
@@ -96,6 +92,10 @@
         "product_4": "4-in-1-adjustable-dumbbell-set-44lbs-weight-set-with-iron-handle-used-as-kettlebell-barbell-push-up-stand-for-home-gym-octagon"
       }
     },
+    "achievement": {
+      "type": "achievement",
+      "settings": {}
+    },
     "customer-reviews": {
       "type": "customer-reviews",
       "settings": {
@@ -115,10 +115,10 @@
   },
   "order": [
     "slideshow",
-    "achievement",
     "products_A3VtML",
     "products_9REDDx",
     "products_jTF4Ta",
+    "achievement",
     "customer-reviews"
   ]
 }
