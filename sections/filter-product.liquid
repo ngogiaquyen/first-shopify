@@ -1,7 +1,7 @@
 {% comment %}
   This Liquid file displays all products in the Shopify store in a responsive grid layout.
-  It includes product images, titles, prices, an "Add to Cart" button, pagination, and filtering by product type using buttons.
-  Updated to use buttons for product type filtering instead of checkboxes.
+  It includes product images, titles, prices, an "Add to Cart" button, pagination, and filtering by product type using buttons only.
+  Updated to include only an "All" button and product type buttons, removing the sort dropdown.
 {% endcomment %}
 
 {% style %}
@@ -16,38 +16,9 @@
   .products-filter {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-    align-items: center;
-  }
-
-  .products-filter__sort,
-  .products-filter__types {
-    flex: 1;
-    min-width: 200px;
-  }
-
-  .products-filter__sort select {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid var(--color-border);
-    border-radius: 0.375rem;
-    background: var(--color-background);
-    color: var(--color-foreground);
-    font-size: 1rem;
-    cursor: pointer;
-    transition: border-color 0.2s ease;
-  }
-
-  .products-filter__sort select:focus {
-    outline: none;
-    border-color: var(--color-accent);
-  }
-
-  .products-filter__types {
-    display: flex;
-    flex-wrap: wrap;
     gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    justify-content: center;
   }
 
   .products-filter__type-button {
@@ -185,13 +156,12 @@
 
   @media screen and (max-width: 768px) {
     .products-filter {
-      flex-direction: column;
-      align-items: stretch;
+      justify-content: flex-start;
     }
 
-    .products-filter__sort,
-    .products-filter__types {
-      min-width: auto;
+    .products-filter__type-button {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.75rem;
     }
 
     .products-grid {
@@ -215,58 +185,37 @@
       padding: 0.5rem 1rem;
       font-size: 0.875rem;
     }
-
-    .products-filter__type-button {
-      padding: 0.5rem 0.75rem;
-      font-size: 0.75rem;
-    }
   }
 {% endstyle %}
 
 <section class="products-section" aria-label="All products">
   <h1>All Products</h1>
 
-  {% comment %} Filter and Sort Form {% endcomment %}
+  {% comment %} Filter Form with Product Type Buttons {% endcomment %}
   <form class="products-filter" action="{{ collection.url }}" method="get">
-    <div class="products-filter__sort">
-      <label for="sort-by" class="visually-hidden">Sort by</label>
-      <select id="sort-by" name="sort_by" onchange="this.form.submit()">
-        <option value="" {% unless sort_by %}selected{% endunless %}>Default</option>
-        <option value="title-ascending" {% if sort_by == 'title-ascending' %}selected{% endif %}>Alphabetically, A-Z</option>
-        <option value="title-descending" {% if sort_by == 'title-descending' %}selected{% endif %}>Alphabetically, Z-A</option>
-        <option value="price-ascending" {% if sort_by == 'price-ascending' %}selected{% endif %}>Price, Low to High</option>
-        <option value="price-descending" {% if sort_by == 'price-descending' %}selected{% endif %}>Price, High to Low</option>
-        <option value="created-descending" {% if sort_by == 'created-descending' %}selected{% endif %}>Newest First</option>
-      </select>
-    </div>
-    <div class="products-filter__types">
-      {% assign product_types = collection.all_types | sort %}
-      {% if product_types.size > 0 %}
-        <h3>Filter by Product Type</h3>
-        <div class="products-filter__types-buttons">
-          <button
-            type="submit"
-            name="filter_type"
-            value=""
-            class="products-filter__type-button {% unless current_tags %}products-filter__type-button--active{% endunless %}"
-            aria-label="Show all product types"
-          >
-            All
-          </button>
-          {% for type in product_types %}
-            <button
-              type="submit"
-              name="filter_type"
-              value="{{ type | handle }}"
-              class="products-filter__type-button {% if current_tags contains type %}products-filter__type-button--active{% endif %}"
-              aria-label="Filter by {{ type }}"
-            >
-              {{ type }}
-            </button>
-          {% endfor %}
-        </div>
-      {% endif %}
-    </div>
+    {% assign product_types = collection.all_types | sort %}
+    {% if product_types.size > 0 %}
+      <button
+        type="submit"
+        name="filter_type"
+        value=""
+        class="products-filter__type-button {% unless current_tags %}products-filter__type-button--active{% endunless %}"
+        aria-label="Show all product types"
+      >
+        All
+      </button>
+      {% for type in product_types %}
+        <button
+          type="submit"
+          name="filter_type"
+          value="{{ type | handle }}"
+          class="products-filter__type-button {% if current_tags contains type %}products-filter__type-button--active{% endif %}"
+          aria-label="Filter by {{ type }}"
+        >
+          {{ type }}
+        </button>
+      {% endfor %}
+    {% endif %}
   </form>
 
   <div class="products-grid">
@@ -339,35 +288,23 @@
 
 {% javascript %}
 document.addEventListener('DOMContentLoaded', function() {
-  const sortSelect = document.querySelector('#sort-by');
   const typeButtons = document.querySelectorAll('.products-filter__type-button');
 
-  function updateURL(event) {
-    const form = document.querySelector('.products-filter form');
-    const sortValue = sortSelect.value;
-    const selectedType = event.target.value; // Get value from clicked button
-    
-    let url = form.action; // Use form action (collection.url)
-    let params = new URLSearchParams();
-
-    if (sortValue) {
-      params.set('sort_by', sortValue);
-    }
-    if (selectedType) {
-      params.set('filter_type', selectedType);
-    }
-
-    if (params.toString()) {
-      url += '?' + params.toString();
-    }
-    window.history.pushState({}, '', url);
-    window.location.href = url;
-  }
-
-  sortSelect.addEventListener('change', function() {
-    this.form.submit(); // Direct form submission for sort
+  typeButtons.forEach(button => {
+    button.addEventListener('click', function(event) {
+      event.preventDefault(); // Prevent default form submission
+      const form = document.querySelector('.products-filter form');
+      const selectedType = this.value;
+      
+      let url = form.action; // Use form action (collection.url)
+      if (selectedType) {
+        url += '?filter_type=' + encodeURIComponent(selectedType);
+      }
+      
+      window.history.pushState({}, '', url);
+      window.location.href = url;
+    });
   });
-  typeButtons.forEach(button => button.addEventListener('click', updateURL));
 });
 {% endjavascript %}
 
