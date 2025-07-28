@@ -1,7 +1,6 @@
 {% comment %}
   This section is used in the collection template to render collection page
   listing all products within a collection with product type filtering.
-
   https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
 {% endcomment %}
 
@@ -9,42 +8,49 @@
   <h1>{{ collection.title }}</h1>
 
   <div class="collection-filter">
-    <button class="filter-button active" data-filter="all">All Products</button>
-    {% assign product_types = collection.products | map: 'type' | uniq %}
+    <button class="filter-button {% if selected_type == 'all' %}active{% endif %}" data-filter="all">All Products ({{ collection.products_count }})</button>
+    {% assign product_types = collection.products | map: 'type' | uniq | sort %}
+    {% assign all_products = collection.products %}
     {% for type in product_types %}
       {% if type != blank %}
-        <button class="filter-button" data-filter="{{ type | handleize }}">{{ type }}</button>
+        {% assign type_handle = type | handleize %}
+        {% assign count = all_products | where: 'type', type | size %}
+        <button class="filter-button {% if selected_type == type_handle %}active{% endif %}" data-filter="{{ type_handle }}">{{ type }} ({{ count }})</button>
       {% endif %}
     {% endfor %}
   </div>
 
   <div class="collection-products" id="product-grid">
+    {% assign selected_type = request.params.type | default: 'all' %}
     {% paginate collection.products by 20 %}
       {% for product in collection.products %}
-        <div class="collection-product" data-product-type="{{ product.type | handleize }}">
-          {% if product.featured_image %}
-            {% render 'image',
-              class: 'collection-product__image',
-              image: product.featured_image,
-              url: product.url,
-              width: 400,
-              height: 400,
-              crop: 'center'
-            %}
-          {% endif %}
-          <div class="collection-product__content">
-            <p>{{ product.title | escape | link_to: product.url }}</p>
-            <p>{{ product.price | money }}</p>
-            <p class="product-type">Type: {{ product.type }}</p>
+        {% assign product_type_handle = product.type | handleize %}
+        {% if selected_type == 'all' or product_type_handle == selected_type %}
+          <div class="collection-product" data-product-type="{{ product_type_handle }}">
+            {% if product.featured_image %}
+              {% render 'image',
+                class: 'collection-product__image',
+                image: product.featured_image,
+                url: product.url,
+                width: 400,
+                height: 400,
+                crop: 'center'
+              %}
+            {% endif %}
+            <div class="collection-product__content">
+              <p>{{ product.title | escape | link_to: product.url }}</p>
+              <p>{{ product.price | money }}</p>
+              <p class="product-type">Type: {{ product.type }}</p>
+            </div>
           </div>
-        </div>
+        {% endif %}
       {% endfor %}
       {% if paginate.pages > 1 %}
         <nav class="pagination" role="navigation" aria-label="Pagination">
           <ul class="pagination__list">
             {% if paginate.previous.is_link %}
               <li class="pagination__item">
-                <a href="{{ paginate.previous.url }}" class="pagination__link pagination__link--prev" aria-label="Previous page">
+                <a href="{{ paginate.previous.url }}?type={{ selected_type | url_encode }}" class="pagination__link pagination__link--prev" aria-label="Previous page">
                   <span>←</span>
                 </a>
               </li>
@@ -52,7 +58,7 @@
             {% for part in paginate.parts %}
               {% if part.is_link %}
                 <li class="pagination__item">
-                  <a href="{{ part.url }}" class="pagination__link" aria-label="Page {{ part.title }}">{{ part.title }}</a>
+                  <a href="{{ part.url }}?type={{ selected_type | url_encode }}" class="pagination__link" aria-label="Page {{ part.title }}">{{ part.title }}</a>
                 </li>
               {% else %}
                 <li class="pagination__item">
@@ -62,7 +68,7 @@
             {% endfor %}
             {% if paginate.next.is_link %}
               <li class="pagination__item">
-                <a href="{{ paginate.next.url }}" class="pagination__link pagination__link--next" aria-label="Next page">
+                <a href="{{ paginate.next.url }}?type={{ selected_type | url_encode }}" class="pagination__link pagination__link--next" aria-label="Next page">
                   <span>→</span>
                 </a>
               </li>
@@ -168,10 +174,16 @@
   font-size: 12px;
 }
 
+.collection-product.hidden {
+  display: none;
+}
+
 .pagination {
   display: flex;
   justify-content: center;
+  align-items: center;
   margin-top: 32px;
+  width: 100%;
 }
 
 .pagination__list {
@@ -180,7 +192,7 @@
   list-style: none;
   padding: 0;
   margin: 0;
-  margin-left: 900px;
+  justify-content: center;
 }
 
 .pagination__item {
@@ -312,24 +324,36 @@
 document.addEventListener('DOMContentLoaded', function() {
   const filterButtons = document.querySelectorAll('.filter-button');
   const products = document.querySelectorAll('.collection-product');
+  const currentType = new URLSearchParams(window.location.search).get('type') || 'all';
 
+  // Set active button based on URL parameter
+  filterButtons.forEach(button => {
+    if (button.getAttribute('data-filter') === currentType) {
+      button.classList.add('active');
+    } else {
+      button.classList.remove('active');
+    }
+  });
+
+  // Filter products on page load (client-side for initial display)
+  products.forEach(product => {
+    const productType = product.getAttribute('data-product-type');
+    if (currentType === 'all' || productType === currentType) {
+      product.classList.remove('hidden');
+    } else {
+      product.classList.add('hidden');
+    }
+  });
+
+  // Handle filter button clicks
   filterButtons.forEach(button => {
     button.addEventListener('click', function() {
-      // Remove active class from all buttons
-      filterButtons.forEach(btn => btn.classList.remove('active'));
-      // Add active class to clicked button
-      this.classList.add('active');
-
       const filterType = this.getAttribute('data-filter');
 
-      // Show/hide products based on filter
-      products.forEach(product => {
-        if (filterType === 'all' || product.getAttribute('data-product-type') === filterType) {
-          product.classList.remove('hidden');
-        } else {
-          product.classList.add('hidden');
-        }
-      });
+      // Update URL with filter parameter
+      const url = new URL(window.location);
+      url.searchParams.set('type', filterType);
+      window.location.href = url.toString(); // Reload page to apply server-side filtering
     });
   });
 });
