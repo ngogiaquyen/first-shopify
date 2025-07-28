@@ -1,7 +1,7 @@
 {% comment %}
   This Liquid file displays all products in the Shopify store in a responsive grid layout.
-  It includes product images, titles, prices, an "Add to Cart" button, pagination, and filtering by product type and sorting.
-  Updated to filter by product type using collection.all_types instead of tags.
+  It includes product images, titles, prices, an "Add to Cart" button, pagination, and filtering by product type using buttons.
+  Updated to use buttons for product type filtering instead of checkboxes.
 {% endcomment %}
 
 {% style %}
@@ -46,30 +46,36 @@
 
   .products-filter__types {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     gap: 0.5rem;
   }
 
-  .products-filter__type {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .products-filter__type input {
-    margin: 0;
-    cursor: pointer;
-  }
-
-  .products-filter__type label {
-    font-size: 0.875rem;
+  .products-filter__type-button {
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
     color: var(--color-foreground);
+    font-size: 0.875rem;
+    font-weight: 500;
     cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
   }
 
-  .products-filter__type input:checked + label {
+  .products-filter__type-button:hover {
+    background: var(--color-background-hover);
     color: var(--color-accent);
-    font-weight: 500;
+  }
+
+  .products-filter__type-button--active {
+    background: var(--color-accent);
+    color: #ffffff;
+    border-color: var(--color-accent);
+  }
+
+  .products-filter__type-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--color-accent);
   }
 
   .products-grid {
@@ -209,6 +215,11 @@
       padding: 0.5rem 1rem;
       font-size: 0.875rem;
     }
+
+    .products-filter__type-button {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.75rem;
+    }
   }
 {% endstyle %}
 
@@ -232,19 +243,28 @@
       {% assign product_types = collection.all_types | sort %}
       {% if product_types.size > 0 %}
         <h3>Filter by Product Type</h3>
-        {% for type in product_types %}
-          <div class="products-filter__type">
-            <input
-              type="checkbox"
-              id="type-{{ type | handle }}"
+        <div class="products-filter__types-buttons">
+          <button
+            type="submit"
+            name="filter_type"
+            value=""
+            class="products-filter__type-button {% unless current_tags %}products-filter__type-button--active{% endunless %}"
+            aria-label="Show all product types"
+          >
+            All
+          </button>
+          {% for type in product_types %}
+            <button
+              type="submit"
               name="filter_type"
               value="{{ type | handle }}"
-              {% if current_tags contains type %}checked{% endif %}
-              onchange="this.form.submit()"
+              class="products-filter__type-button {% if current_tags contains type %}products-filter__type-button--active{% endif %}"
+              aria-label="Filter by {{ type }}"
             >
-            <label for="type-{{ type | handle }}">{{ type }}</label>
-          </div>
-        {% endfor %}
+              {{ type }}
+            </button>
+          {% endfor %}
+        </div>
       {% endif %}
     </div>
   </form>
@@ -320,14 +340,12 @@
 {% javascript %}
 document.addEventListener('DOMContentLoaded', function() {
   const sortSelect = document.querySelector('#sort-by');
-  const typeCheckboxes = document.querySelectorAll('.products-filter__type input');
+  const typeButtons = document.querySelectorAll('.products-filter__type-button');
 
-  function updateURL() {
+  function updateURL(event) {
     const form = document.querySelector('.products-filter form');
     const sortValue = sortSelect.value;
-    const selectedTypes = Array.from(typeCheckboxes)
-      .filter(checkbox => checkbox.checked)
-      .map(checkbox => checkbox.value);
+    const selectedType = event.target.value; // Get value from clicked button
     
     let url = form.action; // Use form action (collection.url)
     let params = new URLSearchParams();
@@ -335,8 +353,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (sortValue) {
       params.set('sort_by', sortValue);
     }
-    if (selectedTypes.length > 0) {
-      params.set('filter_type', selectedTypes.join('+'));
+    if (selectedType) {
+      params.set('filter_type', selectedType);
     }
 
     if (params.toString()) {
@@ -346,8 +364,10 @@ document.addEventListener('DOMContentLoaded', function() {
     window.location.href = url;
   }
 
-  sortSelect.addEventListener('change', updateURL);
-  typeCheckboxes.forEach(checkbox => checkbox.addEventListener('change', updateURL));
+  sortSelect.addEventListener('change', function() {
+    this.form.submit(); // Direct form submission for sort
+  });
+  typeButtons.forEach(button => button.addEventListener('click', updateURL));
 });
 {% endjavascript %}
 
