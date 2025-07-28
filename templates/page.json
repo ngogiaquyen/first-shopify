@@ -12,7 +12,7 @@
     "main": {
       "type": "page",
       "settings": {
-        "header_image": "shopify://shop_images/ct3.avif"
+        "header_image": "shopify://shop_images/contact.jpg"
       }
     }
   },
