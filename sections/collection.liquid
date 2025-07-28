@@ -1,5 +1,5 @@
 {% comment %}
-This template displays products with pagination and product type filtering.
+This template displays all products in a Shopify store with pagination and a select all checkbox.
 Assumes a collection named "all" exists or uses search.products for all products.
 https://shopify.dev/docs/storefronts/themes/architecture/templates
 {% endcomment %}
@@ -11,90 +11,88 @@ https://shopify.dev/docs/storefronts/themes/architecture/templates
   {% assign products = search.products | default: collections.all.products %}
   {% assign products_per_page = 12 %}
   {% paginate products by products_per_page %}
-    {% assign product_types = products | map: 'type' | uniq | sort %}
-    
-    <div class="collection-filter" role="navigation" aria-label="Bộ lọc theo loại sản phẩm">
-      <button class="filter-button active" data-filter="all" aria-pressed="true">Tất cả</button>
-      {% for type in product_types %}
-        {% if type != blank %}
-          <button class="filter-button" data-filter="{{ type | handleize }}" aria-pressed="false">{{ type | escape }}</button>
-        {% endif %}
-      {% endfor %}
-    </div>
-
-    {% if paginate.collection.size > 0 %}
-      <div class="collection-products" id="product-grid" role="grid">
-        {% for product in paginate.collection %}
-          <div class="collection-product" data-product-type="{{ product.type | handleize }}" role="gridcell">
-            {% if product.featured_image %}
-              {% render 'image',
-                class: 'collection-product__image',
-                image: product.featured_image,
-                url: product.url,
-                width: 400,
-                height: 400,
-                crop: 'center',
-                loading: 'lazy',
-                alt: product.title | escape
-              %}
-            {% else %}
-              <div class="collection-product__image placeholder">
-                <span>Không có hình ảnh</span>
-              </div>
-            {% endif %}
-            <div class="collection-product__content">
-              <h2 class="product-title">
-                <a href="{{ product.url }}" aria-label="{{ product.title | escape }}">{{ product.title | escape }}</a>
-              </h2>
-              <p class="product-price">{{ product.price | money }}</p>
-              <p class="product-type">Loại: {{ product.type | escape }}</p>
-            </div>
-          </div>
-        {% endfor %}
+    <form id="product-selection-form" action="/cart/add" method="post">
+      <div class="selection-controls" role="toolbar" aria-label="Điều khiển lựa chọn sản phẩm">
+        <label for="select-all">
+          <input type="checkbox" id="select-all" aria-label="Chọn tất cả sản phẩm trên trang này">
+          Chọn tất cả
+        </label>
       </div>
 
-      {% if paginate.pages > 1 %}
-        <nav class="pagination" role="navigation" aria-label="Phân trang sản phẩm">
-          <ul class="pagination-list">
-            {% if paginate.previous.is_link %}
-              <li class="pagination-item">
-                <a href="{{ paginate.previous.url }}" class="pagination-link" aria-label="Trang trước">Trước</a>
-              </li>
-            {% else %}
-              <li class="pagination-item disabled">
-                <span class="pagination-link" aria-disabled="true">Trước</span>
-              </li>
-            {% endif %}
+      {% if paginate.collection.size > 0 %}
+        <div class="collection-products" id="product-grid" role="grid">
+          {% for product in paginate.collection %}
+            <div class="collection-product" role="gridcell">
+              {% if product.featured_image %}
+                {% render 'image',
+                  class: 'collection-product__image',
+                  image: product.featured_image,
+                  url: product.url,
+                  width: 400,
+                  height: 400,
+                  crop: 'center',
+                  loading: 'lazy',
+                  alt: product.title | escape
+                %}
+              {% else %}
+                <div class="collection-product__image placeholder">
+                  <span>Không có hình ảnh</span>
+                </div>
+              {% endif %}
+              <div class="collection-product__content">
+                <input type="checkbox" name="id[]" value="{{ product.variants.first.id }}" class="product-checkbox" aria-label="Chọn {{ product.title | escape }}">
+                <h2 class="product-title">
+                  <a href="{{ product.url }}" aria-label="{{ product.title | escape }}">{{ product.title | escape }}</a>
+                </h2>
+                <p class="product-price">{{ product.price | money }}</p>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
 
-            {% for part in paginate.parts %}
-              {% if part.is_link %}
+        {% if paginate.pages > 1 %}
+          <nav class="pagination" role="navigation" aria-label="Phân trang sản phẩm">
+            <ul class="pagination-list">
+              {% if paginate.previous.is_link %}
                 <li class="pagination-item">
-                  <a href="{{ part.url }}" class="pagination-link" aria-label="Trang {{ part.title }}">{{ part.title }}</a>
+                  <a href="{{ paginate.previous.url }}" class="pagination-link" aria-label="Trang trước">Trước</a>
                 </li>
               {% else %}
-                <li class="pagination-item {% if part.title == paginate.current_page %}active{% endif %}">
-                  <span class="pagination-link" aria-current="{% if part.title == paginate.current_page %}page{% endif %}">{{ part.title }}</span>
+                <li class="pagination-item disabled">
+                  <span class="pagination-link" aria-disabled="true">Trước</span>
                 </li>
               {% endif %}
-            {% endfor %}
 
-            {% if paginate.next.is_link %}
-              <li class="pagination-item">
-                <a href="{{ paginate.next.url }}" class="pagination-link" aria-label="Trang sau">Sau</a>
-              </li>
-            {% else %}
-              <li class="pagination-item disabled">
-                <span class="pagination-link" aria-disabled="true">Sau</span>
-              </li>
-            {% endif %}
-          </ul>
-        </nav>
+              {% for part in paginate.parts %}
+                {% if part.is_link %}
+                  <li class="pagination-item">
+                    <a href="{{ part.url }}" class="pagination-link" aria-label="Trang {{ part.title }}">{{ part.title }}</a>
+                  </li>
+                {% else %}
+                  <li class="pagination-item {% if part.title == paginate.current_page %}active{% endif %}">
+                    <span class="pagination-link" aria-current="{% if part.title == paginate.current_page %}page{% endif %}">{{ part.title }}</span>
+                  </li>
+                {% endif %}
+              {% endfor %}
+
+              {% if paginate.next.is_link %}
+                <li class="pagination-item">
+                  <a href="{{ paginate.next.url }}" class="pagination-link" aria-label="Trang sau">Sau</a>
+                </li>
+              {% else %}
+                <li class="pagination-item disabled">
+                  <span class="pagination-link" aria-disabled="true">Sau</span>
+                </li>
+              {% endif %}
+            </ul>
+          </nav>
+        {% endif %}
+      {% else %}
+        <div class="collection-empty" role="alert">
+          <p>Không tìm thấy sản phẩm nào.</p>
+        </div>
       {% endif %}
-    {% else %}
-      <div class="collection-empty" role="alert">
-        <p>Không tìm thấy sản phẩm nào.</p>
-      </div>
-    {% endif %}
+    </form>
   {% endpaginate %}
 </div>
 
@@ -118,31 +116,17 @@ https://shopify.dev/docs/storefronts/themes/architecture/templates
   margin: 32px 0;
 }
 
-.collection-filter {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+.selection-controls {
   margin: 24px 0;
-  justify-content: center;
+  text-align: center;
 }
 
-.filter-button {
-  padding: 10px 20px;
-  border: 1px solid #d1d5db;
-  background: #ffffff;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
+.selection-controls label {
+  font-size: 16px;
   font-weight: 500;
-  text-transform: capitalize;
-  transition: all 0.2s ease;
-}
-
-.filter-button[aria-pressed="true"],
-.filter-button:hover {
-  background: #111827;
-  color: #ffffff;
-  border-color: #111827;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .collection-product {
@@ -190,6 +174,10 @@ https://shopify.dev/docs/storefronts/themes/architecture/templates
   text-align: center;
 }
 
+.product-checkbox {
+  margin-bottom: 8px;
+}
+
 .product-title {
   margin: 0 0 8px;
   font-size: 16px;
@@ -209,23 +197,6 @@ https://shopify.dev/docs/storefronts/themes/architecture/templates
   margin: 8px 0;
   font-size: 14px;
   font-weight: 500;
-}
-
-.product-type {
-  margin: 8px 0;
-  color: #6b7280;
-  font-size: 12px;
-}
-
-.collection-product.hidden {
-  display: none;
-}
-
-.collection-empty {
-  text-align: center;
-  padding: 40px 0;
-  color: #6b7280;
-  font-size: 16px;
 }
 
 .pagination {
@@ -307,8 +278,7 @@ https://shopify.dev/docs/storefronts/themes/architecture/templates
     font-size: 14px;
   }
 
-  .product-price,
-  .product-type {
+  .product-price {
     font-size: 12px;
   }
 
@@ -321,41 +291,21 @@ https://shopify.dev/docs/storefronts/themes/architecture/templates
 
 {% javascript %}
 document.addEventListener('DOMContentLoaded', () => {
-  const filterButtons = document.querySelectorAll('.filter-button');
-  const products = document.querySelectorAll('.collection-product');
-  let activeFilter = 'all';
+  const selectAllCheckbox = document.getElementById('select-all');
+  const productCheckboxes = document.querySelectorAll('.product-checkbox');
 
-  const updateFilters = (button, filterType) => {
-    filterButtons.forEach(btn => {
-      const isActive = btn === button;
-      btn.classList.toggle('active', isActive);
-      btn.setAttribute('aria-pressed', isActive.toString());
-    });
-
-    requestAnimationFrame(() => {
-      products.forEach(product => {
-        const productType = product.getAttribute('data-product-type');
-        product.classList.toggle('hidden', filterType !== 'all' && productType !== filterType);
-      });
-    });
-
-    activeFilter = filterType;
-  };
-
-  filterButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      const filterType = button.getAttribute('data-filter');
-      if (filterType !== activeFilter) {
-        updateFilters(button, filterType);
-      }
+  selectAllCheckbox.addEventListener('change', (e) => {
+    productCheckboxes.forEach(checkbox => {
+      checkbox.checked = e.target.checked;
     });
   });
 
-  filterButtons.forEach(button => {
-    button.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        button.click();
+  productCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', () => {
+      if (!checkbox.checked) {
+        selectAllCheckbox.checked = false;
+      } else if (Array.from(productCheckboxes).every(cb => cb.checked)) {
+        selectAllCheckbox.checked = true;
       }
     });
   });

@@ -15,7 +15,7 @@
   });
 </script>
 
-{% comment %} Styles and scripts for contact page with enhanced slideshow and layout {% endcomment %}
+{% comment %} Styles and scripts for contact page with two-column layout {% endcomment %}
 <style>
   .com_info {
     width: 100%;
@@ -29,12 +29,24 @@
     margin: 0 auto;
     padding: 0.5rem 1.5rem;
   }
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+  .col-left {
+    flex: 1;
+    min-width: 0;
+  }
+  .col-right {
+    flex: 1;
+    min-width: 0;
+  }
   .page-image-wrapper {
     position: relative;
-    width: 100vw;
-    margin-left: calc(-50vw + 50%);
+    width: 100%;
     overflow: hidden;
-    margin-bottom: 2rem;
+    margin-bottom: 0;
   }
   .page-slideshow {
     position: relative;
@@ -75,13 +87,13 @@
     z-index: 2;
     display: flex;
     justify-content: space-between;
-    padding: 0 2rem;
+    padding: 0 1rem;
   }
   .slideshow-btn {
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
     border: none;
-    padding: 1rem;
+    padding: 0.75rem;
     cursor: pointer;
     font-size: 1.5rem;
     transition: background-color 0.3s ease;
@@ -111,9 +123,8 @@
   }
   .rte {
     background-color: #fff;
-    padding: 3rem;
-    margin: 0 auto;
-    max-width: 800px;
+    padding: 2rem;
+    margin: 0;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
@@ -122,23 +133,22 @@
     color: #4a5568;
     line-height: 1.8;
     margin-bottom: 1.5rem;
-    text-align: center;
+    text-align: left;
   }
   .contact-section {
-    margin-top: 2rem;
-    text-align: center;
+    margin-top: 1rem;
+    text-align: left;
   }
   .contact-title {
     font-size: 2.5rem;
     font-weight: 700;
     color: #1a202c;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     text-transform: uppercase;
     letter-spacing: 1px;
   }
   .form-group {
     margin-bottom: 1.5rem;
-    text-align: left;
   }
   .form-control {
     width: 100%;
@@ -190,23 +200,25 @@
     margin-top: 2rem;
     font-size: 1.1rem;
     color: #4a5568;
-    text-align: center;
+    text-align: left;
     font-style: italic;
   }
   @media screen and (max-width: 768px) {
-    .com_info .container {
-      padding: 1rem 1rem;
+    .row {
+      flex-direction: column;
+    }
+    .col-left,
+    .col-right {
+      flex: 100%;
     }
     .page-image-wrapper {
-      margin-left: calc(-50vw + 50%);
-      width: 100vw;
+      width: 100%;
     }
     .page-slideshow {
       height: 300px;
     }
     .rte {
-      padding: 2rem;
-      max-width: 100%;
+      padding: 1.5rem;
     }
     .contact-title {
       font-size: 2rem;
@@ -313,55 +325,61 @@
 
 <div class="com_info">
   <div class="container">
-    {% if section.settings.header_image or section.settings.header_image_2 or section.settings.header_image_3 or section.settings.header_image_4 %}
-      <div class="page-image-wrapper">
-        <div class="page-slideshow">
-          <div class="slideshow-controls"></div>
-          {% if section.settings.header_image %}
-            <img src="{{ section.settings.header_image | img_url: 'master' }}" alt="Header Image 1" class="page-image" loading="lazy">
-          {% endif %}
-          {% if section.settings.header_image_2 %}
-            <img src="{{ section.settings.header_image_2 | img_url: 'master' }}" alt="Header Image 2" class="page-image" loading="lazy">
-          {% endif %}
-          {% if section.settings.header_image_3 %}
-            <img src="{{ section.settings.header_image_3 | img_url: 'master' }}" alt="Header Image 3" class="page-image" loading="lazy">
-          {% endif %}
-          {% if section.settings.header_image_4 %}
-            <img src="{{ section.settings.header_image_4 | img_url: 'master' }}" alt="Header Image 4" class="page-image" loading="lazy">
-          {% endif %}
-          <div class="page-image-overlay"></div>
-        </div>
-      </div>
-    {% endif %}
-    <div class="rte">
-      <div class="content_ct">
-        {{ page.content }}
-      </div>
-      <div class="contact-section">
-        <h2 class="contact-title">Contact Information</h2>
-        <form method="post" action="/contact#contact_form" id="contact_form" accept-charset="UTF-8">
-          <input name="form_type" type="hidden" value="contact">
-          <input name="utf8" type="hidden" value="✓">
-          <div class="customer-name">
-            <div class="form-group">
-              <input type="text" class="form-control" name="contact[name]" placeholder="Name *" required>
-            </div>
-            <div class="form-group">
-              <input type="email" class="form-control" name="contact[email]" placeholder="Email *" required>
-            </div>
-            <div class="form-group">
-              <textarea name="contact[body]" placeholder="Message *" class="form-control" rows="3" required></textarea>
+    <div class="row">
+      <div class="col-left">
+        {% if section.settings.header_image or section.settings.header_image_2 or section.settings.header_image_3 or section.settings.header_image_4 %}
+          <div class="page-image-wrapper">
+            <div class="page-slideshow">
+              <div class="slideshow-controls"></div>
+              {% if section.settings.header_image %}
+                <img src="{{ section.settings.header_image | img_url: 'master' }}" alt="Header Image 1" class="page-image" loading="lazy">
+              {% endif %}
+              {% if section.settings.header_image_2 %}
+                <img src="{{ section.settings.header_image_2 | img_url: 'master' }}" alt="Header Image 2" class="page-image" loading="lazy">
+              {% endif %}
+              {% if section.settings.header_image_3 %}
+                <img src="{{ section.settings.header_image_3 | img_url: 'master' }}" alt="Header Image 3" class="page-image" loading="lazy">
+              {% endif %}
+              {% if section.settings.header_image_4 %}
+                <img src="{{ section.settings.header_image_4 | img_url: 'master' }}" alt="Header Image 4" class="page-image" loading="lazy">
+              {% endif %}
+              <div class="page-image-overlay"></div>
             </div>
           </div>
-          <span class="require d-block mb-3"><em class="required">*</em> Required information</span>
-          <div class="buttons-set">
-            <button type="submit" title="Submit" class="book-submit">
-              <span>Send</span>
-            </button>
+        {% endif %}
+      </div>
+      <div class="col-right">
+        <div class="rte">
+          <div class="content_ct">
+            {{ page.content }}
           </div>
-        </form>
-        <div class="google-map mt-4">
-          Room 901, Building A, Wanda Plaza, No. 121, Huaian East Road, Yuhua District, Shijiazhuang City, Hebei Province, China
+          <div class="contact-section">
+            <h2 class="contact-title">Contact Information</h2>
+            <form method="post" action="/contact#contact_form" id="contact_form" accept-charset="UTF-8">
+              <input name="form_type" type="hidden" value="contact">
+              <input name="utf8" type="hidden" value="✓">
+              <div class="customer-name">
+                <div class="form-group">
+                  <input type="text" class="form-control" name="contact[name]" placeholder="Name *" required>
+                </div>
+                <div class="form-group">
+                  <input type="email" class="form-control" name="contact[email]" placeholder="Email *" required>
+                </div>
+                <div class="form-group">
+                  <textarea name="contact[body]" placeholder="Message *" class="form-control" rows="3" required></textarea>
+                </div>
+              </div>
+              <span class="require d-block mb-3"><em class="required">*</em> Required information</span>
+              <div class="buttons-set">
+                <button type="submit" title="Submit" class="book-submit">
+                  <span>Send</span>
+                </button>
+              </div>
+            </form>
+            <div class="google-map mt-4">
+              Room 901, Building A, Wanda Plaza, No. 121, Huaian East Road, Yuhua District, Shijiazhuang City, Hebei Province, China
+            </div>
+          </div>
         </div>
       </div>
     </div>
