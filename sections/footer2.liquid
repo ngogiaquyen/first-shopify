@@ -75,15 +75,16 @@
 {% comment %} Load Font Awesome for icons {% endcomment %}
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
-{% comment %} Enhanced CSS for a modern, fitness-focused footer {% endcomment %}
+{% comment %} Enhanced CSS for a modern, fitness-focused footer with updated blue-teal color scheme {% endcomment %}
 <style>
   footer {
-    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
-    color: #f1f5f9;
+    background: linear-gradient(180deg, #0f1c2e 0%, #1e3a4b 100%);
+    color: #e2e8f0;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     padding: 3rem 0;
     position: relative;
     overflow: hidden;
+    z-index: 0;
   }
   .footer-container {
     max-width: 1280px;
@@ -119,7 +120,7 @@
     left: 0;
     width: 2.5rem;
     height: 3px;
-    background: linear-gradient(to right, #f43f5e, #ec4899);
+    background: linear-gradient(to right, #3b82f6, #10b981);
     transition: width 0.4s ease, transform 0.4s ease;
   }
   footer h5:hover::after {
@@ -153,9 +154,9 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   }
   .social-icons a:hover {
-    background: linear-gradient(45deg, #f43f5e, #ec4899);
+    background: linear-gradient(45deg, #3b82f6, #10b981);
     transform: scale(1.15) rotate(5deg);
-    box-shadow: 0 4px 12px rgba(244, 63, 94, 0.4);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
     color: #1e293b;
   }
   .social-icons i {
@@ -171,7 +172,7 @@
   }
   .footer-links a {
     font-size: 0.9375rem;
-    color: #f1f5f9;
+    color: #e2e8f0;
     text-decoration: none;
     display: flex;
     align-items: center;
@@ -181,11 +182,11 @@
   }
   .footer-links i {
     font-size: 0.8125rem;
-    color: #f43f5e;
+    color: #3b82f6;
     transition: transform 0.3s ease;
   }
   .footer-links a:hover {
-    color: #f43f5e;
+    color: #3b82f6;
     transform: translateX(6px);
   }
   .footer-links a:hover i {
@@ -199,8 +200,8 @@
   .newsletter-form input {
     padding: 0.875rem;
     border: 1px solid #475569;
-    background: #1e293b;
-    color: #f1f5f9;
+    background: #1e3a4b;
+    color: #e2e8f0;
     border-radius: 0.5rem;
     font-size: 0.9375rem;
     width: 100%;
@@ -208,13 +209,13 @@
     transition: all 0.3s ease;
   }
   .newsletter-form input:focus {
-    border-color: #f43f5e;
-    box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.25);
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.25);
     outline: none;
   }
   .newsletter-form button {
     padding: 0.875rem;
-    background: linear-gradient(45deg, #f43f5e, #ec4899);
+    background: linear-gradient(45deg, #3b82f6, #10b981);
     color: #ffffff;
     font-weight: 600;
     border: none;
@@ -226,9 +227,9 @@
     letter-spacing: 0.05em;
   }
   .newsletter-form button:hover {
-    background: linear-gradient(45deg, #e11d48, #db2777);
+    background: linear-gradient(45deg, #2563eb, #059669);
     transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(244, 63, 94, 0.4);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
   }
   .legal-section {
     border-top: 1px solid #475569;
@@ -247,7 +248,7 @@
     flex-wrap: wrap;
   }
   .legal-links a {
-    color: #f1f5f9;
+    color: #e2e8f0;
     text-decoration: none;
     position: relative;
     transition: all 0.3s ease;
@@ -260,22 +261,20 @@
     left: 0;
     width: 0;
     height: 1px;
-    background: #f43f5e;
+    background: #3b82f6;
     transition: width 0.3s ease;
   }
   .legal-links a:hover {
-    color: #f43f5e;
+    color: #3b82f6;
   }
   .legal-links a:hover::after {
     width: 100%;
   }
   footer a:focus, footer button:focus {
-    outline: 2px solid #f43f5e;
+    outline: 2px solid #3b82f6;
     outline-offset: 3px;
-    box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.25);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.25);
   }
-
-  /* Subtle background texture for fitness vibe */
   footer::before {
     content: '';
     position: absolute;
@@ -287,8 +286,6 @@
     background-size: 20px 20px;
     opacity: 0.2;
   }
-
-  /* Tablet (768px - 1024px) */
   @media (max-width: 1024px) {
     .footer-columns {
       grid-template-columns: repeat(2, 1fr);
@@ -320,8 +317,6 @@
       padding: 0.75rem;
     }
   }
-
-  /* Mobile (below 768px) */
   @media (max-width: 768px) {
     .footer-columns {
       grid-template-columns: 1fr;
@@ -405,7 +400,6 @@
           {% endif %}
         </div>
       </div>
-
       {% comment %} Shop Links {% endcomment %}
       <div class="footer-column">
         <h5>Shop</h5>
@@ -417,7 +411,6 @@
           <li><a href="/collections/pre-workouts"><i class="fas fa-square-full"></i>Pre-Workouts</a></li>
         </ul>
       </div>
-
       {% comment %} About Us Links {% endcomment %}
       <div class="footer-column">
         <h5>About Us</h5>
@@ -428,7 +421,6 @@
           <li><a href="/pages/faqs"><i class="fas fa-square-full"></i>FAQs</a></li>
         </ul>
       </div>
-
       {% comment %} Newsletter Signup {% endcomment %}
       <div class="footer-column">
         <h5>{{ section.settings.newsletter_title | escape }}</h5>
@@ -441,7 +433,6 @@
         </form>
       </div>
     </div>
-
     {% comment %} Copyright and Legal Links {% endcomment %}
     <div class="legal-section">
       <p>Copyright &copy; 2025 {{ section.settings.company_name | escape }}, All rights reserved. Powered by <a href="https://moxcreative.com" target="_blank" rel="noopener">MoxCreative</a>.</p>
