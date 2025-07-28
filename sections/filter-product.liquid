@@ -1,7 +1,7 @@
 {% comment %}
   This Liquid file displays all products in the Shopify store in a responsive grid layout.
-  It includes product images, titles, prices, an "Add to Cart" button, pagination, and filtering by product type using buttons only.
-  Updated to include only an "All" button and product type buttons, removing the sort dropdown.
+  It includes product images, titles, prices, an "Add to Cart" button, pagination, and filtering by product type using buttons.
+  Updated to use direct URL paths for product type filtering (e.g., /collections/all/shirt) and remove JavaScript dependency.
 {% endcomment %}
 
 {% style %}
@@ -191,70 +191,69 @@
 <section class="products-section" aria-label="All products">
   <h1>All Products</h1>
 
-  {% comment %} Filter Form with Product Type Buttons {% endcomment %}
-  <form class="products-filter" action="{{ collection.url }}" method="get">
+  {% comment %} Filter Buttons for Product Types {% endcomment %}
+  <div class="products-filter">
     {% assign product_types = collection.all_types | sort %}
-    {% if product_types.size > 0 %}
-      <button
-        type="submit"
-        name="filter_type"
-        value=""
-        class="products-filter__type-button {% unless current_tags %}products-filter__type-button--active{% endunless %}"
-        aria-label="Show all product types"
+    {% assign current_type = current_tags | first %}
+    <a
+      href="{{ collection.url }}"
+      class="products-filter__type-button {% unless current_type %}products-filter__type-button--active{% endunless %}"
+      aria-label="Show all product types"
+    >
+      All
+    </a>
+    {% for type in product_types %}
+      <a
+        href="{{ collection.url }}/{{ type | handle }}"
+        class="products-filter__type-button {% if current_type == type %}products-filter__type-button--active{% endif %}"
+        aria-label="Filter by {{ type }}"
       >
-        All
-      </button>
-      {% for type in product_types %}
-        <button
-          type="submit"
-          name="filter_type"
-          value="{{ type | handle }}"
-          class="products-filter__type-button {% if current_tags contains type %}products-filter__type-button--active{% endif %}"
-          aria-label="Filter by {{ type }}"
-        >
-          {{ type }}
-        </button>
-      {% endfor %}
-    {% endif %}
-  </form>
+        {{ type }}
+      </a>
+    {% endfor %}
+  </div>
 
   <div class="products-grid">
     {% paginate collection.products by 12 %}
-      {% for product in collection.products %}
-        <div class="product-card">
-          <a href="{{ product.url }}" class="product-card__image-link" aria-label="{{ product.title }}">
-            {% if product.featured_image %}
-              <img
-                src="{{ product.featured_image | image_url: width: 300 }}"
-                alt="{{ product.title | escape }}"
-                class="product-card__image"
-                loading="lazy"
-              />
-            {% else %}
-              <img
-                src="{{ 'no-image.svg' | asset_url }}"
-                alt="No image available"
-                class="product-card__image"
-                loading="lazy"
-              />
-            {% endif %}
-          </a>
-          <div class="product-card__content">
-            <a href="{{ product.url }}" class="product-card__title">{{ product.title }}</a>
-            <div class="product-card__price">
-              {% if product.price_varies %}
-                From {{ product.price_min | money }}
+      {% if collection.products.size > 0 %}
+        {% for product in collection.products %}
+          <div class="product-card">
+            <a href="{{ product.url }}" class="product-card__image-link" aria-label="{{ product.title }}">
+              {% if product.featured_image %}
+                <img
+                  src="{{ product.featured_image | image_url: width: 300 }}"
+                  alt="{{ product.title | escape }}"
+                  class="product-card__image"
+                  loading="lazy"
+                />
               {% else %}
-                {{ product.price | money }}
+                <img
+                  src="{{ 'no-image.svg' | asset_url }}"
+                  alt="No image available"
+                  class="product-card__image"
+                  loading="lazy"
+                />
               {% endif %}
+            </a>
+            <div class="product-card__content">
+              <a href="{{ product.url }}" class="product-card__title">{{ product.title }}</a>
+              <div class="product-card__price">
+                {% if product.price_varies %}
+                  From {{ product.price_min | money }}
+                {% else %}
+                  {{ product.price | money }}
+                {% endif %}
+              </div>
+              {% form 'product', product, class: 'product-card__form' %}
+                <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+                <button type="submit" class="product-card__button">Add to Cart</button>
+              {% endform %}
             </div>
-            {% form 'product', product, class: 'product-card__form' %}
-              <input type="hidden" name="id" value="{{ product.variants.first.id }}">
-              <button type="submit" class="product-card__button">Add to Cart</button>
-            {% endform %}
           </div>
-        </div>
-      {% endfor %}
+        {% endfor %}
+      {% else %}
+        <p>No products found for this filter.</p>
+      {% endif %}
       {% if paginate.pages > 1 %}
         <nav class="pagination" aria-label="Pagination">
           {% if paginate.previous %}
@@ -285,28 +284,6 @@
     {% endpaginate %}
   </div>
 </section>
-
-{% javascript %}
-document.addEventListener('DOMContentLoaded', function() {
-  const typeButtons = document.querySelectorAll('.products-filter__type-button');
-
-  typeButtons.forEach(button => {
-    button.addEventListener('click', function(event) {
-      event.preventDefault(); // Prevent default form submission
-      const form = document.querySelector('.products-filter form');
-      const selectedType = this.value;
-      
-      let url = form.action; // Use form action (collection.url)
-      if (selectedType) {
-        url += '?filter_type=' + encodeURIComponent(selectedType);
-      }
-      
-      window.history.pushState({}, '', url);
-      window.location.href = url;
-    });
-  });
-});
-{% endjavascript %}
 
 {% schema %}
 {
