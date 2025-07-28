@@ -26,7 +26,9 @@
     "checkout": "Checkout",
     "title": "Cart",
     "update": "Update",
-    "remove": "Remove"
+    "remove": "Remove",
+    "empty": "Your cart is empty",
+    "subtotal": "Subtotal",
   },
   "collections": {
     "title": "Collections"
@@ -96,12 +98,4 @@
       "home": "Home"
     }
   },
-      "cart": {
-    "empty": "Your cart is empty",
-    "title": "Cart",
-    "subtotal": "Subtotal",
-    "remove": "Remove",
-    "update": "Update",
-    "checkout": "Checkout"
-  }
 }
