@@ -1,156 +1,91 @@
-{% comment %} Defining schema for Shopify Theme Editor {% endcomment %}
-{% schema %}
-{
-  "name": "Footer",
-  "settings": [
-    {
-      "type": "image_picker",
-      "id": "logo",
-      "label": "Logo"
-    },
-    {
-      "type": "text",
-      "id": "company_name",
-      "label": "Company Name",
-      "default": "Dustrium"
-    },
-    {
-      "type": "textarea",
-      "id": "address",
-      "label": "Company Address",
-      "default": "Room 901, Building A, Wanda Plaza, No. 121, Huaian East Road, Yuhua District, Shijiazhuang City, Hebei Province, China"
-    },
-    {
-      "type": "text",
-      "id": "email_url",
-      "label": "Email URL",
-      "default": "mailto:support@dustrium.com"
-    },
-    {
-      "type": "text",
-      "id": "whatsapp_url",
-      "label": "WhatsApp URL",
-      "default": "https://wa.me/18231139331"
-    },
-    {
-      "type": "text",
-      "id": "facebook_url",
-      "label": "Facebook URL",
-      "default": "https://www.facebook.com/JoyMaRaetin"
-    },
-    {
-      "type": "text",
-      "id": "linkedin_url",
-      "label": "LinkedIn URL",
-      "default": "https://linkedin.com"
-    },
-    {
-      "type": "text",
-      "id": "youtube_url",
-      "label": "YouTube URL",
-      "default": "https://www.youtube.com/@TradeScalping6789"
-    },
-    {
-      "type": "text",
-      "id": "newsletter_title",
-      "label": "Newsletter Title",
-      "default": "Join Our Fitness Community"
-    },
-    {
-      "type": "text",
-      "id": "newsletter_description",
-      "label": "Newsletter Description",
-      "default": "Get workout tips, exclusive offers, and the latest on gym equipment and supplements."
-    }
-  ],
-  "presets": [
-    {
-      "name": "Footer",
-      "category": "Custom"
-    }
-  ]
-}
-{% endschema %}
-
 {% comment %} Load Font Awesome for icons {% endcomment %}
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
-{% comment %} Pure CSS for responsive, fitness-focused footer styling with dynamic underline {% endcomment %}
+{% comment %} Enhanced CSS for a modern, fitness-focused footer {% endcomment %}
 <style>
   footer {
-    background: linear-gradient(180deg, #1a202c 0%, #2d3748 100%);
-    color: #e2e8f0;
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+    color: #f1f5f9;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    padding: 2.5rem 0;
+    padding: 3rem 0;
+    position: relative;
+    overflow: hidden;
   }
   .footer-container {
-    max-width: 1200px;
+    max-width: 1280px;
     margin: 0 auto;
-    padding: 0 1rem;
+    padding: 0 1.5rem;
   }
   .footer-columns {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-    margin-bottom: 2.5rem;
+    gap: 2rem;
+    margin-bottom: 3rem;
   }
   .footer-logo img {
-    max-width: 140px;
+    max-width: 160px;
     height: auto;
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
   }
   footer h5 {
-    font-size: 1.125rem;
+    font-size: 1.25rem;
     font-weight: 700;
     color: #ffffff;
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
     position: relative;
-    display: inline-block; /* Ensure underline aligns with text width */
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
   footer h5::after {
     content: '';
     position: absolute;
-    bottom: 0;
+    bottom: -4px;
     left: 0;
-    width: 2rem;
-    height: 2px;
-    background-color: #ef4444;
-    transition: width 0.3s ease;
+    width: 2.5rem;
+    height: 3px;
+    background: linear-gradient(to right, #f43f5e, #ec4899);
+    transition: width 0.4s ease, transform 0.4s ease;
   }
   footer h5:hover::after {
-    width: 100%; /* Extend to full width of text on hover */
+    width: 100%;
+    transform: translateX(4px);
   }
   footer p {
-    font-size: 0.875rem;
-    line-height: 1.6;
-    margin-bottom: 1rem;
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+    opacity: 0.9;
   }
   .social-icons {
     display: flex;
-    gap: 0.75rem;
+    gap: 1rem;
     flex-wrap: wrap;
   }
   .social-icons a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 2.5rem;
+    height: 2.5rem;
     border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15);
     color: #ffffff;
     text-decoration: none;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    min-width: 44px;
-    min-height: 44px;
+    transition: all 0.3s ease;
+    min-width: 48px;
+    min-height: 48px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   }
   .social-icons a:hover {
-    background-color: #ef4444;
-    transform: scale(1.1);
-    color: #1a202c;
+    background: linear-gradient(45deg, #f43f5e, #ec4899);
+    transform: scale(1.15) rotate(5deg);
+    box-shadow: 0 4px 12px rgba(244, 63, 94, 0.4);
+    color: #1e293b;
   }
   .social-icons i {
-    font-size: 1.125rem;
+    font-size: 1.25rem;
   }
   .footer-links {
     list-style: none;
@@ -158,82 +93,91 @@
     margin: 0;
   }
   .footer-links li {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
   }
   .footer-links a {
-    font-size: 0.875rem;
-    color: #e2e8f0;
+    font-size: 0.9375rem;
+    color: #f1f5f9;
     text-decoration: none;
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    transition: color 0.3s ease, transform 0.2s ease;
-    padding: 0.25rem 0;
+    transition: all 0.3s ease;
+    padding: 0.375rem 0;
   }
   .footer-links i {
-    font-size: 0.75rem;
-    color: #ef4444;
+    font-size: 0.8125rem;
+    color: #f43f5e;
+    transition: transform 0.3s ease;
   }
   .footer-links a:hover {
-    color: #ef4444;
-    transform: translateX(4px);
+    color: #f43f5e;
+    transform: translateX(6px);
+  }
+  .footer-links a:hover i {
+    transform: scale(1.2);
   }
   .newsletter-form {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 1rem;
   }
   .newsletter-form input {
-    padding: 0.75rem;
-    border: 1px solid #4a5568;
-    background-color: #2d3748;
-    color: #e2e8f0;
-    border-radius: 0.375rem;
-    font-size: 0.875rem;
+    padding: 0.875rem;
+    border: 1px solid #475569;
+    background: #1e293b;
+    color: #f1f5f9;
+    border-radius: 0.5rem;
+    font-size: 0.9375rem;
     width: 100%;
     box-sizing: border-box;
+    transition: all 0.3s ease;
   }
   .newsletter-form input:focus {
-    border-color: #ef4444;
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+    border-color: #f43f5e;
+    box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.25);
     outline: none;
   }
   .newsletter-form button {
-    padding: 0.75rem;
-    background-color: #ef4444;
+    padding: 0.875rem;
+    background: linear-gradient(45deg, #f43f5e, #ec4899);
     color: #ffffff;
     font-weight: 600;
     border: none;
-    border-radius: 0.375rem;
+    border-radius: 0.5rem;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    min-height: 44px;
+    transition: all 0.3s ease;
+    min-height: 48px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
   .newsletter-form button:hover {
-    background-color: #dc2626;
-    transform: translateY(-2px);
+    background: linear-gradient(45deg, #e11d48, #db2777);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(244, 63, 94, 0.4);
   }
   .legal-section {
-    border-top: 1px solid #4a5568;
-    padding-top: 1.5rem;
+    border-top: 1px solid #475569;
+    padding-top: 2rem;
     text-align: center;
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
+    opacity: 0.9;
   }
   .legal-section p {
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
   }
   .legal-links {
     display: flex;
     justify-content: center;
-    gap: 1.25rem;
+    gap: 1.5rem;
     flex-wrap: wrap;
   }
   .legal-links a {
-    color: #e2e8f0;
+    color: #f1f5f9;
     text-decoration: none;
     position: relative;
-    transition: color 0.3s ease;
-    padding: 0.25rem 0;
+    transition: all 0.3s ease;
+    padding: 0.375rem 0;
   }
   .legal-links a::after {
     content: '';
@@ -242,24 +186,72 @@
     left: 0;
     width: 0;
     height: 1px;
-    background-color: #ef4444;
+    background: #f43f5e;
     transition: width 0.3s ease;
   }
   .legal-links a:hover {
-    color: #ef4444;
+    color: #f43f5e;
   }
   .legal-links a:hover::after {
     width: 100%;
   }
   footer a:focus, footer button:focus {
-    outline: 2px solid #ef4444;
-    outline-offset: 2px;
+    outline: 2px solid #f43f5e;
+    outline-offset: 3px;
+    box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.25);
+  }
+
+  /* Subtle background texture for fitness vibe */
+  footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+    opacity: 0.2;
   }
 
   /* Tablet (768px - 1024px) */
   @media (max-width: 1024px) {
     .footer-columns {
       grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    .footer-logo img {
+      max-width: 140px;
+    }
+    footer h5 {
+      font-size: 1.125rem;
+    }
+    footer h5::after {
+      width: 2rem;
+    }
+    footer p, .footer-links a {
+      font-size: 0.875rem;
+    }
+    .social-icons a {
+      width: 2.25rem;
+      height: 2.25rem;
+      min-width: 44px;
+      min-height: 44px;
+    }
+    .social-icons i {
+      font-size: 1.125rem;
+    }
+    .newsletter-form input, .newsletter-form button {
+      font-size: 0.875rem;
+      padding: 0.75rem;
+    }
+  }
+
+  /* Mobile (below 768px) */
+  @media (max-width: 768px) {
+    .footer-columns {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
     }
     .footer-logo img {
       max-width: 120px;
@@ -270,11 +262,11 @@
     footer h5::after {
       width: 1.75rem;
     }
-    footer h5:hover::after {
-      width: 100%;
-    }
     footer p, .footer-links a {
       font-size: 0.8125rem;
+    }
+    .social-icons {
+      gap: 0.75rem;
     }
     .social-icons a {
       width: 2rem;
@@ -289,139 +281,12 @@
       font-size: 0.8125rem;
       padding: 0.625rem;
     }
-  }
-
-  /* Mobile (below 768px) */
-  @media (max-width: 768px) {
-    .footer-columns {
-      grid-template-columns: 1fr;
-    }
-    .footer-logo img {
-      max-width: 100px;
-    }
-    footer h5 {
-      font-size: 0.9375rem;
-    }
-    footer h5::after {
-      width: 1.5rem;
-    }
-    footer h5:hover::after {
-      width: 100%;
-    }
-    footer p, .footer-links a {
-      font-size: 0.75rem;
-    }
-    .social-icons {
-      gap: 0.5rem;
-    }
-    .social-icons a {
-      width: 1.75rem;
-      height: 1.75rem;
-      min-width: 36px;
-      min-height: 36px;
-    }
-    .social-icons i {
-      font-size: 0.875rem;
-    }
-    .newsletter-form input, .newsletter-form button {
-      font-size: 0.75rem;
-      padding: 0.5rem;
-    }
     .legal-section {
-      font-size: 0.75rem;
+      font-size: 0.8125rem;
     }
     .legal-links {
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.75rem;
     }
   }
 </style>
-
-{% comment %} Footer HTML structure {% endcomment %}
-<footer>
-  <div class="footer-container">
-    <div class="footer-columns">
-      {% comment %} Company Info {% endcomment %}
-      <div class="footer-column">
-        {% if section.settings.logo %}
-          <div class="footer-logo">
-            <img src="{{ section.settings.logo | img_url: '150x' }}" alt="{{ section.settings.company_name | escape }} Logo" loading="lazy">
-          </div>
-        {% endif %}
-        <p>{{ section.settings.address | escape }}</p>
-        <div class="social-icons">
-          {% if section.settings.email_url %}
-            <a href="{{ section.settings.email_url | escape }}" target="_blank" rel="noopener" aria-label="Email">
-              <i class="fas fa-envelope"></i>
-            </a>
-          {% endif %}
-          {% if section.settings.whatsapp_url %}
-            <a href="{{ section.settings.whatsapp_url | escape }}" target="_blank" rel="noopener" aria-label="WhatsApp">
-              <i class="fab fa-whatsapp"></i>
-            </a>
-          {% endif %}
-          {% if section.settings.facebook_url %}
-            <a href="{{ section.settings.facebook_url | escape }}" target="_blank" rel="noopener" aria-label="Facebook">
-              <i class="fab fa-facebook-f"></i>
-            </a>
-          {% endif %}
-          {% if section.settings.linkedin_url %}
-            <a href="{{ section.settings.linkedin_url | escape }}" target="_blank" rel="noopener" aria-label="LinkedIn">
-              <i class="fab fa-linkedin-in"></i>
-            </a>
-          {% endif %}
-          {% if section.settings.youtube_url %}
-            <a href="{{ section.settings.youtube_url | escape }}" target="_blank" rel="noopener" aria-label="YouTube">
-              <i class="fab fa-youtube"></i>
-            </a>
-          {% endif %}
-        </div>
-      </div>
-
-      {% comment %} Shop Links {% endcomment %}
-      <div class="footer-column">
-        <h5>Shop</h5>
-        <ul class="footer-links">
-          <li><a href="/collections/treadmills"><i class="fas fa-square-full"></i>Treadmills</a></li>
-          <li><a href="/collections/dumbbells"><i class="fas fa-square-full"></i>Dumbbells</a></li>
-          <li><a href="/collections/resistance-bands"><i class="fas fa-square-full"></i>Resistance Bands</a></li>
-          <li><a href="/collections/protein-powders"><i class="fas fa-square-full"></i>Protein Powders</a></li>
-          <li><a href="/collections/pre-workouts"><i class="fas fa-square-full"></i>Pre-Workouts</a></li>
-        </ul>
-      </div>
-
-      {% comment %} About Us Links {% endcomment %}
-      <div class="footer-column">
-        <h5>About Us</h5>
-        <ul class="footer-links">
-          <li><a href="/pages/our-mission"><i class="fas fa-square-full"></i>Our Mission</a></li>
-          <li><a href="/pages/why-shop-with-us"><i class="fas fa-square-full"></i>Why Shop With Us</a></li>
-          <li><a href="/pages/fitness-tips"><i class="fas fa-square-full"></i>Fitness Tips</a></li>
-          <li><a href="/pages/faqs"><i class="fas fa-square-full"></i>FAQs</a></li>
-        </ul>
-      </div>
-
-      {% comment %} Newsletter Signup {% endcomment %}
-      <div class="footer-column">
-        <h5>{{ section.settings.newsletter_title | escape }}</h5>
-        <p>{{ section.settings.newsletter_description | escape }}</p>
-        <form class="newsletter-form" method="post" action="/contact#newsletter" aria-label="Newsletter Signup">
-          <input type="hidden" name="form_id" value="newsletter_form">
-          <input type="text" name="contact[name]" id="newsletter-name" placeholder="Name" required>
-          <input type="email" name="contact[email]" id="newsletter-email" placeholder="Email" required>
-          <button type="submit">Sign Up</button>
-        </form>
-      </div>
-    </div>
-
-    {% comment %} Copyright and Legal Links {% endcomment %}
-    <div class="legal-section">
-      <p>Copyright &copy; 2025 {{ section.settings.company_name | escape }}, All rights reserved. Powered by <a href="https://moxcreative.com" target="_blank" rel="noopener">MoxCreative</a>.</p>
-      <div class="legal-links">
-        <a href="/pages/terms-of-use">Terms of Use</a>
-        <a href="/pages/privacy-policy">Privacy Policy</a>
-        <a href="/pages/cookie-policy">Cookie Policy</a>
-      </div>
-    </div>
-  </div>
-</footer>
