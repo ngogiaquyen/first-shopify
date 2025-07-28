@@ -66,6 +66,18 @@
         "product_4": "resistance-bands-for-working-elastic-exercice-loop-bands-yoga-starter-set-of-stretch-bands-for-booty-legs-pilates-flexbands"
       }
     },
+    "products_NHViPt": {
+      "type": "products",
+      "name": "Product Grid",
+      "settings": {
+        "grid_title": "quần áo",
+        "title_color": "#1f2937",
+        "product_1": "1200-mg-calcium-citrate-and-calcium-carbonate-blend-with-1000-iu-vitamin-d3-bone-health-supplement-for-adultssupplements",
+        "product_2": "2024-new-summer-running-shorts-men-sports-jogging-fitness-shorts-quick-dry-mens-gym-men-shorts-mesh-gyms-shorts-mens-sweatpants",
+        "product_3": "2025-compression-t-shirt-men-summer-sportswear-running-t-shirt-elastic-quick-dry-sport-tops-tee-athletic-gym-workout-shirts-men",
+        "product_4": "2025mens-running-shorts-2-in-1-breathable-sport-pants-quick-dry-workout-training-fitness-jogging-shorts-summer-beach-men-shorts"
+      }
+    },
     "products_RAVrLx": {
       "type": "products",
       "settings": {
@@ -100,6 +112,7 @@
   "order": [
     "slideshow",
     "products",
+    "products_NHViPt",
     "products_RAVrLx",
     "achievement",
     "customer-reviews"
