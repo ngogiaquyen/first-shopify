@@ -15,7 +15,7 @@
   });
 </script>
 
-{% comment %} Styles and scripts for contact page with two-column layout {% endcomment %}
+{% comment %} Styles for contact page with single image layout {% endcomment %}
 <style>
   .com_info {
     width: 100%;
@@ -48,26 +48,13 @@
     overflow: hidden;
     margin-bottom: 0;
   }
-  .page-slideshow {
-    position: relative;
+  .page-image {
     width: 100%;
     height: 500px;
-  }
-  .page-image {
-    display: none;
-    width: 100%;
-    height: 100%;
     object-fit: cover;
-    position: absolute;
-    top: 0;
-    left: 0;
-    transition: opacity 0.5s ease, transform 0.3s ease;
+    transition: transform 0.3s ease;
   }
-  .page-image.active {
-    display: block;
-    opacity: 1;
-  }
-  .page-image-wrapper:hover .page-image.active {
+  .page-image-wrapper:hover .page-image {
     transform: scale(1.05);
   }
   .page-image-overlay {
@@ -78,48 +65,6 @@
     height: 100%;
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));
     z-index: 1;
-  }
-  .slideshow-controls {
-    position: absolute;
-    top: 50%;
-    width: 100%;
-    transform: translateY(-50%);
-    z-index: 2;
-    display: flex;
-    justify-content: space-between;
-    padding: 0 1rem;
-  }
-  .slideshow-btn {
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    padding: 0.75rem;
-    cursor: pointer;
-    font-size: 1.5rem;
-    transition: background-color 0.3s ease;
-  }
-  .slideshow-btn:hover {
-    background-color: rgba(0, 0, 0, 0.7);
-  }
-  .slideshow-dots {
-    position: absolute;
-    bottom: 1rem;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2;
-    display: flex;
-    gap: 0.5rem;
-  }
-  .dot {
-    width: 10px;
-    height: 10px;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  .dot.active {
-    background-color: white;
   }
   .rte {
     background-color: #fff;
@@ -214,7 +159,7 @@
     .page-image-wrapper {
       width: 100%;
     }
-    .page-slideshow {
+    .page-image {
       height: 300px;
     }
     .rte {
@@ -236,7 +181,7 @@
     }
   }
   @media screen and (max-width: 480px) {
-    .page-slideshow {
+    .page-image {
       height: 200px;
     }
     .contact-title {
@@ -256,95 +201,14 @@
   }
 </style>
 
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const slides = document.querySelectorAll('.page-image');
-    const prevBtn = document.createElement('button');
-    const nextBtn = document.createElement('button');
-    const dotsContainer = document.createElement('div');
-    let currentSlide = 0;
-
-    function showSlide(index) {
-      slides.forEach((slide, i) => {
-        slide.classList.remove('active');
-        if (i === index) slide.classList.add('active');
-      });
-      updateDots();
-    }
-
-    function nextSlide() {
-      currentSlide = (currentSlide + 1) % slides.length;
-      showSlide(currentSlide);
-    }
-
-    function prevSlide() {
-      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-      showSlide(currentSlide);
-    }
-
-    function createControls() {
-      prevBtn.classList.add('slideshow-btn');
-      prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
-      nextBtn.classList.add('slideshow-btn');
-      nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
-      const controls = document.querySelector('.slideshow-controls');
-      controls.appendChild(prevBtn);
-      controls.appendChild(nextBtn);
-
-      dotsContainer.classList.add('slideshow-dots');
-      slides.forEach((_, i) => {
-        const dot = document.createElement('div');
-        dot.classList.add('dot');
-        dot.addEventListener('click', () => showSlide(i));
-        dotsContainer.appendChild(dot);
-      });
-      document.querySelector('.page-image-wrapper').appendChild(dotsContainer);
-    }
-
-    function updateDots() {
-      const dots = document.querySelectorAll('.dot');
-      dots.forEach((dot, i) => {
-        dot.classList.toggle('active', i === currentSlide);
-      });
-    }
-
-    // Chuyển slide tự động mỗi 3 giây
-    setInterval(nextSlide, 3000);
-
-    // Thêm điều khiển
-    createControls();
-
-    // Gán sự kiện cho nút
-    prevBtn.addEventListener('click', prevSlide);
-    nextBtn.addEventListener('click', nextSlide);
-
-    // Hiển thị slide đầu tiên khi tải trang
-    showSlide(currentSlide);
-  });
-</script>
-
 <div class="com_info">
   <div class="container">
     <div class="row">
       <div class="col-left">
-        {% if section.settings.header_image or section.settings.header_image_2 or section.settings.header_image_3 or section.settings.header_image_4 %}
+        {% if section.settings.header_image %}
           <div class="page-image-wrapper">
-            <div class="page-slideshow">
-              <div class="slideshow-controls"></div>
-              {% if section.settings.header_image %}
-                <img src="{{ section.settings.header_image | img_url: 'master' }}" alt="Header Image 1" class="page-image" loading="lazy">
-              {% endif %}
-              {% if section.settings.header_image_2 %}
-                <img src="{{ section.settings.header_image_2 | img_url: 'master' }}" alt="Header Image 2" class="page-image" loading="lazy">
-              {% endif %}
-              {% if section.settings.header_image_3 %}
-                <img src="{{ section.settings.header_image_3 | img_url: 'master' }}" alt="Header Image 3" class="page-image" loading="lazy">
-              {% endif %}
-              {% if section.settings.header_image_4 %}
-                <img src="{{ section.settings.header_image_4 | img_url: 'master' }}" alt="Header Image 4" class="page-image" loading="lazy">
-              {% endif %}
-              <div class="page-image-overlay"></div>
-            </div>
+            <img src="{{ section.settings.header_image | img_url: 'master' }}" alt="Header Image" class="page-image" loading="lazy">
+            <div class="page-image-overlay"></div>
           </div>
         {% endif %}
       </div>
@@ -354,7 +218,7 @@
             {{ page.content }}
           </div>
           <div class="contact-section">
-            <h2 class="contact-title">Contact Us</h2>
+            <h2 class="contact-title">Contact Information</h2>
             <form method="post" action="/contact#contact_form" id="contact_form" accept-charset="UTF-8">
               <input name="form_type" type="hidden" value="contact">
               <input name="utf8" type="hidden" value="✓">
@@ -376,6 +240,9 @@
                 </button>
               </div>
             </form>
+            <div class="google-map mt-4">
+              Room 901, Building A, Wanda Plaza, No. 121, Huaian East Road, Yuhua District, Shijiazhuang City, Hebei Province, China
+            </div>
           </div>
         </div>
       </div>
@@ -390,22 +257,7 @@
     {
       "type": "image_picker",
       "id": "header_image",
-      "label": "Header Image 1"
-    },
-    {
-      "type": "image_picker",
-      "id": "header_image_2",
-      "label": "Header Image 2"
-    },
-    {
-      "type": "image_picker",
-      "id": "header_image_3",
-      "label": "Header Image 3"
-    },
-    {
-      "type": "image_picker",
-      "id": "header_image_4",
-      "label": "Header Image 4"
+      "label": "Header Image"
     }
   ]
 }
