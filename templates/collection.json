@@ -12,9 +12,17 @@
     "main": {
       "type": "collection",
       "settings": {}
+    },
+    "filter_product_DVKfEh": {
+      "type": "filter-product",
+      "name": "All Products",
+      "settings": {
+        "collection": ""
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "filter_product_DVKfEh"
   ]
 }
