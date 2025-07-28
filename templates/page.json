@@ -11,7 +11,9 @@
   "sections": {
     "main": {
       "type": "page",
-      "settings": {}
+      "settings": {
+        "header_image": "shopify://shop_images/snapedit_1753544765084.jpg"
+      }
     }
   },
   "order": [
