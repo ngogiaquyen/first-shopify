@@ -127,7 +127,7 @@
 
 .collection-product:hover {
   transform: translateY(-3px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 12px rgba(0, 00, 0, 0.12);
 }
 
 .collection-product__image img {
@@ -314,9 +314,11 @@
 }
 {% endstylesheet %}
 
-{% javascript %}
-console.log({{ collection.products.size }});
+<script>
+  console.log({{ collection.products.size | json }});
+</script>
 
+{% javascript %}
 document.addEventListener('DOMContentLoaded', function() {
   const filterButtons = document.querySelectorAll('.filter-button');
   const products = document.querySelectorAll('.collection-product');
