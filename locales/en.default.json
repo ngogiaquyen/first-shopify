@@ -95,5 +95,13 @@
     "Breadcrumb": {
       "home": "Home"
     }
+  },
+      "cart": {
+    "empty": "Your cart is empty",
+    "title": "Cart",
+    "subtotal": "Subtotal",
+    "remove": "Remove",
+    "update": "Update",
+    "checkout": "Checkout"
   }
 }
