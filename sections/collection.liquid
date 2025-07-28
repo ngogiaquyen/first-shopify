@@ -44,7 +44,7 @@
           <ul class="pagination__list">
             {% if paginate.previous.is_link %}
               <li class="pagination__item">
-                <a href="{{ paginate.previous.url }}" class="pagination__link pagination__link--prev" aria-label="Previous page">
+                <a href="{{ paginate.previous.url }}{% if selected_type %}?type={{ selected_type }}{% endif %}" class="pagination__link pagination__link--prev" aria-label="Previous page">
                   <span>←</span>
                 </a>
               </li>
@@ -52,7 +52,7 @@
             {% for part in paginate.parts %}
               {% if part.is_link %}
                 <li class="pagination__item">
-                  <a href="{{ part.url }}" class="pagination__link" aria-label="Page {{ part.title }}">{{ part.title }}</a>
+                  <a href="{{ part.url }}{% if selected_type %}?type={{ selected_type }}{% endif %}" class="pagination__link" aria-label="Page {{ part.title }}">{{ part.title }}</a>
                 </li>
               {% else %}
                 <li class="pagination__item">
@@ -62,7 +62,7 @@
             {% endfor %}
             {% if paginate.next.is_link %}
               <li class="pagination__item">
-                <a href="{{ paginate.next.url }}" class="pagination__link pagination__link--next" aria-label="Next page">
+                <a href="{{ paginate.next.url }}{% if selected_type %}?type={{ selected_type }}{% endif %}" class="pagination__link pagination__link--next" aria-label="Next page">
                   <span>→</span>
                 </a>
               </li>
@@ -318,25 +318,69 @@
 document.addEventListener('DOMContentLoaded', function() {
   const filterButtons = document.querySelectorAll('.filter-button');
   const products = document.querySelectorAll('.collection-product');
+  let selectedType = new URLSearchParams(window.location.search).get('type') || 'all';
 
+  // Set initial active filter button based on URL parameter
+  filterButtons.forEach(button => {
+    const filterType = button.getAttribute('data-filter');
+    if (filterType === selectedType) {
+      button.classList.add('active');
+    } else {
+      button.classList.remove('active');
+    }
+  });
+
+  // Apply initial filter based on URL parameter
+  products.forEach(product => {
+    const productType = product.getAttribute('data-product-type');
+    if (selectedType === 'all' || productType === selectedType) {
+      product.classList.remove('hidden');
+    } else {
+      product.classList.add('hidden');
+    }
+  });
+
+  // Handle filter button clicks
   filterButtons.forEach(button => {
     button.addEventListener('click', function() {
-      // Remove active class from all buttons
+      // Update selected type
+      selectedType = this.getAttribute('data-filter');
+
+      // Update active button
       filterButtons.forEach(btn => btn.classList.remove('active'));
-      // Add active class to clicked button
       this.classList.add('active');
 
-      const filterType = this.getAttribute('data-filter');
+      // Update URL with selected type
+      const url = new URL(window.location);
+      if (selectedType === 'all') {
+        url.searchParams.delete('type');
+      } else {
+        url.searchParams.set('type', selectedType);
+      }
+      url.searchParams.delete('page'); // Reset to page 1 on filter change
+      window.history.pushState({}, '', url);
 
       // Show/hide products based on filter
       products.forEach(product => {
         const productType = product.getAttribute('data-product-type');
-        if (filterType === 'all' || productType === filterType) {
+        if (selectedType === 'all' || productType === selectedType) {
           product.classList.remove('hidden');
         } else {
           product.classList.add('hidden');
         }
       });
+    });
+  });
+
+  // Handle pagination link clicks
+  document.querySelectorAll('.pagination__link').forEach(link => {
+    link.addEventListener('click', function(event) {
+      event.preventDefault();
+      const url = new URL(this.href);
+      if (selectedType !== 'all') {
+        url.searchParams.set('type', selectedType);
+      }
+      window.location.href = url.toString();
     });
   });
 });
