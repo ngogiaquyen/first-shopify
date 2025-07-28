@@ -1,35 +1,26 @@
 {% comment %}
   This section is used in the collection template to render collection page
-  listing all products within a collection with product type filtering and pagination per category.
+  listing all products within a collection with product type filtering.
+
+  https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
 {% endcomment %}
 
 <div class="collection-container">
   <h1>{{ collection.title }}</h1>
 
   <div class="collection-filter">
-    <button class="filter-button {% if request.params.type == blank %}active{% endif %}">
-      <a href="{{ collection.url }}">All Products</a>
-    </button>
+    <button class="filter-button active" data-filter="all">All Products</button>
     {% assign product_types = collection.products | map: 'type' | uniq %}
     {% for type in product_types %}
       {% if type != blank %}
-        <button class="filter-button {% if request.params.type == type %}active{% endif %}">
-          <a href="{{ collection.url }}?type={{ type | url_encode }}">{{ type }}</a>
-        </button>
+        <button class="filter-button" data-filter="{{ type | handleize }}">{{ type }}</button>
       {% endif %}
     {% endfor %}
   </div>
 
   <div class="collection-products" id="product-grid">
-    {% assign selected_type = request.params.type %}
-    {% if selected_type %}
-      {% assign filtered_products = collection.products | where: 'type', selected_type %}
-    {% else %}
-      {% assign filtered_products = collection.products %}
-    {% endif %}
-    
-    {% paginate filtered_products by 20 %}
-      {% for product in paginate.collection %}
+    {% paginate collection.products by 20 %}
+      {% for product in collection.products %}
         <div class="collection-product" data-product-type="{{ product.type | handleize }}">
           {% if product.featured_image %}
             {% render 'image',
@@ -53,7 +44,7 @@
           <ul class="pagination__list">
             {% if paginate.previous.is_link %}
               <li class="pagination__item">
-                <a href="{{ paginate.previous.url }}{% if selected_type %}?type={{ selected_type | url_encode }}{% endif %}" class="pagination__link pagination__link--prev" aria-label="Previous page">
+                <a href="{{ paginate.previous.url }}" class="pagination__link pagination__link--prev" aria-label="Previous page">
                   <span>←</span>
                 </a>
               </li>
@@ -61,7 +52,7 @@
             {% for part in paginate.parts %}
               {% if part.is_link %}
                 <li class="pagination__item">
-                  <a href="{{ part.url }}{% if selected_type %}?type={{ selected_type | url_encode }}{% endif %}" class="pagination__link" aria-label="Page {{ part.title }}">{{ part.title }}</a>
+                  <a href="{{ part.url }}" class="pagination__link" aria-label="Page {{ part.title }}">{{ part.title }}</a>
                 </li>
               {% else %}
                 <li class="pagination__item">
@@ -71,7 +62,7 @@
             {% endfor %}
             {% if paginate.next.is_link %}
               <li class="pagination__item">
-                <a href="{{ paginate.next.url }}{% if selected_type %}?type={{ selected_type | url_encode }}{% endif %}" class="pagination__link pagination__link--next" aria-label="Next page">
+                <a href="{{ paginate.next.url }}" class="pagination__link pagination__link--next" aria-label="Next page">
                   <span>→</span>
                 </a>
               </li>
@@ -118,23 +109,12 @@
   transition: all 0.2s ease;
 }
 
-.filter-button a {
-  color: #111827;
-  text-decoration: none;
-  display: block;
-}
-
 .filter-button.active,
 .filter-button:hover {
   background: #111827;
   color: #ffffff;
   border-color: #111827;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.filter-button.active a,
-.filter-button:hover a {
-  color: #ffffff;
 }
 
 .collection-product {
@@ -336,7 +316,29 @@
 
 {% javascript %}
 document.addEventListener('DOMContentLoaded', function() {
-  // No JavaScript needed for filtering since it's handled server-side
+  const filterButtons = document.querySelectorAll('.filter-button');
+  const products = document.querySelectorAll('.collection-product');
+
+  filterButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      // Remove active class from all buttons
+      filterButtons.forEach(btn => btn.classList.remove('active'));
+      // Add active class to clicked button
+      this.classList.add('active');
+
+      const filterType = this.getAttribute('data-filter');
+
+      // Show/hide products based on filter
+      products.forEach(product => {
+        const productType = product.getAttribute('data-product-type');
+        if (filterType === 'all' || productType === filterType) {
+          product.classList.remove('hidden');
+        } else {
+          product.classList.add('hidden');
+        }
+      });
+    });
+  });
 });
 {% endjavascript %}
 
