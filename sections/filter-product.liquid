@@ -1,7 +1,7 @@
 {% comment %}
   This Liquid file displays all products in the Shopify store in a responsive grid layout.
-  It includes product images, titles, prices, an "Add to Cart" button, pagination, and filtering by tags and sorting.
-  Updated to add sorting dropdown and tag filter checkboxes.
+  It includes product images, titles, prices, an "Add to Cart" button, pagination, and filtering by product type and sorting.
+  Updated to filter by product type using collection.all_types instead of tags.
 {% endcomment %}
 
 {% style %}
@@ -22,7 +22,7 @@
   }
 
   .products-filter__sort,
-  .products-filter__tags {
+  .products-filter__types {
     flex: 1;
     min-width: 200px;
   }
@@ -44,30 +44,30 @@
     border-color: var(--color-accent);
   }
 
-  .products-filter__tags {
+  .products-filter__types {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
   }
 
-  .products-filter__tag {
+  .products-filter__type {
     display: flex;
     align-items: center;
     gap: 0.5rem;
   }
 
-  .products-filter__tag input {
+  .products-filter__type input {
     margin: 0;
     cursor: pointer;
   }
 
-  .products-filter__tag label {
+  .products-filter__type label {
     font-size: 0.875rem;
     color: var(--color-foreground);
     cursor: pointer;
   }
 
-  .products-filter__tag input:checked + label {
+  .products-filter__type input:checked + label {
     color: var(--color-accent);
     font-weight: 500;
   }
@@ -184,7 +184,7 @@
     }
 
     .products-filter__sort,
-    .products-filter__tags {
+    .products-filter__types {
       min-width: auto;
     }
 
@@ -216,7 +216,7 @@
   <h1>All Products</h1>
 
   {% comment %} Filter and Sort Form {% endcomment %}
-  <div class="products-filter">
+  <form class="products-filter" action="{{ collection.url }}" method="get">
     <div class="products-filter__sort">
       <label for="sort-by" class="visually-hidden">Sort by</label>
       <select id="sort-by" name="sort_by" onchange="this.form.submit()">
@@ -228,26 +228,26 @@
         <option value="created-descending" {% if sort_by == 'created-descending' %}selected{% endif %}>Newest First</option>
       </select>
     </div>
-    <div class="products-filter__tags">
-      {% assign tags = collection.all_tags | sort %}
-      {% if tags.size > 0 %}
-        <h3>Filter by Tags</h3>
-        {% for tag in tags %}
-          <div class="products-filter__tag">
+    <div class="products-filter__types">
+      {% assign product_types = collection.all_types | sort %}
+      {% if product_types.size > 0 %}
+        <h3>Filter by Product Type</h3>
+        {% for type in product_types %}
+          <div class="products-filter__type">
             <input
               type="checkbox"
-              id="tag-{{ tag | handle }}"
-              name="filter_tags"
-              value="{{ tag | handle }}"
-              {% if current_tags contains tag %}checked{% endif %}
+              id="type-{{ type | handle }}"
+              name="filter_type"
+              value="{{ type | handle }}"
+              {% if current_tags contains type %}checked{% endif %}
               onchange="this.form.submit()"
             >
-            <label for="tag-{{ tag | handle }}">{{ tag }}</label>
+            <label for="type-{{ type | handle }}">{{ type }}</label>
           </div>
         {% endfor %}
       {% endif %}
     </div>
-  </div>
+  </form>
 
   <div class="products-grid">
     {% paginate collection.products by 12 %}
@@ -320,23 +320,23 @@
 {% javascript %}
 document.addEventListener('DOMContentLoaded', function() {
   const sortSelect = document.querySelector('#sort-by');
-  const tagCheckboxes = document.querySelectorAll('.products-filter__tag input');
+  const typeCheckboxes = document.querySelectorAll('.products-filter__type input');
 
   function updateURL() {
     const form = document.querySelector('.products-filter form');
     const sortValue = sortSelect.value;
-    const selectedTags = Array.from(tagCheckboxes)
+    const selectedTypes = Array.from(typeCheckboxes)
       .filter(checkbox => checkbox.checked)
       .map(checkbox => checkbox.value);
     
-    let url = window.location.pathname;
+    let url = form.action; // Use form action (collection.url)
     let params = new URLSearchParams();
 
     if (sortValue) {
       params.set('sort_by', sortValue);
     }
-    if (selectedTags.length > 0) {
-      params.set('filter_tags', selectedTags.join('+'));
+    if (selectedTypes.length > 0) {
+      params.set('filter_type', selectedTypes.join('+'));
     }
 
     if (params.toString()) {
@@ -347,7 +347,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   sortSelect.addEventListener('change', updateURL);
-  tagCheckboxes.forEach(checkbox => checkbox.addEventListener('change', updateURL));
+  typeCheckboxes.forEach(checkbox => checkbox.addEventListener('change', updateURL));
 });
 {% endjavascript %}
 
