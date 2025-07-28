@@ -59,6 +59,7 @@
     "products": {
       "type": "products",
       "settings": {
+        "grid_title": "Gears",
         "product_1": "adjustable-weight-bench-incline-decline-foldable-adjustable-dumbbell-weight-bench-full-body-workout-strength-training",
         "product_2": "fitness-equipment-leg-curl-extention-machine-workout-to-imporove-knee-function-leg-extension-curl-machine-leg-strength",
         "product_3": "merach-foldable-treadmill-t12b1-incline-quiet-treadmills-double-deck-technology-4-silicone-shock-cushion-heart-rate-monitoring",
@@ -68,6 +69,7 @@
     "products_RAVrLx": {
       "type": "products",
       "settings": {
+        "grid_title": "Featured Products",
         "product_1": "1200-mg-calcium-citrate-and-calcium-carbonate-blend-with-1000-iu-vitamin-d3-bone-health-supplement-for-adultssupplements",
         "product_2": "18-womens-fitness-equipment-accessories-pilates-balls-stretching-straps-magic-rings-yoga-rings-for-fitness",
         "product_3": "creatine-monohydrate-3000-mg-build-muscle-improve-athletic-performance-fitness-energy-generation-adult-nutritional-supplement",
