@@ -1,7 +1,7 @@
 {% comment %}
-  This Liquid file displays all products in the Shopify store in a responsive grid layout.
-  It includes product images, titles, prices, an "Add to Cart" button, pagination, and filtering by product type using buttons.
-  Updated to ensure product type filtering uses correct URL paths (e.g., /collections/all/shirt) and adds debugging output.
+  File này hiển thị tất cả sản phẩm trong Shopify store dưới dạng lưới responsive.
+  Bao gồm ảnh sản phẩm, tiêu đề, giá, nút "Thêm vào giỏ", phân trang, và lọc theo loại sản phẩm bằng JavaScript với if-else.
+  Cập nhật để lọc client-side, tránh redirect URL, sử dụng data-product-type và nút button.
 {% endcomment %}
 
 {% style %}
@@ -30,7 +30,6 @@
     font-size: 0.875rem;
     font-weight: 500;
     cursor: pointer;
-    text-decoration: none;
     transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
   }
 
@@ -66,6 +65,10 @@
     border-radius: 0.5rem;
     overflow: hidden;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .product-card.hidden {
+    display: none;
   }
 
   .product-card:hover {
@@ -155,8 +158,13 @@
     border-color: var(--color-accent);
   }
 
+  .error-message {
+    text-align: center;
+    color: #e53e3e;
+    padding: 1rem;
+  }
+
   .debug-info {
-    display: none; /* Hidden by default; enable for debugging */
     background: #f8f8f8;
     padding: 1rem;
     margin-bottom: 1rem;
@@ -197,113 +205,211 @@
   }
 {% endstyle %}
 
-<section class="products-section" aria-label="All products">
-  <h1>All Products</h1>
+<section class="products-section" aria-label="Tất cả sản phẩm">
+  <h1>Tất cả sản phẩm</h1>
 
-  {% comment %} Debugging Output (optional, can be removed) {% endcomment %}
+  {% comment %} Debug để kiểm tra collection và product types {% endcomment %}
   <div class="debug-info">
-    <p><strong>Current Collection:</strong> {{ collection.title }} (Handle: {{ collection.handle }})</p>
-    <p><strong>Current Tags:</strong> {{ current_tags | join: ', ' }}</p>
-    <p><strong>Available Product Types:</strong> {{ collection.all_types | join: ', ' }}</p>
+    <p><strong>Collection hiện tại:</strong> {{ collection.title }} (Handle: {{ collection.handle }})</p>
+    <p><strong>Tag hiện tại:</strong> {{ current_tags | join: ', ' }}</p>
+    <p><strong>Loại sản phẩm có sẵn:</strong> {{ collection.all_types | join: ', ' }}</p>
   </div>
 
-  {% comment %} Filter Buttons for Product Types {% endcomment %}
+  {% comment %} Nút lọc theo loại sản phẩm {% endcomment %}
   <div class="products-filter">
     {% assign product_types = collection.all_types | sort %}
-    {% assign current_type = current_tags | first %}
-    <a
-      href="{{ collection.url }}"
-      class="products-filter__type-button {% unless current_type %}products-filter__type-button--active{% endunless %}"
-      aria-label="Show all product types"
+    <button
+      data-filter-type="all"
+      class="products-filter__type-button products-filter__type-button--active"
+      aria-label="Hiển thị tất cả loại sản phẩm"
     >
-      All
-    </a>
+      Tất cả
+    </button>
     {% if product_types.size > 0 %}
       {% for type in product_types %}
-        <a
-          href="{{ collection.url }}/{{ type | handle }}"
-          class="products-filter__type-button {% if current_type == type %}products-filter__type-button--active{% endif %}"
-          aria-label="Filter by {{ type }}"
+        <button
+          data-filter-type="{{ type | handle }}"
+          class="products-filter__type-button"
+          aria-label="Lọc theo {{ type }}"
         >
           {{ type }}
-        </a>
+        </button>
       {% endfor %}
     {% else %}
-      <p>No product types available. Please assign product types to your products.</p>
+      <p class="error-message">Không có loại sản phẩm nào. Vui lòng gán loại sản phẩm trong Shopify Admin.</p>
     {% endif %}
   </div>
 
   <div class="products-grid">
-    {% paginate collection.products by 12 %}
-      {% if collection.products.size > 0 %}
-        {% for product in collection.products %}
-          <div class="product-card">
-            <a href="{{ product.url }}" class="product-card__image-link" aria-label="{{ product.title }}">
-              {% if product.featured_image %}
-                <img
-                  src="{{ product.featured_image | image_url: width: 300 }}"
-                  alt="{{ product.title | escape }}"
-                  class="product-card__image"
-                  loading="lazy"
-                />
-              {% else %}
-                <img
-                  src="{{ 'no-image.svg' | asset_url }}"
-                  alt="No image available"
-                  class="product-card__image"
-                  loading="lazy"
-                />
-              {% endif %}
-            </a>
-            <div class="product-card__content">
-              <a href="{{ product.url }}" class="product-card__title">{{ product.title }}</a>
-              <div class="product-card__price">
-                {% if product.price_varies %}
-                  From {{ product.price_min | money }}
-                {% else %}
-                  {{ product.price | money }}
-                {% endif %}
-              </div>
-              {% form 'product', product, class: 'product-card__form' %}
-                <input type="hidden" name="id" value="{{ product.variants.first.id }}">
-                <button type="submit" class="product-card__button">Add to Cart</button>
-              {% endform %}
-            </div>
-          </div>
-        {% endfor %}
-      {% else %}
-        <p>No products found for this filter.</p>
-      {% endif %}
-      {% if paginate.pages > 1 %}
-        <nav class="pagination" aria-label="Pagination">
-          {% if paginate.previous %}
-            <a href="{{ paginate.previous.url }}" class="pagination__link" aria-label="Previous page">Previous</a>
+    {% for product in collection.products %}
+      <div class="product-card" data-product-type="{{ product.type | handle }}">
+        <a href="{{ product.url }}" class="product-card__image-link" aria-label="{{ product.title }}">
+          {% if product.featured_image %}
+            <img
+              src="{{ product.featured_image | image_url: width: 300 }}"
+              alt="{{ product.title | escape }}"
+              class="product-card__image"
+              loading="lazy"
+            />
           {% else %}
-            <span class="pagination__link pagination__link--disabled" aria-disabled="true">Previous</span>
+            <img
+              src="{{ 'no-image.svg' | asset_url }}"
+              alt="Không có ảnh"
+              class="product-card__image"
+              loading="lazy"
+            />
           {% endif %}
-
-          {% for part in paginate.parts %}
-            {% if part.is_link %}
-              <a href="{{ part.url }}" class="pagination__link" aria-label="Page {{ part.title }}">{{ part.title }}</a>
+        </a>
+        <div class="product-card__content">
+          <a href="{{ product.url }}" class="product-card__title">{{ product.title }}</a>
+          <div class="product-card__price">
+            {% if product.price_varies %}
+              Từ {{ product.price_min | money }}
             {% else %}
-              {% if part.title == paginate.current_page %}
-                <span class="pagination__link pagination__link--current" aria-current="page">{{ part.title }}</span>
-              {% else %}
-                <span class="pagination__link pagination__link--disabled">{{ part.title }}</span>
-              {% endif %}
+              {{ product.price | money }}
             {% endif %}
-          {% endfor %}
-
-          {% if paginate.next %}
-            <a href="{{ paginate.next.url }}" class="pagination__link" aria-label="Next page">Next</a>
-          {% else %}
-            <span class="pagination__link pagination__link--disabled" aria-disabled="true">Next</span>
-          {% endif %}
-        </nav>
-      {% endif %}
-    {% endpaginate %}
+          </div>
+          {% form 'product', product, class: 'product-card__form' %}
+            <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+            <button type="submit" class="product-card__button">Thêm vào giỏ</button>
+          {% endform %}
+        </div>
+      </div>
+    {% endfor %}
+    {% if collection.products.size == 0 %}
+      <p class="error-message">Không tìm thấy sản phẩm nào.</p>
+    {% endif %}
   </div>
+
+  {% comment %} Phân trang giả lập cho client-side {% endcomment %}
+  <nav class="pagination" aria-label="Phân trang" id="pagination">
+    <!-- JavaScript sẽ tạo phân trang động -->
+  </nav>
 </section>
+
+{% javascript %}
+document.addEventListener('DOMContentLoaded', function() {
+  const filterButtons = document.querySelectorAll('.products-filter__type-button');
+  const productCards = document.querySelectorAll('.product-card');
+  const paginationContainer = document.getElementById('pagination');
+  const itemsPerPage = 12;
+  let currentPage = 1;
+
+  function updatePagination(filteredProducts) {
+    const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+    paginationContainer.innerHTML = '';
+
+    if (totalPages <= 1) return;
+
+    if (currentPage > 1) {
+      const prevLink = document.createElement('a');
+      prevLink.href = '#';
+      prevLink.className = 'pagination__link';
+      prevLink.textContent = 'Trước';
+      prevLink.setAttribute('aria-label', 'Trang trước');
+      prevLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        currentPage--;
+        filterProducts(document.querySelector('.products-filter__type-button--active').dataset.filterType);
+      });
+      paginationContainer.appendChild(prevLink);
+    } else {
+      const prevSpan = document.createElement('span');
+      prevSpan.className = 'pagination__link pagination__link--disabled';
+      prevSpan.textContent = 'Trước';
+      prevSpan.setAttribute('aria-disabled', 'true');
+      paginationContainer.appendChild(prevSpan);
+    }
+
+    for (let i = 1; i <= totalPages; i++) {
+      const pageLink = document.createElement(i === currentPage ? 'span' : 'a');
+      pageLink.className = i === currentPage ? 'pagination__link pagination__link--current' : 'pagination__link';
+      pageLink.textContent = i;
+      pageLink.setAttribute('aria-label', `Trang ${i}`);
+      if (i !== currentPage) {
+        pageLink.href = '#';
+        pageLink.addEventListener('click', (e) => {
+          e.preventDefault();
+          currentPage = i;
+          filterProducts(document.querySelector('.products-filter__type-button--active').dataset.filterType);
+        });
+      } else {
+        pageLink.setAttribute('aria-current', 'page');
+      }
+      paginationContainer.appendChild(pageLink);
+    }
+
+    if (currentPage < totalPages) {
+      const nextLink = document.createElement('a');
+      nextLink.href = '#';
+      nextLink.className = 'pagination__link';
+      nextLink.textContent = 'Sau';
+      nextLink.setAttribute('aria-label', 'Trang sau');
+      nextLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        currentPage++;
+        filterProducts(document.querySelector('.products-filter__type-button--active').dataset.filterType);
+      });
+      paginationContainer.appendChild(nextLink);
+    } else {
+      const nextSpan = document.createElement('span');
+      nextSpan.className = 'pagination__link pagination__link--disabled';
+      nextSpan.textContent = 'Sau';
+      nextSpan.setAttribute('aria-disabled', 'true');
+      paginationContainer.appendChild(nextSpan);
+    }
+  }
+
+  function filterProducts(filterType) {
+    const filteredProducts = [];
+
+    productCards.forEach(card => {
+      const productType = card.dataset.productType;
+      if (filterType === 'all') {
+        filteredProducts.push(card);
+        card.classList.remove('hidden');
+      } else if (productType === filterType) {
+        filteredProducts.push(card);
+        card.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+
+    currentPage = 1; // Reset về trang 1 khi lọc
+    updatePagination(filteredProducts);
+
+    filteredProducts.forEach((card, index) => {
+      if (index >= (currentPage - 1) * itemsPerPage && index < currentPage * itemsPerPage) {
+        card.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+
+    if (filteredProducts.length === 0) {
+      const errorMessage = document.createElement('p');
+      errorMessage.className = 'error-message';
+      errorMessage.textContent = 'Không tìm thấy sản phẩm cho loại này.';
+      document.querySelector('.products-grid').appendChild(errorMessage);
+    } else {
+      const existingError = document.querySelector('.products-grid .error-message');
+      if (existingError) existingError.remove();
+    }
+  }
+
+  filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      filterButtons.forEach(btn => btn.classList.remove('products-filter__type-button--active'));
+      button.classList.add('products-filter__type-button--active');
+      filterProducts(button.dataset.filterType);
+    });
+  });
+
+  // Khởi tạo với tất cả sản phẩm
+  filterProducts('all');
+});
+{% endjavascript %}
 
 {% schema %}
 {
@@ -317,7 +423,7 @@
   ],
   "presets": [
     {
-      "name": "All Products",
+      "name": "Tất cả sản phẩm",
       "category": "Collection"
     }
   ]
