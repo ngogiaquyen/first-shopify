@@ -1,7 +1,7 @@
 {% comment %}
   File này hiển thị tất cả sản phẩm trong Shopify store dưới dạng lưới responsive.
   Bao gồm ảnh sản phẩm, tiêu đề, giá, nút "Thêm vào giỏ", phân trang, và lọc theo loại sản phẩm bằng JavaScript với if-else.
-  Cập nhật để lọc client-side, tránh redirect URL, sử dụng data-product-type và nút button.
+  Cập nhật để sửa lỗi phân trang không chuyển trang khi bấm nút.
 {% endcomment %}
 
 {% style %}
@@ -294,33 +294,32 @@ document.addEventListener('DOMContentLoaded', function() {
   const paginationContainer = document.getElementById('pagination');
   const itemsPerPage = 12;
   let currentPage = 1;
+  let currentFilter = 'all';
 
   function updatePagination(filteredProducts) {
     const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
     paginationContainer.innerHTML = '';
 
-    if (totalPages <= 1) return;
+    if (totalPages <= 1) {
+      return; // Không cần phân trang nếu chỉ có 1 trang
+    }
 
+    // Nút "Trước"
+    const prevLink = document.createElement('a');
+    prevLink.href = '#';
+    prevLink.className = currentPage > 1 ? 'pagination__link' : 'pagination__link pagination__link--disabled';
+    prevLink.textContent = 'Trước';
+    prevLink.setAttribute('aria-label', 'Trang trước');
     if (currentPage > 1) {
-      const prevLink = document.createElement('a');
-      prevLink.href = '#';
-      prevLink.className = 'pagination__link';
-      prevLink.textContent = 'Trước';
-      prevLink.setAttribute('aria-label', 'Trang trước');
       prevLink.addEventListener('click', (e) => {
         e.preventDefault();
         currentPage--;
-        filterProducts(document.querySelector('.products-filter__type-button--active').dataset.filterType);
+        filterProducts(currentFilter);
       });
-      paginationContainer.appendChild(prevLink);
-    } else {
-      const prevSpan = document.createElement('span');
-      prevSpan.className = 'pagination__link pagination__link--disabled';
-      prevSpan.textContent = 'Trước';
-      prevSpan.setAttribute('aria-disabled', 'true');
-      paginationContainer.appendChild(prevSpan);
     }
+    paginationContainer.appendChild(prevLink);
 
+    // Nút số trang
     for (let i = 1; i <= totalPages; i++) {
       const pageLink = document.createElement(i === currentPage ? 'span' : 'a');
       pageLink.className = i === currentPage ? 'pagination__link pagination__link--current' : 'pagination__link';
@@ -331,7 +330,7 @@ document.addEventListener('DOMContentLoaded', function() {
         pageLink.addEventListener('click', (e) => {
           e.preventDefault();
           currentPage = i;
-          filterProducts(document.querySelector('.products-filter__type-button--active').dataset.filterType);
+          filterProducts(currentFilter);
         });
       } else {
         pageLink.setAttribute('aria-current', 'page');
@@ -339,30 +338,27 @@ document.addEventListener('DOMContentLoaded', function() {
       paginationContainer.appendChild(pageLink);
     }
 
+    // Nút "Sau"
+    const nextLink = document.createElement('a');
+    nextLink.href = '#';
+    nextLink.className = currentPage < totalPages ? 'pagination__link' : 'pagination__link pagination__link--disabled';
+    nextLink.textContent = 'Sau';
+    nextLink.setAttribute('aria-label', 'Trang sau');
     if (currentPage < totalPages) {
-      const nextLink = document.createElement('a');
-      nextLink.href = '#';
-      nextLink.className = 'pagination__link';
-      nextLink.textContent = 'Sau';
-      nextLink.setAttribute('aria-label', 'Trang sau');
       nextLink.addEventListener('click', (e) => {
         e.preventDefault();
         currentPage++;
-        filterProducts(document.querySelector('.products-filter__type-button--active').dataset.filterType);
+        filterProducts(currentFilter);
       });
-      paginationContainer.appendChild(nextLink);
-    } else {
-      const nextSpan = document.createElement('span');
-      nextSpan.className = 'pagination__link pagination__link--disabled';
-      nextSpan.textContent = 'Sau';
-      nextSpan.setAttribute('aria-disabled', 'true');
-      paginationContainer.appendChild(nextSpan);
     }
+    paginationContainer.appendChild(nextLink);
   }
 
   function filterProducts(filterType) {
+    currentFilter = filterType; // Lưu filter hiện tại
     const filteredProducts = [];
 
+    // Lọc sản phẩm bằng if-else
     productCards.forEach(card => {
       const productType = card.dataset.productType;
       if (filterType === 'all') {
@@ -376,9 +372,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
 
-    currentPage = 1; // Reset về trang 1 khi lọc
-    updatePagination(filteredProducts);
-
+    // Cập nhật hiển thị theo trang
     filteredProducts.forEach((card, index) => {
       if (index >= (currentPage - 1) * itemsPerPage && index < currentPage * itemsPerPage) {
         card.classList.remove('hidden');
@@ -387,21 +381,26 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
 
+    // Cập nhật phân trang
+    updatePagination(filteredProducts);
+
+    // Xử lý thông báo lỗi
+    const existingError = document.querySelector('.products-grid .error-message');
+    if (existingError) existingError.remove();
     if (filteredProducts.length === 0) {
       const errorMessage = document.createElement('p');
       errorMessage.className = 'error-message';
       errorMessage.textContent = 'Không tìm thấy sản phẩm cho loại này.';
       document.querySelector('.products-grid').appendChild(errorMessage);
-    } else {
-      const existingError = document.querySelector('.products-grid .error-message');
-      if (existingError) existingError.remove();
     }
   }
 
+  // Gắn sự kiện cho nút lọc
   filterButtons.forEach(button => {
     button.addEventListener('click', () => {
       filterButtons.forEach(btn => btn.classList.remove('products-filter__type-button--active'));
       button.classList.add('products-filter__type-button--active');
+      currentPage = 1; // Reset trang khi lọc
       filterProducts(button.dataset.filterType);
     });
   });
