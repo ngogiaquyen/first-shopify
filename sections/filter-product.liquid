@@ -456,13 +456,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (matchingButton) {
       matchingButton.click();
-      // filterButtons.forEach(btn => btn.classList.remove('products-filter__type-button--active'));
-      // matchingButton.classList.add('products-filter__type-button--active');
-      // currentFilter = decodedCollectionValue;
-      // filterProducts(decodedCollectionValue);
+      filterButtons.forEach(btn => btn.classList.remove('products-filter__type-button--active'));
+      matchingButton.classList.add('products-filter__type-button--active');
+      currentFilter = decodedCollectionValue;
+      filterProducts(decodedCollectionValue);
     } else {
       console.warn(`Không tìm thấy nút lọc cho collection: ${collectionValue}`);
-      // filterProducts('all');
+      filterProducts('all');
     }
   } else {
     filterProducts('all');
