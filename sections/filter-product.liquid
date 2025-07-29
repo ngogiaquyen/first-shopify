@@ -448,7 +448,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log(filterButtons)
 
     const matchingButton = Array.from(filterButtons).find(button => {
-      console.log(button.innerText)
+      console.log(button.innerText, decodedCollectionValue)
       return button.innerText === decodedCollectionValue
     }
     );
