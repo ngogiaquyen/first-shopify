@@ -150,6 +150,22 @@
     text-align: left;
     font-style: italic;
   }
+  .form-notification {
+    display: none;
+    padding: 1rem;
+    background-color: #48bb78;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 500;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    text-align: center;
+    transition: opacity 0.3s ease;
+  }
+  .form-notification.visible {
+    display: block;
+    opacity: 1;
+  }
   @media screen and (max-width: 768px) {
     .row {
       flex-direction: column;
@@ -181,6 +197,10 @@
     .google-map {
       font-size: 1rem;
     }
+    .form-notification {
+      font-size: 1rem;
+      padding: 0.75rem;
+    }
   }
   @media screen and (max-width: 480px) {
     .page-image {
@@ -199,6 +219,10 @@
     }
     .google-map {
       font-size: 0.95rem;
+    }
+    .form-notification {
+      font-size: 0.95rem;
+      padding: 0.5rem;
     }
   }
 </style>
@@ -237,6 +261,7 @@
               </div>
               <span class="require d-block mb-3"><em class="required">*</em> Required information</span>
               <div class="buttons-set">
+                <div id="form-notification" class="form-notification">Chúng tôi sẽ phản hồi bạn trong thời gian sớm nhất</div>
                 <button type="submit" title="Submit" class="book-submit">
                   <span>Send</span>
                 </button>
@@ -252,13 +277,18 @@
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('contact_form');
+    const notification = document.getElementById('form-notification');
+
     form.addEventListener('submit', (event) => {
       const name = form.querySelector('input[name="contact[name]"]').value.trim();
       const email = form.querySelector('input[name="contact[email]"]').value.trim();
       const message = form.querySelector('textarea[name="contact[body]"]').value.trim();
 
       if (name && email && message) {
-        alert('Chúng tôi sẽ phản hồi bạn trong thời gian sớm nhất');
+        notification.classList.add('visible');
+        setTimeout(() => {
+          notification.classList.remove('visible');
+        }, 3000); // Hide after 3 seconds
       }
     });
   });
