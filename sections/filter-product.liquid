@@ -442,9 +442,10 @@ document.addEventListener('DOMContentLoaded', function() {
   // Tự động kích hoạt nút lọc dựa trên collectionValue
   if (collectionValue) {
     let decodedCollectionValue = decodeURIComponent(collectionValue).toLowerCase().replaceAll(/\s+/g, '-'); // Chuẩn hóa giá trị collection
-decodedCollectionValue =  decodedCollectionValue.replaceAll("-", ' ')
+    decodedCollectionValue =  decodedCollectionValue.replaceAll("-", ' ')
 
     console.log(decodedCollectionValue);
+    console.log(filterButtons)
     const matchingButton = Array.from(filterButtons).find(button => 
       button.dataset.filterType === decodedCollectionValue
     );
