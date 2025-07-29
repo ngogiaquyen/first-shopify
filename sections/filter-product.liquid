@@ -1,6 +1,7 @@
 {% comment %}
   Template hiển thị tất cả sản phẩm trong Shopify store dưới dạng lưới responsive.
   Tối ưu cho mobile (1 sản phẩm/dòng), tablet (3 sản phẩm/dòng), laptop (4 sản phẩm/dòng).
+  Hình ảnh sản phẩm được điều chỉnh thành hình vuông với aspect-ratio 1:1.
   CSS hiện đại, mượt mà, giữ nguyên logic lọc và phân trang client-side.
 {% endcomment %}
 
@@ -25,7 +26,6 @@
     background: var(--color-background);
     color: var(--color-foreground);
     font-family: 'Inter', system-ui, sans-serif;
-    width: 100vw;
   }
 
   .products-section h1 {
@@ -102,7 +102,7 @@
 
   .product-card__image {
     width: 100%;
-    height: clamp(150px, 40vw, 280px);
+    aspect-ratio: 1/1; /* Đảm bảo hình vuông */
     object-fit: cover;
     background: #f9fafb;
   }
@@ -216,7 +216,7 @@
     }
 
     .product-card__image {
-      height: clamp(120px, 35vw, 160px);
+      aspect-ratio: 1/1; /* Giữ hình vuông */
     }
 
     .product-card__title {
@@ -238,6 +238,10 @@
     .products-grid {
       grid-template-columns: repeat(3, 1fr);
     }
+
+    .product-card__image {
+      aspect-ratio: 1/1; /* Giữ hình vuông */
+    }
   }
 
   /* Laptop: 4 sản phẩm/dòng (1024px trở lên) */
@@ -245,11 +249,23 @@
     .products-grid {
       grid-template-columns: repeat(4, 1fr);
     }
+
+    .product-card__image {
+      aspect-ratio: 1/1; /* Giữ hình vuông */
+    }
   }
 {% endstyle %}
 
 <section class="products-section" aria-label="Tất cả sản phẩm">
   <h1>Tất cả sản phẩm</h1>
+
+  {% comment %} Debug để kiểm tra collection và product types {% endcomment %}
+  <div class="debug-info">
+    <p><strong>Collection hiện tại:</strong> {{ collection.title }} (Handle: {{ collection.handle }})</p>
+    <p><strong>Tag hiện tại:</strong> {{ current_tags | join: ', ' }}</p>
+    <p><strong>Loại sản phẩm có sẵn:</strong> {{ collection.all_types | join: ', ' }}</p>
+    <p><strong>Tổng số sản phẩm:</strong> {{ collection.products_count }}</p>
+  </div>
 
   {% comment %} Nút lọc theo loại sản phẩm {% endcomment %}
   <div class="products-filter">
