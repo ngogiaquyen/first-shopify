@@ -24,6 +24,7 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    width: 100%;
   }
   .images-container {
     display: flex;
@@ -49,10 +50,10 @@
     flex-direction: column;
     flex-wrap: wrap;
     gap: 0.75rem;
-    width: 180px; /* Đủ chỗ cho 2 ảnh (80px mỗi ảnh + 0.75rem gap) */
-    max-height: 400px; /* Giới hạn chiều cao để thumbnails không kéo dài quá */
+    width: 180px; /* Đủ cho 2 ảnh (80px mỗi ảnh + 0.75rem gap) */
+    max-height: 180px; /* Giới hạn chiều cao để hiển thị 2 ảnh mỗi cột */
     flex-shrink: 0;
-    align-content: flex-start; /* Đảm bảo thumbnails căn trái */
+    align-content: flex-start;
   }
   .product-thumbnail {
     width: 80px;
@@ -252,15 +253,15 @@
       flex-direction: row;
       flex-wrap: wrap;
       justify-content: center;
-      width: 100%; /* Thumbnails chiếm toàn bộ chiều rộng */
+      width: 100%;
       max-width: none;
-      max-height: none; /* Bỏ giới hạn chiều cao */
+      max-height: none;
       gap: 0.75rem;
     }
     .product-thumbnail {
       width: 80px;
       height: 80px;
-      flex: 0 0 calc(50% - 0.375rem); /* Mỗi hàng 2 ảnh, trừ gap */
+      flex: 0 0 calc(50% - 0.375rem); /* Mỗi hàng 2 ảnh */
       max-width: calc(50% - 0.375rem);
     }
     .product-image-main {
@@ -313,7 +314,7 @@
     .product-thumbnail {
       width: 60px;
       height: 60px;
-      flex: 0 0 calc(50% - 0.25rem); /* Mỗi hàng 2 ảnh, trừ gap */
+      flex: 0 0 calc(50% - 0.25rem); /* Mỗi hàng 2 ảnh */
       max-width: calc(50% - 0.25rem);
     }
     .product-image-main {
@@ -411,8 +412,14 @@
   <div class="product-images">
     {% if product.images.size > 0 %}
       <div class="images-container">
+        <img
+          src="{{ product.featured_image | img_url: '800x800' }}"
+          alt="{{ product.title | escape }} - Main Image"
+          class="product-image-main"
+          id="main-image"
+        >
         <div class="product-thumbnails">
-          {% for image in product.images %}
+          {% for image in product.images limit: 4 %} <!-- Giới hạn tối đa 4 ảnh để tránh quá dài -->
             <img
               src="{{ image | img_url: '100x100' }}"
               alt="{{ product.title | escape }} - Thumbnail {{ forloop.index }}"
@@ -421,12 +428,6 @@
             >
           {% endfor %}
         </div>
-        <img
-          src="{{ product.featured_image | img_url: '800x800' }}"
-          alt="{{ product.title | escape }} - Main Image"
-          class="product-image-main"
-          id="main-image"
-        >
       </div>
     {% else %}
       <img src="{{ 'no-image.jpg' | asset_url }}" alt="No image available" class="product-image-main">
