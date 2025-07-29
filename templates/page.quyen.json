@@ -1,0 +1,22 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "page",
+      "settings": {
+        "header_image": "shopify://shop_images/gempages_576723600090858235-c78c30db-5e34-4266-9e48-d042d4fcb5a7.webp"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
