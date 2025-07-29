@@ -410,6 +410,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
       productCards.forEach(card => {
         const productType = card.dataset.productType;
+        console.log("loại: ", productType)
         if (filterType === 'all' || productType === filterType) {
           filteredProducts.push(card);
         }
@@ -456,7 +457,6 @@ document.addEventListener('DOMContentLoaded', function() {
       filterButtons.forEach(btn => btn.classList.remove('products-filter__type-button--active'));
       matchingButton.classList.add('products-filter__type-button--active');
       currentFilter = decodedCollectionValue;
-      filterProducts('all');
       filterProducts(decodedCollectionValue);
     } else {
       console.warn(`Không tìm thấy nút lọc cho collection: ${collectionValue}`);
