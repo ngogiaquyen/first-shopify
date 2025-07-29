@@ -342,7 +342,6 @@
 {% javascript %}
 const url = new URL(window.location.href);
 const collectionValue = url.searchParams.get('collection');
-console.log(collectionValue);
 
 document.addEventListener('DOMContentLoaded', function() {
   const filterButtons = document.querySelectorAll('.products-filter__type-button');
@@ -444,7 +443,7 @@ document.addEventListener('DOMContentLoaded', function() {
   if (collectionValue) {
     const decodedCollectionValue = decodeURIComponent(collectionValue).toLowerCase().replace(/\s+/g, '-'); // Chuẩn hóa giá trị collection
 
-    
+
     consosle.log(decodedCollectionValue);
     const matchingButton = Array.from(filterButtons).find(button => 
       button.dataset.filterType === decodedCollectionValue
