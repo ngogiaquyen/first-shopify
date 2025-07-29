@@ -296,7 +296,13 @@
 {% comment %} Product grid HTML with for loop and error handling {% endcomment %}
 <div class="product-grid-container-{{ section.id }}">
   {% if section.settings.grid_title != blank %}
-    <h2 class="title"><a href="#">{{ section.settings.grid_title | escape }}</a></h2>
+    <h2 class="title">
+      {% if section.settings.grid_title_link != blank %}
+        <a href="{{ section.settings.grid_title_link }}">{{ section.settings.grid_title | escape }}</a>
+      {% else %}
+        {{ section.settings.grid_title | escape }}
+      {% endif %}
+    </h2>
   {% endif %}
   <div class="product-grid">
     {% assign product_handles = section.settings.product_1 | append: ',' | append: section.settings.product_2 | append: ',' | append: section.settings.product_3 | append: ',' | append: section.settings.product_4 | split: ',' %}
