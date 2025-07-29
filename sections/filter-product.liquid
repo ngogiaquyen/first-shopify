@@ -443,7 +443,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Tự động kích hoạt nút lọc dựa trên collectionValue
   if (collectionValue) {
     let decodedCollectionValue = decodeURIComponent(collectionValue).replaceAll(/\s+/g, '-'); // Chuẩn hóa giá trị collection
-
+decodedCollectionValue = decodedCollectionValue.replaceAll("-", " ")
     console.log(decodedCollectionValue);
     console.log(filterButtons)
 
@@ -456,7 +456,7 @@ document.addEventListener('DOMContentLoaded', function() {
       filterButtons.forEach(btn => btn.classList.remove('products-filter__type-button--active'));
       matchingButton.classList.add('products-filter__type-button--active');
       currentFilter = decodedCollectionValue;
-      filterProducts(decodedCollectionValue.toLowerCase());
+      filterProducts(decodedCollectionValue.toLowerCase()replaceAll(" ", "-"));
     } else {
       console.warn(`Không tìm thấy nút lọc cho collection: ${collectionValue}`);
       filterProducts('all');
