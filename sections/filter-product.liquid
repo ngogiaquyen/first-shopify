@@ -456,7 +456,7 @@ document.addEventListener('DOMContentLoaded', function() {
       filterButtons.forEach(btn => btn.classList.remove('products-filter__type-button--active'));
       matchingButton.classList.add('products-filter__type-button--active');
       currentFilter = decodedCollectionValue;
-      filterProducts(decodedCollectionValue.toLowerCase()replaceAll(" ", "-"));
+      // filterProducts(decodedCollectionValue.toLowerCase()replaceAll(" ", "-"));
     } else {
       console.warn(`Không tìm thấy nút lọc cho collection: ${collectionValue}`);
       filterProducts('all');
