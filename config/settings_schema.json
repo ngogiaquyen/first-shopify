@@ -23,7 +23,7 @@
     ]
   },
   {
-    "name": "Favicon",
+    "name": "t:general.favicon",
     "settings": [
       {
         "type": "image_picker",
