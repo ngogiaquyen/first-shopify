@@ -1,3 +1,9 @@
+{% comment %}
+  File này hiển thị tất cả sản phẩm trong Shopify store dưới dạng lưới responsive.
+  Bao gồm ảnh sản phẩm, tiêu đề, giá, nút "Thêm vào giỏ", phân trang, và lọc theo loại sản phẩm bằng JavaScript với if-else.
+  Cập nhật để hiển thị tất cả sản phẩm (lên đến 1000) bằng paginate, sửa lỗi phân trang, và giữ lọc client-side.
+{% endcomment %}
+
 {% style %}
   :root {
     --color-background: #ffffff;
@@ -292,3 +298,224 @@
     }
   }
 {% endstyle %}
+
+<section class="products-section" aria-label="Tất cả sản phẩm">
+  <h1>Tất cả sản phẩm</h1>
+
+  {% comment %} Nút lọc theo loại sản phẩm {% endcomment %}
+  <div class="products-filter">
+    {% assign product_types = collection.all_types | sort %}
+    <button
+      data-filter-type="all"
+      class="products-filter__type-button products-filter__type-button--active"
+      aria-label="Hiển thị tất cả loại sản phẩm"
+    >
+      Tất cả
+    </button>
+    {% if product_types.size > 0 %}
+      {% for type in product_types %}
+        <button
+          data-filter-type="{{ type | handle }}"
+          class="products-filter__type-button"
+          aria-label="Lọc theo {{ type }}"
+        >
+          {{ type }}
+        </button>
+      {% endfor %}
+    {% else %}
+      <p class="error-message">Không có loại sản phẩm nào. Vui lòng gán loại sản phẩm trong Shopify Admin.</p>
+    {% endif %}
+  </div>
+
+  <div class="products-grid">
+    {% paginate collection.products by 1000 %}
+      {% for product in collection.products %}
+        <div class="product-card" data-product-type="{{ product.type | handle }}">
+          <a href="{{ product.url }}" class="product-card__image-link" aria-label="{{ product.title }}">
+            {% if product.featured_image %}
+              <img
+                src="{{ product.featured_image | image_url: width: 300 }}"
+                alt="{{ product.title | escape }}"
+                class="product-card__image"
+                loading="lazy"
+              />
+            {% else %}
+              <img
+                src="{{ 'no-image.svg' | asset_url }}"
+                alt="Không có ảnh"
+                class="product-card__image"
+                loading="lazy"
+              />
+            {% endif %}
+          </a>
+          <div class="product-card__content">
+            <a href="{{ product.url }}" class="product-card__title">{{ product.title }}</a>
+            <div class="product-card__price">
+              {% if product.price_varies %}
+                Từ {{ product.price_min | money }}
+              {% else %}
+                {{ product.price | money }}
+              {% endif %}
+            </div>
+            {% form 'product', product, class: 'product-card__form' %}
+              <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+              <button type="submit" class="product-card__button">Thêm vào giỏ</button>
+            {% endform %}
+          </div>
+        </div>
+      {% endfor %}
+      {% if collection.products.size == 0 %}
+        <p class="error-message">Không tìm thấy sản phẩm nào.</p>
+      {% endif %}
+    {% endpaginate %}
+  </div>
+
+  {% comment %} Phân trang giả lập cho client-side {% endcomment %}
+  <nav class="pagination" aria-label="Phân trang" id="pagination">
+    <!-- JavaScript sẽ tạo phân trang động -->
+  </nav>
+</section>
+
+{% javascript %}
+document.addEventListener('DOMContentLoaded', function() {
+  const filterButtons = document.querySelectorAll('.products-filter__type-button');
+  const productCards = document.querySelectorAll('.product-card');
+  const paginationContainer = document.getElementById('pagination');
+  const itemsPerPage = 12;
+  let currentPage = 1;
+  let currentFilter = 'all';
+
+  function updatePagination(filteredProducts) {
+    const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+    paginationContainer.innerHTML = '';
+
+    if (totalPages <= 1) {
+      return; // Không cần phân trang nếu chỉ có 1 trang
+    }
+
+    // Nút "Trước"
+    const prevLink = document.createElement('a');
+    prevLink.href = '#';
+    prevLink.className = currentPage > 1 ? 'pagination__link' : 'pagination__link pagination__link--disabled';
+    prevLink.textContent = 'Trước';
+    prevLink.setAttribute('aria-label', 'Trang trước');
+    if (currentPage > 1) {
+      prevLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        currentPage--;
+        filterProducts(currentFilter);
+      });
+    }
+    paginationContainer.appendChild(prevLink);
+
+    // Nút số trang
+    for (let i = 1; i <= totalPages; i++) {
+      const pageLink = document.createElement(i === currentPage ? 'span' : 'a');
+      pageLink.className = i === currentPage ? 'pagination__link pagination__link--current' : 'pagination__link';
+      pageLink.textContent = i;
+      pageLink.setAttribute('aria-label', `Trang ${i}`);
+      if (i !== currentPage) {
+        pageLink.href = '#';
+        pageLink.addEventListener('click', (e) => {
+          e.preventDefault();
+          currentPage = i;
+          filterProducts(currentFilter);
+        });
+      } else {
+        pageLink.setAttribute('aria-current', 'page');
+      }
+      paginationContainer.appendChild(pageLink);
+    }
+
+    // Nút "Sau"
+    const nextLink = document.createElement('a');
+    nextLink.href = '#';
+    nextLink.className = currentPage < totalPages ? 'pagination__link' : 'pagination__link pagination__link--disabled';
+    nextLink.textContent = 'Sau';
+    nextLink.setAttribute('aria-label', 'Trang sau');
+    if (currentPage < totalPages) {
+      nextLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        currentPage++;
+        filterProducts(currentFilter);
+      });
+    }
+    paginationContainer.appendChild(nextLink);
+  }
+
+  function filterProducts(filterType) {
+    currentFilter = filterType; // Lưu filter hiện tại
+    const filteredProducts = [];
+
+    // Lọc sản phẩm bằng if-else
+    productCards.forEach(card => {
+      const productType = card.dataset.productType;
+      if (filterType === 'all') {
+        filteredProducts.push(card);
+      } else if (productType === filterType) {
+        filteredProducts.push(card);
+      }
+    });
+
+    // Ẩn tất cả sản phẩm trước khi hiển thị trang hiện tại
+    productCards.forEach(card => {
+      card.classList.add('hidden');
+    });
+
+    // Hiển thị sản phẩm trong trang hiện tại
+    filteredProducts.forEach((card, index) => {
+      if (index >= (currentPage - 1) * itemsPerPage && index < currentPage * itemsPerPage) {
+        card.classList.remove('hidden');
+      }
+    });
+
+    // Cập nhật phân trang
+    updatePagination(filteredProducts);
+
+    // Xử lý thông báo lỗi
+    const existingError = document.querySelector('.products-grid .error-message');
+    if (existingError) existingError.remove();
+    if (filteredProducts.length === 0) {
+      const errorMessage = document.createElement('p');
+      errorMessage.className = 'error-message';
+      errorMessage.textContent = 'Không tìm thấy sản phẩm cho loại này.';
+      document.querySelector('.products-grid').appendChild(errorMessage);
+    }
+  }
+
+  // Gắn sự kiện cho nút lọc
+  filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      filterButtons.forEach(btn => btn.classList.remove('products-filter__type-button--active'));
+      button.classList.add('products-filter__type-button--active');
+      currentPage = 1; // Reset trang khi lọc
+      filterProducts(button.dataset.filterType);
+    });
+  });
+
+  // Khởi tạo với tất cả sản phẩm
+  filterProducts('all');
+
+  // Debug số lượng sản phẩm
+  console.log('Tổng số sản phẩm tải được:', productCards.length);
+});
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Products",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tất cả sản phẩm",
+      "category": "Collection"
+    }
+  ]
+}
+{% endschema %}
