@@ -23,6 +23,16 @@
     ]
   },
   {
+    "name": "Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "custom_favicon",
+        "label": "Favicon Image"
+      }
+    ]
+  },
+  {
     "name": "t:general.layout",
     "settings": [
       {
