@@ -457,7 +457,7 @@ document.addEventListener('DOMContentLoaded', function() {
       matchingButton.classList.add('products-filter__type-button--active');
       currentFilter = decodedCollectionValue;
       filterProducts('all');
-      // filterProducts(decodedCollectionValue);
+      filterProducts(decodedCollectionValue);
     } else {
       console.warn(`Không tìm thấy nút lọc cho collection: ${collectionValue}`);
       filterProducts('all');
