@@ -250,30 +250,6 @@
 <section class="products-section" aria-label="Tất cả sản phẩm">
   <h1>Tất cả sản phẩm</h1>
 
-  {% comment %} Nút lọc theo loại sản phẩm {% endcomment %}
-  <div class="products-filter">
-    {% assign product_types = collection.all_types | sort %}
-    <button
-      data-filter-type="all"
-      class="products-filter__type-button products-filter__type-button--active"
-      aria-label="Hiển thị tất cả loại sản phẩm"
-    >
-      Tất cả
-    </button>
-    {% if product_types.size > 0 %}
-      {% for type in product_types %}
-        <button
-          data-filter-type="{{ type | handle }}"
-          class="products-filter__type-button"
-          aria-label="Lọc theo {{ type }}"
-        >
-          {{ type }}
-        </button>
-      {% endfor %}
-    {% else %}
-      <p class="error-message">Không có loại sản phẩm nào. Vui lòng gán loại sản phẩm trong Shopify Admin.</p>
-    {% endif %}
-  </div>
 
   <div class="products-grid">
     {% paginate collection.products by 1000 %}
