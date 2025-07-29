@@ -1,377 +1,497 @@
-{% comment %} Defining schema for Shopify Theme Editor {% endcomment %}
+{% comment %}
+  Template hiển thị tất cả sản phẩm trong Shopify store dưới dạng lưới responsive.
+  Tối ưu cho mobile (1 sản phẩm/dòng), tablet (3 sản phẩm/dòng), laptop (4 sản phẩm/dòng).
+  Hình ảnh sản phẩm được điều chỉnh thành hình vuông với aspect-ratio 1:1.
+  CSS hiện đại, mượt mà, hỗ trợ lọc theo danh mục và loại sản phẩm.
+{% endcomment %}
+
+{% style %}
+  :root {
+    --color-background: #ffffff;
+    --color-foreground: #1f2937;
+    --color-accent: #2563eb;
+    --color-accent-dark: #1d4ed8;
+    --color-border: #d1d5db;
+    --color-background-hover: #f3f4f6;
+    --page-margin: clamp(1rem, 3vw, 2rem);
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .products-section {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: var(--page-margin);
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: 'Inter', system-ui, sans-serif;
+    width: 100%;
+  }
+
+  .products-section h1 {
+    font-size: clamp(1.5rem, 5vw, 2.25rem);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--color-foreground);
+  }
+
+  .products-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(0.5rem, 2vw, 0.75rem);
+    margin-bottom: 2rem;
+    justify-content: center;
+  }
+
+  .products-filter__type-button {
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.25rem);
+    border-radius: 0.5rem;
+    color: var(--color-foreground);
+    font-size: clamp(0.75rem, 2.5vw, 0.875rem);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .products-filter__type-button:hover {
+    background: var(--color-background-hover);
+    color: var(--color-accent);
+    transform: translateY(-2px);
+  }
+
+  .products-filter__type-button--active {
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark) 100%);
+    color: #ffffff;
+    border-color: var(--color-accent);
+  }
+
+  .products-filter__type-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Mặc định cho mobile: 1 sản phẩm/dòng */
+    gap: clamp(1rem, 3vw, 1.5rem);
+    padding: 1rem 0;
+  }
+
+  .product-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    transition: var(--transition);
+  }
+
+  .product-card.hidden {
+    display: none;
+  }
+
+  .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .product-card__image {
+    width: 100%;
+    aspect-ratio: 1/1; /* Đảm bảo hình vuông */
+    object-fit: cover;
+    background: #f9fafb;
+  }
+
+  .product-card__content {
+    padding: clamp(0.75rem, 2vw, 1rem);
+    text-align: center;
+    width: 100%;
+  }
+
+  .product-card__title {
+    font-size: clamp(1rem, 3vw, 1.125rem);
+    font-weight: 600;
+    margin: 0.5rem 0;
+    color: var(--color-foreground);
+    text-decoration: none;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .product-card__title:hover {
+    color: var(--color-accent);
+  }
+
+  .product-card__price {
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
+    font-weight: 600;
+    color: var(--color-accent);
+    margin-bottom: 1rem;
+  }
+
+  .product-card__button {
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark) 100%);
+    color: #ffffff;
+    border: none;
+    padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.5rem);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: var(--transition);
+    width: 100%;
+    text-align: center;
+  }
+
+  .product-card__button:hover {
+    background: var(--color-accent-dark);
+    transform: scale(1.02);
+  }
+
+  .product-card__button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+  }
+
+  .pagination__link {
+    padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.25rem);
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    text-decoration: none;
+    color: var(--color-foreground);
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
+    transition: var(--transition);
+  }
+
+  .pagination__link:hover {
+    background: var(--color-background-hover);
+    color: var(--color-accent);
+  }
+
+  .pagination__link--disabled {
+    color: #9ca3af;
+    pointer-events: none;
+  }
+
+  .pagination__link--current {
+    background: var(--color-accent);
+    color: #ffffff;
+    border-color: var(--color-accent);
+  }
+
+  .error-message {
+    text-align: center;
+    color: #dc2626;
+    padding: 1rem;
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
+  }
+
+  .debug-info {
+    background: #f9fafb;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    color: #4b5563;
+  }
+
+  /* Mobile: 1 sản phẩm/dòng (max-width: 767px) */
+  @media screen and (max-width: 767px) {
+    .products-grid {
+      grid-template-columns: 1fr;
+    }
+    .product-card__image {
+      aspect-ratio: 1/1;
+    }
+    .product-card__title {
+      font-size: clamp(0.875rem, 2.5vw, 1rem);
+    }
+    .product-card__price {
+      font-size: clamp(0.75rem, 2vw, 0.875rem);
+    }
+    .product-card__button {
+      padding: clamp(0.5rem, 2vw, 0.625rem) clamp(0.75rem, 2.5vw, 1rem);
+      font-size: clamp(0.75rem, 2vw, 0.875rem);
+    }
+  }
+
+  /* Tablet: 3 sản phẩm/dòng (768px - 1023px) */
+  @media screen and (min-width: 768px) and (max-width: 1023px) {
+    .products-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .product-card__image {
+      aspect-ratio: 1/1;
+    }
+  }
+
+  /* Laptop: 4 sản phẩm/dòng (1024px trở lên) */
+  @media screen and (min-width: 1024px) {
+    .products-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .product-card__image {
+      aspect-ratio: 1/1;
+    }
+  }
+{% endstyle %}
+
+<section class="products-section" aria-label="Tất cả sản phẩm">
+  <h1 id="collection-title">All products</h1>
+  {% comment %} Nút lọc theo loại sản phẩm {% endcomment %}
+  <div class="products-filter">
+    {% assign product_types = collection.all_types | sort %}
+    <button
+      data-filter-type="all"
+      class="products-filter__type-button products-filter__type-button--active"
+      aria-label="Show all products"
+    >
+      All
+    </button>
+    {% if product_types.size > 0 %}
+      {% for type in product_types %}
+        <button
+          data-filter-type="{{ type | handle }}"
+          class="products-filter__type-button"
+          aria-label="Lọc theo {{ type }}"
+        >
+          {{ type }}
+        </button>
+      {% endfor %}
+    {% else %}
+      <p class="error-message">No product type. Please specify a product type in Shopify Admin.</p>
+    {% endif %}
+  </div>
+
+  <div class="products-grid">
+    {% paginate collection.products by 1000 %}
+      {% for product in collection.products %}
+        <div class="product-card" data-product-type="{{ product.type | handle }}" data-collections="{% for collection in product.collections %}{{ collection.handle }}{% unless forloop.last %},{% endunless %}{% endfor %}">
+          <a href="{{ product.url }}" class="product-card__image-link" aria-label="{{ product.title }}">
+            {% if product.featured_image %}
+              <img
+                src="{{ product.featured_image | image_url: width: 300 }}"
+                srcset="
+                  {{ product.featured_image | image_url: width: 150 }} 150w,
+                  {{ product.featured_image | image_url: width: 300 }} 300w,
+                  {{ product.featured_image | image_url: width: 600 }} 600w
+                "
+                sizes="(max-width: 767px) 100vw, (max-width: 1023px) 33vw, 25vw"
+                alt="{{ product.title | escape }}"
+                class="product-card__image"
+                loading="lazy"
+              />
+            {% else %}
+              <img
+                src="{{ 'no-image.svg' | asset_url }}"
+                alt="No Image"
+                class="product-card__image"
+                loading="lazy"
+              />
+            {% endif %}
+          </a>
+          <div class="product-card__content">
+            <a href="{{ product.url }}" class="product-card__title">{{ product.title }}</a>
+            <div class="product-card__price">
+              {% if product.price_varies %}
+                Từ {{ product.price_min | money }}
+              {% else %}
+                {{ product.price | money }}
+              {% endif %}
+            </div>
+            {% form 'product', product, class: 'product-card__form' %}
+              <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+              <button type="submit" class="product-card__button">Add to cart</button>
+            {% endform %}
+          </div>
+        </div>
+      {% endfor %}
+      {% if collection.products.size == 0 %}
+        <p class="error-message">No products found</p>
+      {% endif %}
+    {% endpaginate %}
+  </div>
+
+  {% comment %} Phân trang giả lập cho client-side {% endcomment %}
+  <nav class="pagination" aria-label="Phân trang" id="pagination">
+    <!-- JavaScript sẽ tạo phân trang động -->
+  </nav>
+</section>
+
+{% javascript %}
+document.addEventListener('DOMContentLoaded', function() {
+  const filterButtons = document.querySelectorAll('.products-filter__type-button');
+  const productCards = document.querySelectorAll('.product-card');
+  const paginationContainer = document.getElementById('pagination');
+  const collectionTitle = document.getElementById('collection-title');
+  const itemsPerPage = 12;
+  let currentPage = 1;
+  let currentFilter = 'all';
+  let currentCollection = '';
+  let debounceTimeout;
+
+  // Check for collection query parameter
+  const urlParams = new URLSearchParams(window.location.search);
+  currentCollection = urlParams.get('collection') || '';
+
+  // Update page title based on collection
+  if (currentCollection) {
+    const collectionName = currentCollection
+      .replace(/-/g, ' ')
+      .replace(/\b\w/g, char => char.toUpperCase());
+    collectionTitle.textContent = collectionName;
+  } else {
+    collectionTitle.textContent = 'All products';
+  }
+
+  function updatePagination(filteredProducts) {
+    const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+    paginationContainer.innerHTML = '';
+
+    if (totalPages <= 1) return;
+
+    const prevLink = document.createElement('a');
+    prevLink.href = '#';
+    prevLink.className = currentPage > 1 ? 'pagination__link' : 'pagination__link pagination__link--disabled';
+    prevLink.textContent = 'Previous';
+    prevLink.setAttribute('aria-label', 'Trang trước');
+    if (currentPage > 1) {
+      prevLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        currentPage--;
+        filterProducts(currentFilter, currentCollection);
+      });
+    }
+    paginationContainer.appendChild(prevLink);
+
+    for (let i = 1; i <= totalPages; i++) {
+      const pageLink = document.createElement(i === currentPage ? 'span' : 'a');
+      pageLink.className = i === currentPage ? 'pagination__link pagination__link--current' : 'pagination__link';
+      pageLink.textContent = i;
+      pageLink.setAttribute('aria-label', `Trang ${i}`);
+      if (i !== currentPage) {
+        pageLink.href = '#';
+        pageLink.addEventListener('click', (e) => {
+          e.preventDefault();
+          currentPage = i;
+          filterProducts(currentFilter, currentCollection);
+        });
+      } else {
+        pageLink.setAttribute('aria-current', 'page');
+      }
+      paginationContainer.appendChild(pageLink);
+    }
+
+    const nextLink = document.createElement('a');
+    nextLink.href = '#';
+    nextLink.className = currentPage < totalPages ? 'pagination__link' : 'pagination__link pagination__link--disabled';
+    nextLink.textContent = 'Next';
+    nextLink.setAttribute('aria-label', 'Trang sau');
+    if (currentPage < totalPages) {
+      nextLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        currentPage++;
+        filterProducts(currentFilter, currentCollection);
+      });
+    }
+    paginationContainer.appendChild(nextLink);
+  }
+
+  function filterProducts(filterType, collectionFilter) {
+    clearTimeout(debounceTimeout);
+    debounceTimeout = setTimeout(() => {
+      currentFilter = filterType;
+      currentCollection = collectionFilter;
+      const filteredProducts = [];
+
+      // Update active filter button
+      filterButtons.forEach(btn => btn.classList.remove('products-filter__type-button--active'));
+      const activeButton = Array.from(filterButtons).find(btn => btn.dataset.filterType === filterType);
+      if (activeButton) {
+        activeButton.classList.add('products-filter__type-button--active');
+      } else {
+        filterButtons[0].classList.add('products-filter__type-button--active'); // Default to "All"
+      }
+
+      productCards.forEach(card => {
+        const productType = card.dataset.productType;
+        const collections = card.dataset.collections ? card.dataset.collections.split(',') : [];
+
+        // Check if product matches the collection filter (if provided) and type filter
+        const matchesCollection = !collectionFilter || collections.includes(collectionFilter);
+        const matchesType = filterType === 'all' || productType === filterType;
+
+        if (matchesCollection && matchesType) {
+          filteredProducts.push(card);
+        }
+      });
+
+      productCards.forEach(card => card.classList.add('hidden'));
+
+      filteredProducts.forEach((card, index) => {
+        if (index >= (currentPage - 1) * itemsPerPage && index < currentPage * itemsPerPage) {
+          card.classList.remove('hidden');
+        }
+      });
+
+      const existingError = document.querySelector('.products-grid .error-message');
+      if (existingError && existingError.textContent.includes('Không tìm thấy sản phẩm')) {
+        existingError.remove();
+      }
+      if (filteredProducts.length === 0) {
+        const errorMessage = document.createElement('p');
+        errorMessage.className = 'error-message';
+        errorMessage.textContent = 'Không tìm thấy sản phẩm cho danh mục này.';
+        document.querySelector('.products-grid').appendChild(errorMessage);
+      }
+
+      updatePagination(filteredProducts);
+      console.log('Tổng số sản phẩm tải được:', filteredProducts.length, 'Danh mục:', collectionFilter, 'Loại:', filterType);
+    }, 100);
+  }
+
+  filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      currentPage = 1;
+      filterProducts(button.dataset.filterType, currentCollection);
+    });
+  });
+
+  // Initial filter based on collection query parameter
+  filterProducts('all', currentCollection);
+});
+{% endjavascript %}
+
 {% schema %}
 {
-  "name": "Footer",
+  "name": "Products",
   "settings": [
     {
-      "type": "image_picker",
-      "id": "logo",
-      "label": "Logo"
-    },
-    {
-      "type": "text",
-      "id": "company_name",
-      "label": "Company Name",
-      "default": "Dustrium"
-    },
-    {
-      "type": "textarea",
-      "id": "address",
-      "label": "Company Address",
-      "default": "Room 901, Building A, Wanda Plaza, No. 121, Huaian East Road, Yuhua District, Shijiazhuang City, Hebei Province, China"
-    },
-    {
-      "type": "text",
-      "id": "email_url",
-      "label": "Email URL",
-      "default": "/contact"
-    },
-    {
-      "type": "text",
-      "id": "facebook_url",
-      "label": "Facebook URL",
-      "default": "https://www.facebook.com/JoyMaRaetin"
-    },
-    {
-      "type": "text",
-      "id": "youtube_url",
-      "label": "YouTube URL",
-      "default": "https://www.youtube.com/@TradeScalping6789"
-    },
-    {
-      "type": "text",
-      "id": "newsletter_title",
-      "label": "Newsletter Title",
-      "default": "Join Our Fitness Community"
-    },
-    {
-      "type": "text",
-      "id": "newsletter_description",
-      "label": "Newsletter Description",
-      "default": "Get workout tips, exclusive offers, and the latest on gym equipment and supplements."
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
     }
   ],
   "presets": [
     {
-      "name": "Footer",
-      "category": "Custom"
+      "name": "Tất cả sản phẩm",
+      "category": "Collection"
     }
   ]
 }
 {% endschema %}
-
-{% comment %} Load Font Awesome 6.6.0 for icons {% endcomment %}
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous">
-
-{% comment %} Enhanced CSS for a modern, fitness-focused footer with updated blue-teal color scheme {% endcomment %}
-<style>
-  footer {
-    background: linear-gradient(180deg, #0f1c2e 0%, #1e3a4b 100%);
-    color: #e2e8f0;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif, 'Font Awesome 6 Free', 'Font Awesome 6 Brands';
-    padding: 3rem 0;
-    position: relative;
-    overflow: hidden;
-    z-index: 0;
-  }
-  .footer-container {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-  }
-  .footer-columns {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2rem;
-    margin-bottom: 3rem;
-  }
-  .footer-logo img {
-    max-width: 160px;
-    height: auto;
-    margin-bottom: 1.25rem;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-  }
-  footer h5 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #ffffff;
-    margin-bottom: 1.25rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  footer p {
-    font-size: 0.9375rem;
-    line-height: 1.7;
-    margin-bottom: 1.25rem;
-    opacity: 0.9;
-  }
-  .social-icons {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-  .social-icons a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.15);
-    color: #ffffff;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    min-width: 48px;
-    min-height: 48px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  }
-  .social-icons a:hover {
-    background: linear-gradient(45deg, #3b82f6, #10b981);
-    transform: scale(1.15) rotate(5deg);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
-    color: #1e293b;
-  }
-  .social-icons i {
-    font-size: 1.25rem;
-  }
-  .footer-links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  .footer-links li {
-    margin-bottom: 0.75rem;
-  }
-  .footer-links a {
-    font-size: 0.9375rem;
-    color: #e2e8f0;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: all 0.3s ease;
-    padding: 0.375rem 0;
-  }
-  .footer-links i {
-    font-size: 0.8125rem;
-    color: #3b82f6;
-    transition: transform 0.3s ease;
-  }
-  .footer-links a:hover {
-    color: #3b82f6;
-    transform: translateX(6px);
-  }
-  .footer-links a:hover i {
-    transform: scale(1.2);
-  }
-  .newsletter-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  .newsletter-form input {
-    padding: 0.875rem;
-    border: 1px solid #475569;
-    background: #1e3a4b;
-    color: #e2e8f0;
-    border-radius: 0.5rem;
-    font-size: 0.9375rem;
-    width: 100%;
-    box-sizing: border-box;
-    transition: all 0.3s ease;
-  }
-  .newsletter-form input:focus {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.25);
-    outline: none;
-  }
-  .newsletter-form button {
-    padding: 0.875rem;
-    background: linear-gradient(45deg, #3b82f6, #10b981);
-    color: #ffffff;
-    font-weight: 600;
-    border: none;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    min-height: 48px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  .newsletter-form button:hover {
-    background: linear-gradient(45deg, #2563eb, #059669);
-    transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
-  }
-  .legal-section {
-    border-top: 1px solid #475569;
-    padding-top: 2rem;
-    text-align: center;
-    font-size: 0.875rem;
-    opacity: 0.9;
-  }
-  .legal-section p {
-    margin-bottom: 1rem;
-  }
-  .legal-links {
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-  }
-  .legal-links a {
-    color: #e2e8f0;
-    text-decoration: none;
-    transition: color 0.3s ease;
-    padding: 0.375rem 0;
-  }
-  .legal-links a:hover {
-    color: #3b82f6;
-  }
-  footer a:focus, footer button:focus {
-    outline: 2px solid #3b82f6;
-    outline-offset: 3px;
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.25);
-  }
-  @media (max-width: 1024px) {
-    .footer-columns {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.5rem;
-    }
-    .footer-logo img {
-      max-width: 140px;
-    }
-    footer h5 {
-      font-size: 1.125rem;
-    }
-    footer p, .footer-links a {
-      font-size: 0.875rem;
-    }
-    .social-icons a {
-      width: 2.25rem;
-      height: 2.25rem;
-      min-width: 44px;
-      min-height: 44px;
-    }
-    .social-icons i {
-      font-size: 1.125rem;
-    }
-    .newsletter-form input, .newsletter-form button {
-      font-size: 0.875rem;
-      padding: 0.75rem;
-    }
-  }
-  @media (max-width: 768px) {
-    .footer-columns {
-      grid-template-columns: 1fr;
-      gap: 1.25rem;
-    }
-    .footer-logo img {
-      max-width: 120px;
-    }
-    footer h5 {
-      font-size: 1rem;
-    }
-    footer p, .footer-links a {
-      font-size: 0.8125rem;
-    }
-    .social-icons {
-      gap: 0.75rem;
-    }
-    .social-icons a {
-      width: 2rem;
-      height: 2rem;
-      min-width: 40px;
-      min-height: 40px;
-    }
-    .social-icons i {
-      font-size: 1rem;
-    }
-    .newsletter-form input, .newsletter-form button {
-      font-size: 0.8125rem;
-      padding: 0.625rem;
-    }
-    .legal-section {
-      font-size: 0.8125rem;
-    }
-    .legal-links {
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-  }
-</style>
-
-{% comment %} Footer HTML structure {% endcomment %}
-<footer>
-  <div class="footer-container">
-    <div class="footer-columns">
-      {% comment %} Company Info {% endcomment %}
-      <div class="footer-column">
-        {% if section.settings.logo %}
-          <div class="footer-logo">
-            <img src="{{ section.settings.logo | img_url: '150x' }}" alt="{{ section.settings.company_name | escape }} Logo" loading="lazy">
-          </div>
-        {% endif %}
-        <p>{{ section.settings.address | escape }}</p>
-        <div class="social-icons">
-          {% if section.settings.email_url %}
-            <a href="/contact" rel="noopener" aria-label="Email">
-              <i class="fa-solid fa-envelope"></i>
-            </a>
-          {% endif %}
-          {% if section.settings.facebook_url %}
-            <a href="{{ section.settings.facebook_url | escape }}" target="_blank" rel="noopener" aria-label="Facebook">
-              <i class="fa-brands fa-facebook-f"></i>
-            </a>
-          {% endif %}
-          {% if section.settings.youtube_url %}
-            <a href="{{ section.settings.youtube_url | escape }}" target="_blank" rel="noopener" aria-label="YouTube">
-              <i class="fa-brands fa-youtube"></i>
-            </a>
-          {% endif %}
-        </div>
-      </div>
-      {% comment %} Shop Links {% endcomment %}
-      <div class="footer-column">
-        <h5>Shop</h5>
-        <ul class="footer-links">
-          <li><a href="/collections/all?collection=gymnastics"><i class="fa-solid fa-chevron-right"></i>Gymnastics</a></li>
-          <li><a href="/collections/all?collection=dumbbells"><i class="fa-solid fa-chevron-right"></i>Functional foods</a></li>
-          <li><a href="/collections/all?collection=resistance-bands"><i class="fa-solid fa-chevron-right"></i>Men's fitness</a></li>
-          <li><a href="/collections/all?collection=protein-powders"><i class="fa-solid fa-chevron-right"></i>Women's fitness</a></li>
-          <li><a href="/collections/all?collection=pre-workouts"><i class="fa-solid fa-chevron-right"></i>Accessory Cases</a></li>
-        </ul>
-      </div>
-      {% comment %} About Us Links {% endcomment %}
-      <div class="footer-column">
-        <h5>About Us</h5>
-        <ul class="footer-links">
-          <li><a href="/pages/our-mission"><i class="fa-solid fa-chevron-right"></i>Our Mission</a></li>
-          <li><a href="/pages/why-shop-with-us"><i class="fa-solid fa-chevron-right"></i>Why Shop With Us</a></li>
-          <li><a href="/pages/fitness-tips"><i class="fa-solid fa-chevron-right"></i>Fitness Tips</a></li>
-          <li><a href="/pages/faqs"><i class="fa-solid fa-chevron-right"></i>FAQs</a></li>
-        </ul>
-      </div>
-      {% comment %} Newsletter Signup {% endcomment %}
-      <div class="footer-column">
-        <h5>{{ section.settings.newsletter_title | escape }}</h5>
-        <p>{{ section.settings.newsletter_description | escape }}</p>
-        <form class="newsletter-form" method="post" action="/contact#newsletter" aria-label="Newsletter Signup">
-          <input type="hidden" name="form_id" value="newsletter_form">
-          <input type="text" name="contact[name]" id="newsletter-name" placeholder="Name" required>
-          <input type="email" name="contact[email]" id="newsletter-email" placeholder="Email" required>
-          <button type="submit">Sign Up</button>
-        </form>
-      </div>
-    </div>
-    {% comment %} Copyright and Legal Links {% endcomment %}
-    <div class="legal-section">
-      <p>Copyright &copy; 2025 {{ section.settings.company_name | escape }}, All rights reserved. Powered by <a href="https://moxcreative.com" target="_blank" rel="noopener">MoxCreative</a>.</p>
-      <div class="legal-links">
-        <a href="/pages/terms-of-use">Terms of Use</a>
-        <a href="/pages/privacy-policy">Privacy Policy</a>
-        <a href="/pages/cookie-policy">Cookie Policy</a>
-      </div>
-    </div>
-  </div>
-</footer>
