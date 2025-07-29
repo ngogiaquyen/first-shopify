@@ -1,262 +1,287 @@
 {% comment %}
-  File này hiển thị tất cả sản phẩm trong Shopify store dưới dạng lưới responsive.
-  Bao gồm ảnh sản phẩm, tiêu đề, giá, nút "Thêm vào giỏ", phân trang, và lọc theo loại sản phẩm bằng JavaScript với if-else.
-  Cập nhật để hiển thị tất cả sản phẩm (lên đến 1000) bằng paginate, sửa lỗi phân trang, và giữ lọc client-side.
+  Template hiển thị tất cả sản phẩm trong Shopify store dưới dạng lưới responsive.
+  Tối ưu cho mobile (1 sản phẩm/dòng), tablet (3 sản phẩm/dòng), laptop (4 sản phẩm/dòng).
+  CSS hiện đại, mượt mà, giữ nguyên logic lọc và phân trang client-side.
 {% endcomment %}
 
 {% style %}
-
-/* Products Section */
-.products-section {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-  
-    width: 100vw;
-}
-
-/* Heading */
-.products-section h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 2rem;
-  color: #222;
-}
-
-/* Debug Info */
-.debug-info {
-  background: #f8f8f8;
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-  font-size: 0.9rem;
-  color: #555;
-}
-
-/* Filter Buttons */
-.products-filter {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  justify-content: center;
-  margin-bottom: 2rem;
-}
-
-.products-filter__type-button {
-  background: #f0f0f0;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.products-filter__type-button:hover,
-.products-filter__type-button--active {
-  background: #007bff;
-  color: #fff;
-  border-color: #007bff;
-}
-
-.products-filter__type-button:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
-}
-
-/* Products Grid */
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.5rem;
-  padding: 0 0.5rem;
-}
-
-/* Product Card */
-.product-card {
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.product-card.hidden {
-  display: none;
-}
-
-.product-card__image-link {
-  display: block;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  overflow: hidden;
-}
-
-.product-card__image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.product-card__content {
-  padding: 1rem;
-}
-
-.product-card__title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #222;
-  text-decoration: none;
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
-.product-card__title:hover {
-  color: #007bff;
-}
-
-.product-card__price {
-  font-size: 1rem;
-  color: #e44d26;
-  margin-bottom: 0.75rem;
-}
-
-.product-card__form {
-  display: flex;
-  justify-content: center;
-}
-
-.product-card__button {
-  background: #28a745;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: background 0.3s ease;
-  width: 100%;
-  text-align: center;
-}
-
-.product-card__button:hover {
-  background: #218838;
-}
-
-.product-card__button:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.3);
-}
-
-/* Pagination */
-.pagination {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-top: 2rem;
-}
-
-.pagination__link {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  background: #f0f0f0;
-  border-radius: 5px;
-  text-decoration: none;
-  color: #333;
-  font-size: 0.9rem;
-  transition: all 0.3s ease;
-}
-
-.pagination__link:hover:not(.pagination__link--disabled) {
-  background: #007bff;
-  color: #fff;
-}
-
-.pagination__link--current {
-  background: #007bff;
-  color: #fff;
-  font-weight: 600;
-}
-
-.pagination__link--disabled {
-  color: #aaa;
-  cursor: not-allowed;
-}
-
-/* Error Message */
-.error-message {
-  text-align: center;
-  color: #e44d26;
-  font-size: 1rem;
-  margin: 2rem 0;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .products-section h1 {
-    font-size: 2rem;
+  :root {
+    --color-background: #ffffff;
+    --color-foreground: #1f2937;
+    --color-accent: #2563eb;
+    --color-accent-dark: #1d4ed8;
+    --color-border: #d1d5db;
+    --color-background-hover: #f3f4f6;
+    --page-margin: clamp(1rem, 3vw, 2rem);
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .products-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1rem;
-  }
-
-  .products-filter__type-button {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.85rem;
-  }
-
-  .product-card__title {
-    font-size: 1rem;
-  }
-
-  .product-card__price {
-    font-size: 0.9rem;
-  }
-
-  .product-card__button {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.85rem;
-  }
-}
-
-@media (max-width: 480px) {
   .products-section {
-    padding: 1rem;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: var(--page-margin);
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: 'Inter', system-ui, sans-serif;
   }
 
-  .products-grid {
-    grid-template-columns: 1fr;
+  .products-section h1 {
+    font-size: clamp(1.5rem, 5vw, 2.25rem);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--color-foreground);
   }
 
   .products-filter {
-    gap: 0.3rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(0.5rem, 2vw, 0.75rem);
+    margin-bottom: 2rem;
+    justify-content: center;
   }
 
   .products-filter__type-button {
-    padding: 0.3rem 0.6rem;
-    font-size: 0.8rem;
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.25rem);
+    border-radius: 0.5rem;
+    color: var(--color-foreground);
+    font-size: clamp(0.75rem, 2.5vw, 0.875rem);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .products-filter__type-button:hover {
+    background: var(--color-background-hover);
+    color: var(--color-accent);
+    transform: translateY(-2px);
+  }
+
+  .products-filter__type-button--active {
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark) 100%);
+    color: #ffffff;
+    border-color: var(--color-accent);
+  }
+
+  .products-filter__type-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Mặc định cho mobile: 1 sản phẩm/dòng */
+    gap: clamp(1rem, 3vw, 1.5rem);
+    padding: 1rem 0;
+  }
+
+  .product-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    transition: var(--transition);
+  }
+
+  .product-card.hidden {
+    display: none;
+  }
+
+  .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .product-card__image {
+    width: 100%;
+    height: clamp(150px, 40vw, 280px);
+    object-fit: cover;
+    background: #f9fafb;
+  }
+
+  .product-card__content {
+    padding: clamp(0.75rem, 2vw, 1rem);
+    text-align: center;
+    width: 100%;
+  }
+
+  .product-card__title {
+    font-size: clamp(1rem, 3vw, 1.125rem);
+    font-weight: 600;
+    margin: 0.5rem 0;
+    color: var(--color-foreground);
+    text-decoration: none;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .product-card__title:hover {
+    color: var(--color-accent);
+  }
+
+  .product-card__price {
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
+    font-weight: 600;
+    color: var(--color-accent);
+    margin-bottom: 1rem;
+  }
+
+  .product-card__button {
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark) 100%);
+    color: #ffffff;
+    border: none;
+    padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.5rem);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: var(--transition);
+    width: 100%;
+    text-align: center;
+  }
+
+  .product-card__button:hover {
+    background: var(--color-accent-dark);
+    transform: scale(1.02);
+  }
+
+  .product-card__button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
   }
 
   .pagination__link {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.85rem;
+    padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.25rem);
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    text-decoration: none;
+    color: var(--color-foreground);
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
+    transition: var(--transition);
   }
-}
+
+  .pagination__link:hover {
+    background: var(--color-background-hover);
+    color: var(--color-accent);
+  }
+
+  .pagination__link--disabled {
+    color: #9ca3af;
+    pointer-events: none;
+  }
+
+  .pagination__link--current {
+    background: var(--color-accent);
+    color: #ffffff;
+    border-color: var(--color-accent);
+  }
+
+  .error-message {
+    text-align: center;
+    color: #dc2626;
+    padding: 1rem;
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
+  }
+
+  .debug-info {
+    background: #f9fafb;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    color: #4b5563;
+  }
+
+  /* Mobile: 1 sản phẩm/dòng (max-width: 767px) */
+  @media screen and (max-width: 767px) {
+    .products-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .product-card__image {
+      height: clamp(120px, 35vw, 160px);
+    }
+
+    .product-card__title {
+      font-size: clamp(0.875rem, 2.5vw, 1rem);
+    }
+
+    .product-card__price {
+      font-size: clamp(0.75rem, 2vw, 0.875rem);
+    }
+
+    .product-card__button {
+      padding: clamp(0.5rem, 2vw, 0.625rem) clamp(0.75rem, 2.5vw, 1rem);
+      font-size: clamp(0.75rem, 2vw, 0.875rem);
+    }
+  }
+
+  /* Tablet: 3 sản phẩm/dòng (768px - 1023px) */
+  @media screen and (min-width: 768px) and (max-width: 1023px) {
+    .products-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* Laptop: 4 sản phẩm/dòng (1024px trở lên) */
+  @media screen and (min-width: 1024px) {
+    .products-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
 {% endstyle %}
 
 <section class="products-section" aria-label="Tất cả sản phẩm">
   <h1>Tất cả sản phẩm</h1>
 
+  {% comment %} Debug để kiểm tra collection và product types {% endcomment %}
+  <div class="debug-info">
+    <p><strong>Collection hiện tại:</strong> {{ collection.title }} (Handle: {{ collection.handle }})</p>
+    <p><strong>Tag hiện tại:</strong> {{ current_tags | join: ', ' }}</p>
+    <p><strong>Loại sản phẩm có sẵn:</strong> {{ collection.all_types | join: ', ' }}</p>
+    <p><strong>Tổng số sản phẩm:</strong> {{ collection.products_count }}</p>
+  </div>
 
+  {% comment %} Nút lọc theo loại sản phẩm {% endcomment %}
+  <div class="products-filter">
+    {% assign product_types = collection.all_types | sort %}
+    <button
+      data-filter-type="all"
+      class="products-filter__type-button products-filter__type-button--active"
+      aria-label="Hiển thị tất cả loại sản phẩm"
+    >
+      Tất cả
+    </button>
+    {% if product_types.size > 0 %}
+      {% for type in product_types %}
+        <button
+          data-filter-type="{{ type | handle }}"
+          class="products-filter__type-button"
+          aria-label="Lọc theo {{ type }}"
+        >
+          {{ type }}
+        </button>
+      {% endfor %}
+    {% else %}
+      <p class="error-message">Không có loại sản phẩm nào. Vui lòng gán loại sản phẩm trong Shopify Admin.</p>
+    {% endif %}
+  </div>
 
   <div class="products-grid">
     {% paginate collection.products by 1000 %}
@@ -266,6 +291,12 @@
             {% if product.featured_image %}
               <img
                 src="{{ product.featured_image | image_url: width: 300 }}"
+                srcset="
+                  {{ product.featured_image | image_url: width: 150 }} 150w,
+                  {{ product.featured_image | image_url: width: 300 }} 300w,
+                  {{ product.featured_image | image_url: width: 600 }} 600w
+                "
+                sizes="(max-width: 767px) 100vw, (max-width: 1023px) 33vw, 25vw"
                 alt="{{ product.title | escape }}"
                 class="product-card__image"
                 loading="lazy"
@@ -315,16 +346,14 @@ document.addEventListener('DOMContentLoaded', function() {
   const itemsPerPage = 12;
   let currentPage = 1;
   let currentFilter = 'all';
+  let debounceTimeout;
 
   function updatePagination(filteredProducts) {
     const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
     paginationContainer.innerHTML = '';
 
-    if (totalPages <= 1) {
-      return; // Không cần phân trang nếu chỉ có 1 trang
-    }
+    if (totalPages <= 1) return;
 
-    // Nút "Trước"
     const prevLink = document.createElement('a');
     prevLink.href = '#';
     prevLink.className = currentPage > 1 ? 'pagination__link' : 'pagination__link pagination__link--disabled';
@@ -339,7 +368,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     paginationContainer.appendChild(prevLink);
 
-    // Nút số trang
     for (let i = 1; i <= totalPages; i++) {
       const pageLink = document.createElement(i === currentPage ? 'span' : 'a');
       pageLink.className = i === currentPage ? 'pagination__link pagination__link--current' : 'pagination__link';
@@ -358,7 +386,6 @@ document.addEventListener('DOMContentLoaded', function() {
       paginationContainer.appendChild(pageLink);
     }
 
-    // Nút "Sau"
     const nextLink = document.createElement('a');
     nextLink.href = '#';
     nextLink.className = currentPage < totalPages ? 'pagination__link' : 'pagination__link pagination__link--disabled';
@@ -375,59 +402,49 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function filterProducts(filterType) {
-    currentFilter = filterType; // Lưu filter hiện tại
-    const filteredProducts = [];
+    clearTimeout(debounceTimeout);
+    debounceTimeout = setTimeout(() => {
+      currentFilter = filterType;
+      const filteredProducts = [];
 
-    // Lọc sản phẩm bằng if-else
-    productCards.forEach(card => {
-      const productType = card.dataset.productType;
-      if (filterType === 'all') {
-        filteredProducts.push(card);
-      } else if (productType === filterType) {
-        filteredProducts.push(card);
+      productCards.forEach(card => {
+        const productType = card.dataset.productType;
+        if (filterType === 'all' || productType === filterType) {
+          filteredProducts.push(card);
+        }
+      });
+
+      productCards.forEach(card => card.classList.add('hidden'));
+
+      filteredProducts.forEach((card, index) => {
+        if (index >= (currentPage - 1) * itemsPerPage && index < currentPage * itemsPerPage) {
+          card.classList.remove('hidden');
+        }
+      });
+
+      const existingError = document.querySelector('.products-grid .error-message');
+      if (existingError) existingError.remove();
+      if (filteredProducts.length === 0) {
+        const errorMessage = document.createElement('p');
+        errorMessage.className = 'error-message';
+        errorMessage.textContent = 'Không tìm thấy sản phẩm cho loại này.';
+        document.querySelector('.products-grid').appendChild(errorMessage);
       }
-    });
 
-    // Ẩn tất cả sản phẩm trước khi hiển thị trang hiện tại
-    productCards.forEach(card => {
-      card.classList.add('hidden');
-    });
-
-    // Hiển thị sản phẩm trong trang hiện tại
-    filteredProducts.forEach((card, index) => {
-      if (index >= (currentPage - 1) * itemsPerPage && index < currentPage * itemsPerPage) {
-        card.classList.remove('hidden');
-      }
-    });
-
-    // Cập nhật phân trang
-    updatePagination(filteredProducts);
-
-    // Xử lý thông báo lỗi
-    const existingError = document.querySelector('.products-grid .error-message');
-    if (existingError) existingError.remove();
-    if (filteredProducts.length === 0) {
-      const errorMessage = document.createElement('p');
-      errorMessage.className = 'error-message';
-      errorMessage.textContent = 'Không tìm thấy sản phẩm cho loại này.';
-      document.querySelector('.products-grid').appendChild(errorMessage);
-    }
+      updatePagination(filteredProducts);
+    }, 100);
   }
 
-  // Gắn sự kiện cho nút lọc
   filterButtons.forEach(button => {
     button.addEventListener('click', () => {
       filterButtons.forEach(btn => btn.classList.remove('products-filter__type-button--active'));
       button.classList.add('products-filter__type-button--active');
-      currentPage = 1; // Reset trang khi lọc
+      currentPage = 1;
       filterProducts(button.dataset.filterType);
     });
   });
 
-  // Khởi tạo với tất cả sản phẩm
   filterProducts('all');
-
-  // Debug số lượng sản phẩm
   console.log('Tổng số sản phẩm tải được:', productCards.length);
 });
 {% endjavascript %}
