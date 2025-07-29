@@ -251,14 +251,6 @@
 <section class="products-section" aria-label="Tất cả sản phẩm">
   <h1>Tất cả sản phẩm</h1>
 
-  {% comment %} Debug để kiểm tra collection và product types {% endcomment %}
-  <div class="debug-info">
-    <p><strong>Collection hiện tại:</strong> {{ collection.title }} (Handle: {{ collection.handle }})</p>
-    <p><strong>Tag hiện tại:</strong> {{ current_tags | join: ', ' }}</p>
-    <p><strong>Loại sản phẩm có sẵn:</strong> {{ collection.all_types | join: ', ' }}</p>
-    <p><strong>Tổng số sản phẩm:</strong> {{ collection.products_count }}</p>
-  </div>
-
   {% comment %} Nút lọc theo loại sản phẩm {% endcomment %}
   <div class="products-filter">
     {% assign product_types = collection.all_types | sort %}
