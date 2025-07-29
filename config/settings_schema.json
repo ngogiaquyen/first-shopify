@@ -79,5 +79,15 @@
         "default": 4
       }
     ]
-  }
+  },
+  {
+  "name": "Favicon",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "custom_favicon",
+      "label": "Favicon Image"
+    }
+  ]
+}
 ]
