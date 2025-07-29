@@ -358,7 +358,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const prevLink = document.createElement('a');
     prevLink.href = '#';
     prevLink.className = currentPage > 1 ? 'pagination__link' : 'pagination__link pagination__link--disabled';
-    prevLink.textContent = 'Trước';
+    prevLink.textContent = 'Fist';
     prevLink.setAttribute('aria-label', 'Trang trước');
     if (currentPage > 1) {
       prevLink.addEventListener('click', (e) => {
@@ -390,7 +390,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const nextLink = document.createElement('a');
     nextLink.href = '#';
     nextLink.className = currentPage < totalPages ? 'pagination__link' : 'pagination__link pagination__link--disabled';
-    nextLink.textContent = 'Sau';
+    nextLink.textContent = 'Last';
     nextLink.setAttribute('aria-label', 'Trang sau');
     if (currentPage < totalPages) {
       nextLink.addEventListener('click', (e) => {
