@@ -442,7 +442,7 @@ document.addEventListener('DOMContentLoaded', function() {
   console.log(collectionValue)
   // Tự động kích hoạt nút lọc dựa trên collectionValue
   if (collectionValue) {
-    let decodedCollectionValue = decodeURIComponent(collectionValue).replaceAll(/\s+/g, '-'); // Chuẩn hóa giá trị collection
+    let decodedCollectionValue = decodeURIComponent(collectionValue).toLowerCase().replaceAll(/\s+/g, '-'); // Chuẩn hóa giá trị collection
 
     console.log(decodedCollectionValue);
     console.log(filterButtons)
