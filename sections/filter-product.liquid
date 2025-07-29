@@ -340,7 +340,7 @@
 </section>
 
 {% javascript %}
-
+{% javascript %}
 const url = new URL(window.location.href);
 const collectionValue = url.searchParams.get('collection');
 console.log(collectionValue);
@@ -363,7 +363,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const prevLink = document.createElement('a');
     prevLink.href = '#';
     prevLink.className = currentPage > 1 ? 'pagination__link' : 'pagination__link pagination__link--disabled';
-    prevLink.textContent = 'Fist';
+    prevLink.textContent = 'First';
     prevLink.setAttribute('aria-label', 'Trang trước');
     if (currentPage > 1) {
       prevLink.addEventListener('click', (e) => {
@@ -441,6 +441,26 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 100);
   }
 
+  // Tự động kích hoạt nút lọc dựa trên collectionValue
+  if (collectionValue) {
+    const decodedCollectionValue = decodeURIComponent(collectionValue).toLowerCase().replace(/\s+/g, '-'); // Chuẩn hóa giá trị collection
+    const matchingButton = Array.from(filterButtons).find(button => 
+      button.dataset.filterType === decodedCollectionValue
+    );
+
+    if (matchingButton) {
+      filterButtons.forEach(btn => btn.classList.remove('products-filter__type-button--active'));
+      matchingButton.classList.add('products-filter__type-button--active');
+      currentFilter = decodedCollectionValue;
+      filterProducts(decodedCollectionValue);
+    } else {
+      console.warn(`Không tìm thấy nút lọc cho collection: ${collectionValue}`);
+      filterProducts('all');
+    }
+  } else {
+    filterProducts('all');
+  }
+
   filterButtons.forEach(button => {
     button.addEventListener('click', () => {
       filterButtons.forEach(btn => btn.classList.remove('products-filter__type-button--active'));
@@ -450,7 +470,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  filterProducts('all');
   console.log('Tổng số sản phẩm tải được:', productCards.length);
 });
 {% endjavascript %}
