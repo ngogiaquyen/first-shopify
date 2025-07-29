@@ -455,10 +455,11 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log(matchingButton);
 
     if (matchingButton) {
-      filterButtons.forEach(btn => btn.classList.remove('products-filter__type-button--active'));
-      matchingButton.classList.add('products-filter__type-button--active');
-      currentFilter = decodedCollectionValue;
-      filterProducts(decodedCollectionValue);
+      matchingButton.click();
+      // filterButtons.forEach(btn => btn.classList.remove('products-filter__type-button--active'));
+      // matchingButton.classList.add('products-filter__type-button--active');
+      // currentFilter = decodedCollectionValue;
+      // filterProducts(decodedCollectionValue);
     } else {
       console.warn(`Không tìm thấy nút lọc cho collection: ${collectionValue}`);
       filterProducts('all');
