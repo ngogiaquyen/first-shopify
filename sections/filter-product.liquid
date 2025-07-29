@@ -340,6 +340,11 @@
 </section>
 
 {% javascript %}
+
+const url = new URL(window.location.href);
+const collectionValue = url.searchParams.get('collection');
+console.log(collectionValue);
+
 document.addEventListener('DOMContentLoaded', function() {
   const filterButtons = document.querySelectorAll('.products-filter__type-button');
   const productCards = document.querySelectorAll('.product-card');
