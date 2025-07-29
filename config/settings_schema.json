@@ -19,7 +19,7 @@
         "id": "type_primary_font",
         "default": "work_sans_n4",
         "label": "t:general.primary"
-      },
+      }
     ]
   },
   {
@@ -81,13 +81,13 @@
     ]
   },
   {
-  "name": "Favicon",
-  "settings": [
-    {
-      "type": "image_picker",
-      "id": "custom_favicon",
-      "label": "Favicon Image"
-    }
-  ]
-}
+    "name": "Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "custom_favicon",
+        "label": "Favicon Image"
+      }
+    ]
+  }
 ]
