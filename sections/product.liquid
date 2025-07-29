@@ -280,7 +280,7 @@
           id="main-image"
         >
         <div class="product-thumbnails">
-          {% for image in product.images limit: 4 %} <!-- Giới hạn tối đa 4 ảnh -->
+          {% for image in product.images %} <!-- Giới hạn tối đa 4 ảnh -->
             <img
               src="{{ image | img_url: '100x100' }}"
               alt="{{ product.title | escape }} - Thumbnail {{ forloop.index }}"

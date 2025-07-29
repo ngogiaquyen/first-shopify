@@ -336,7 +336,6 @@
               <i class="fa-brands fa-facebook-f"></i>
             </a>
           {% endif %}
-
           {% if section.settings.youtube_url %}
             <a href="{{ section.settings.youtube_url | escape }}" target="_blank" rel="noopener" aria-label="YouTube">
               <i class="fa-brands fa-youtube"></i>
@@ -348,11 +347,11 @@
       <div class="footer-column">
         <h5>Shop</h5>
         <ul class="footer-links">
-          <li><a href="/collections/treadmills"><i class="fa-solid fa-chevron-right"></i>Treadmills</a></li>
-          <li><a href="/collections/dumbbells"><i class="fa-solid fa-chevron-right"></i>Dumbbells</a></li>
-          <li><a href="/collections/resistance-bands"><i class="fa-solid fa-chevron-right"></i>Resistance Bands</a></li>
-          <li><a href="/collections/protein-powders"><i class="fa-solid fa-chevron-right"></i>Protein Powders</a></li>
-          <li><a href="/collections/pre-workouts"><i class="fa-solid fa-chevron-right"></i>Pre-Workouts</a></li>
+          <li><a href="/collections/all?collection=treadmills"><i class="fa-solid fa-chevron-right"></i>Treadmills</a></li>
+          <li><a href="/collections/all?collection=dumbbells"><i class="fa-solid fa-chevron-right"></i>Dumbbells</a></li>
+          <li><a href="/collections/all?collection=resistance-bands"><i class="fa-solid fa-chevron-right"></i>Resistance Bands</a></li>
+          <li><a href="/collections/all?collection=protein-powders"><i class="fa-solid fa-chevron-right"></i>Protein Powders</a></li>
+          <li><a href="/collections/all?collection=pre-workouts"><i class="fa-solid fa-chevron-right"></i>Pre-Workouts</a></li>
         </ul>
       </div>
       {% comment %} About Us Links {% endcomment %}
@@ -388,3 +387,38 @@
     </div>
   </div>
 </footer>
+
+{% comment %} JavaScript for filtering products by collection on /collections/all {% endcomment %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Check if we're on the /collections/all page
+    if (window.location.pathname === '/collections/all') {
+      // Get the collection parameter from the URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const collectionHandle = urlParams.get('collection');
+
+      if (collectionHandle) {
+        // Find all product items in the product grid (adjust selector based on your theme)
+        const productItems = document.querySelectorAll('.product-grid-item, .grid__item, .product-card');
+
+        productItems.forEach(item => {
+          // Get the product's collection handles (assuming they're in a data attribute)
+          const collections = item.dataset.collections ? item.dataset.collections.split(',') : [];
+          // Show or hide the product based on whether it belongs to the selected collection
+          if (collections.includes(collectionHandle)) {
+            item.style.display = 'block';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+
+        // Update the page title or heading to reflect the filtered collection (optional)
+        const collectionTitle = collectionHandle.replace(/-/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+        const pageHeading = document.querySelector('h1.collection-title, .page-title, .collection-header h1');
+        if (pageHeading) {
+          pageHeading.textContent = collectionTitle;
+        }
+      }
+    }
+  });
+</script>
