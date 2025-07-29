@@ -340,9 +340,6 @@
 </section>
 
 {% javascript %}
-const url = new URL(window.location.href);
-const collectionValue = url.searchParams.get('collection');
-
 document.addEventListener('DOMContentLoaded', function() {
   const filterButtons = document.querySelectorAll('.products-filter__type-button');
   const productCards = document.querySelectorAll('.product-card');
@@ -438,6 +435,9 @@ document.addEventListener('DOMContentLoaded', function() {
       updatePagination(filteredProducts);
     }, 100);
   }
+  
+  const url = new URL(window.location.href);
+  const collectionValue = url.searchParams.get('collection');
 
   // Tự động kích hoạt nút lọc dựa trên collectionValue
   if (collectionValue) {
