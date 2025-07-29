@@ -10,6 +10,12 @@
     {% # Social, title, etc. %}
     {% render 'meta-tags' %}
 
+    {% if settings.custom_favicon %}
+      <link rel="icon" href="{{ settings.custom_favicon | image_url: width: 32 }}" type="image/png">
+      <link rel="shortcut icon" href="{{ settings.custom_favicon | image_url: width: 32 }}" type="image/png">
+      <link rel="apple-touch-icon" href="{{ settings.custom_favicon | image_url }}">
+    {% endif %}
+
     {{ content_for_header }}
   </head>
 
