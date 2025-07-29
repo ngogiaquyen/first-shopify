@@ -265,7 +265,7 @@
     <button
       data-filter-type="all"
       class="products-filter__type-button products-filter__type-button--active"
-      aria-label="Hiển thị tất cả loại sản phẩm"
+      aria-label="Show all products"
     >
       Tất cả
     </button>
@@ -322,7 +322,7 @@
             </div>
             {% form 'product', product, class: 'product-card__form' %}
               <input type="hidden" name="id" value="{{ product.variants.first.id }}">
-              <button type="submit" class="product-card__button">Thêm vào giỏ</button>
+              <button type="submit" class="product-card__button">Add to cart</button>
             {% endform %}
           </div>
         </div>
