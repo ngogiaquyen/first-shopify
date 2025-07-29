@@ -1,7 +1,7 @@
 {% comment %}
   Template hiển thị tất cả sản phẩm trong Shopify store dưới dạng lưới responsive.
-  Tối ưu cho mobile, tablet, laptop với CSS hiện đại, mượt mà.
-  Bao gồm lọc client-side theo loại sản phẩm, phân trang, và hỗ trợ tối đa 1000 sản phẩm.
+  Tối ưu cho mobile (1 sản phẩm/dòng), tablet (3 sản phẩm/dòng), laptop (4 sản phẩm/dòng).
+  CSS hiện đại, mượt mà, giữ nguyên logic lọc và phân trang client-side.
 {% endcomment %}
 
 {% style %}
@@ -74,7 +74,7 @@
 
   .products-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(clamp(160px, 30vw, 280px), 1fr));
+    grid-template-columns: 1fr; /* Mặc định cho mobile: 1 sản phẩm/dòng */
     gap: clamp(1rem, 3vw, 1.5rem);
     padding: 1rem 0;
   }
@@ -208,9 +208,10 @@
     color: #4b5563;
   }
 
-  @media screen and (max-width: 768px) {
+  /* Mobile: 1 sản phẩm/dòng (max-width: 767px) */
+  @media screen and (max-width: 767px) {
     .products-grid {
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      grid-template-columns: 1fr;
     }
 
     .product-card__image {
@@ -231,15 +232,31 @@
     }
   }
 
-  @media screen and (min-width: 769px) and (max-width: 1024px) {
+  /* Tablet: 3 sản phẩm/dòng (768px - 1023px) */
+  @media screen and (min-width: 768px) and (max-width: 1023px) {
     .products-grid {
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* Laptop: 4 sản phẩm/dòng (1024px trở lên) */
+  @media screen and (min-width: 1024px) {
+    .products-grid {
+      grid-template-columns: repeat(4, 1fr);
     }
   }
 {% endstyle %}
 
 <section class="products-section" aria-label="Tất cả sản phẩm">
   <h1>Tất cả sản phẩm</h1>
+
+  {% comment %} Debug để kiểm tra collection và product types {% endcomment %}
+  <div class="debug-info">
+    <p><strong>Collection hiện tại:</strong> {{ collection.title }} (Handle: {{ collection.handle }})</p>
+    <p><strong>Tag hiện tại:</strong> {{ current_tags | join: ', ' }}</p>
+    <p><strong>Loại sản phẩm có sẵn:</strong> {{ collection.all_types | join: ', ' }}</p>
+    <p><strong>Tổng số sản phẩm:</strong> {{ collection.products_count }}</p>
+  </div>
 
   {% comment %} Nút lọc theo loại sản phẩm {% endcomment %}
   <div class="products-filter">
@@ -279,7 +296,7 @@
                   {{ product.featured_image | image_url: width: 300 }} 300w,
                   {{ product.featured_image | image_url: width: 600 }} 600w
                 "
-                sizes="(max-width: 768px) 150px, (max-width: 1024px) 200px, 300px"
+                sizes="(max-width: 767px) 100vw, (max-width: 1023px) 33vw, 25vw"
                 alt="{{ product.title | escape }}"
                 class="product-card__image"
                 loading="lazy"
