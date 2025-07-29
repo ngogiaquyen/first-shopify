@@ -269,15 +269,18 @@
     >
       All
     </button>
+    {% assign desired_order = "Gymnastics,Functional foods,Men's fitness,Women's fitness,Accessory Cases" | split: "," %}
     {% if product_types.size > 0 %}
-      {% for type in product_types %}
-        <button
-          data-filter-type="{{ type | handle }}"
-          class="products-filter__type-button"
-          aria-label="Lọc theo {{ type }}"
-        >
-          {{ type }}
-        </button>
+      {% for type in desired_order %}
+        {% if product_types contains type %}
+          <button
+            data-filter-type="{{ type | handle }}"
+            class="products-filter__type-button"
+            aria-label="Lọc theo {{ type }}"
+          >
+            {{ type }}
+          </button>
+        {% endif %}
       {% endfor %}
     {% else %}
       <p class="error-message">No product type. Please specify a product type in Shopify Admin.</p>
@@ -456,7 +459,7 @@ document.addEventListener('DOMContentLoaded', function() {
       filterButtons.forEach(btn => btn.classList.remove('products-filter__type-button--active'));
       matchingButton.classList.add('products-filter__type-button--active');
       currentFilter = decodedCollectionValue;
-      filterProducts(decodedCollectionValue.toLowerCase().replaceAll(" ", "-").replaceAll("/'", ""));
+      filterProducts(decodedCollectionValue.toLowerCase().replaceAll(" ", "-").replaceAll("'", ""));
     } else {
       console.warn(`Không tìm thấy nút lọc cho collection: ${collectionValue}`);
       filterProducts('all');
