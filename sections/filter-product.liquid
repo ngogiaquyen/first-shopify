@@ -441,21 +441,18 @@ document.addEventListener('DOMContentLoaded', function() {
   console.log(collectionValue)
   // Tự động kích hoạt nút lọc dựa trên collectionValue
   if (collectionValue) {
-    let decodedCollectionValue = decodeURIComponent(collectionValue).replaceAll(/\s+/g, '-'); // Chuẩn hóa giá trị collection
+    let decodedCollectionValue = decodeURIComponent(collectionValue).toLowerCase().replaceAll(/\s+/g, '-'); // Chuẩn hóa giá trị collection
     decodedCollectionValue =  decodedCollectionValue.replaceAll("-", ' ')
 
     console.log(decodedCollectionValue);
     console.log(filterButtons)
 
-    const matchingButton = Array.from(filterButtons).find(button => {
-      console.log(button.innerText, decodedCollectionValue)
-      return button.innerText === decodedCollectionValue
-    }
+    const matchingButton = Array.from(filterButtons).find(button => 
+      button.dataset.filterType === decodedCollectionValue
     );
     console.log(matchingButton);
 
     if (matchingButton) {
-      matchingButton.click();
       filterButtons.forEach(btn => btn.classList.remove('products-filter__type-button--active'));
       matchingButton.classList.add('products-filter__type-button--active');
       currentFilter = decodedCollectionValue;
