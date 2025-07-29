@@ -100,8 +100,9 @@
   }
 
   
-  .product-grid-container-{{ section.id }} .title:hover .product-grid-container-{{ section.id }} .title::after {
+  .product-grid-container-{{ section.id }} .title:hover::after {
     width: 200px;
+    transition: width var(--transition);
   }
 
   .product-grid-container-{{ section.id }}.visible .title {
