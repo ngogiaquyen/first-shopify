@@ -444,7 +444,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const decodedCollectionValue = decodeURIComponent(collectionValue).toLowerCase().replace(/\s+/g, '-'); // Chuẩn hóa giá trị collection
 
 
-    consosle.log(decodedCollectionValue);
+    console.log(decodedCollectionValue);
     const matchingButton = Array.from(filterButtons).find(button => 
       button.dataset.filterType === decodedCollectionValue
     );
