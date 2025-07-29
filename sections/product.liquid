@@ -34,13 +34,15 @@
     width: 100%;
   }
   .product-image-main {
-    width: 100%;
-    max-width: 600px;
-    aspect-ratio: 1 / 1;
-    object-fit: contain;
+    width: 100% !important; /* Ghi đè max-width từ file khác */
+    max-width: 600px !important;
+    aspect-ratio: 1 / 1 !important; /* Đảm bảo tỷ lệ ảnh */
+    height: auto !important; /* Giữ height auto nhưng ghi đè */
+    object-fit: contain !important; /* Đảm bảo ảnh không bị méo */
     border-radius: 0.5rem;
     background-color: #f7fafc;
     transition: transform 0.3s ease;
+    display: block !important; /* Ghi đè display */
   }
   .product-image-main:hover {
     transform: scale(1.02);
@@ -56,13 +58,14 @@
     align-content: flex-start;
   }
   .product-thumbnail {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
+    width: 80px !important; /* Ghi đè */
+    height: 80px !important; /* Ghi đè */
+    object-fit: cover !important; /* Đảm bảo ảnh không bị méo */
     border-radius: 0.5rem;
     border: 2px solid transparent;
     cursor: pointer;
     transition: border-color 0.3s ease, transform 0.2s ease;
+    display: block !important; /* Ghi đè display */
   }
   .product-thumbnail:hover,
   .product-thumbnail.active {
@@ -253,22 +256,25 @@
       flex-direction: row;
       flex-wrap: wrap;
       justify-content: center;
-      width: 100%;
-      max-width: none;
+      width: 100% !important; /* Ghi đè */
+      max-width: none !important;
       max-height: none;
       gap: 0.75rem;
     }
     .product-thumbnail {
-      width: 80px;
-      height: 80px;
+      width: 80px !important;
+      height: 80px !important;
       flex: 0 0 calc(50% - 0.375rem); /* Mỗi hàng 2 ảnh */
-      max-width: calc(50% - 0.375rem);
+      max-width: calc(50% - 0.375rem) !important;
+      display: block !important;
     }
     .product-image-main {
-      width: 100%;
-      max-width: 500px;
-      max-height: 500px;
-      object-fit: contain;
+      width: 100% !important;
+      max-width: 500px !important;
+      max-height: 500px !important;
+      height: auto !important;
+      object-fit: contain !important;
+      display: block !important;
     }
     .product-info h1 {
       font-size: 1.25rem;
@@ -306,23 +312,26 @@
       flex-wrap: wrap;
       gap: 0.5rem;
       justify-content: center;
-      width: 100%;
-      max-width: none;
+      width: 100% !important;
+      max-width: none !important;
       order: 2;
       padding: 0 0.5rem;
     }
     .product-thumbnail {
-      width: 60px;
-      height: 60px;
+      width: 60px !important;
+      height: 60px !important;
       flex: 0 0 calc(50% - 0.25rem); /* Mỗi hàng 2 ảnh */
-      max-width: calc(50% - 0.25rem);
+      max-width: calc(50% - 0.25rem) !important;
+      display: block !important;
     }
     .product-image-main {
-      width: 100%;
-      max-width: 100%;
-      max-height: 400px;
+      width: 100% !important;
+      max-width: 100% !important;
+      max-height: 400px !important;
+      height: auto !important;
       order: 1;
-      object-fit: contain;
+      object-fit: contain !important;
+      display: block !important;
     }
     .product-info {
       width: 100%;
@@ -376,16 +385,19 @@
       margin-bottom: 30px;
     }
     .product-image-main {
-      max-height: 300px;
+      max-height: 300px !important;
+      height: auto !important;
+      display: block !important;
     }
     .product-thumbnails {
       gap: 0.5rem;
     }
     .product-thumbnail {
-      width: 50px;
-      height: 50px;
+      width: 50px !important;
+      height: 50px !important;
       flex: 0 0 calc(50% - 0.25rem); /* Mỗi hàng 2 ảnh */
-      max-width: calc(50% - 0.25rem);
+      max-width: calc(50% - 0.25rem) !important;
+      display: block !important;
     }
     .product-info h1 {
       font-size: 1rem;
@@ -419,7 +431,7 @@
           id="main-image"
         >
         <div class="product-thumbnails">
-          {% for image in product.images limit: 4 %} <!-- Giới hạn tối đa 4 ảnh để tránh quá dài -->
+          {% for image in product.images limit: 4 %} <!-- Giới hạn tối đa 4 ảnh -->
             <img
               src="{{ image | img_url: '100x100' }}"
               alt="{{ product.title | escape }} - Thumbnail {{ forloop.index }}"
