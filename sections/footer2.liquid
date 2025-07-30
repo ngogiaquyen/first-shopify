@@ -68,7 +68,7 @@
   crossorigin="anonymous"
 >
 
-{% comment %} Enhanced CSS for a modern, fitness-focused footer with updated blue-teal color scheme {% endcomment %}
+{% comment %} Enhanced CSS for a modern, fitness-focused footer with updated blue-teal color scheme and toggle content styling {% endcomment %}
 <style>
   footer {
     background: linear-gradient(180deg, #0f1c2e 0%, #1e3a4b 100%);
@@ -156,6 +156,7 @@
     gap: 0.5rem;
     transition: all 0.3s ease;
     padding: 0.375rem 0;
+    cursor: pointer;
   }
   .footer-links i {
     font-size: 0.8125rem;
@@ -168,6 +169,24 @@
   }
   .footer-links a:hover i {
     transform: scale(1.2);
+  }
+  .toggle-content {
+    display: none;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: #e2e8f0;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-top: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translateY(10px);
+  }
+  .toggle-content.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
   }
   .newsletter-form {
     display: flex;
@@ -249,7 +268,7 @@
     footer h5 {
       font-size: 1.125rem;
     }
-    footer p, .footer-links a {
+    footer p, .footer-links a, .toggle-content {
       font-size: 0.875rem;
     }
     .social-icons a {
@@ -277,7 +296,7 @@
     footer h5 {
       font-size: 1rem;
     }
-    footer p, .footer-links a {
+    footer p, .footer-links a, .toggle-content {
       font-size: 0.8125rem;
     }
     .social-icons {
@@ -371,21 +390,33 @@
           </ul>
         </ul>
       </div>
-      {% comment %} About Us Links {% endcomment %}
+      {% comment %} About Us Links with Toggle Content {% endcomment %}
       <div class="footer-column">
         <h5>About Us</h5>
         <ul class="footer-links">
           <li>
-            <a href="/pages/our-mission"><i class="fa-solid fa-chevron-right"></i>Our Mission</a>
+            <a onclick="toggleContent('our-mission')"><i class="fa-solid fa-chevron-right"></i>Our Mission</a>
+            <div id="our-mission" class="toggle-content">
+              Chúng tôi mong muốn truyền cảm hứng sống khỏe mạnh và năng động đến cộng đồng thông qua những sản phẩm chất lượng và dịch vụ tận tâm.
+            </div>
           </li>
           <li>
-            <a href="/pages/why-shop-with-us"><i class="fa-solid fa-chevron-right"></i>Why Shop With Us</a>
+            <a onclick="toggleContent('why-shop')"><i class="fa-solid fa-chevron-right"></i>Why Shop With Us</a>
+            <div id="why-shop" class="toggle-content">
+              Miễn phí giao hàng toàn quốc, sản phẩm chính hãng, hỗ trợ khách hàng 24/7 – bạn luôn là ưu tiên số 1 của chúng tôi.
+            </div>
           </li>
           <li>
-            <a href="/pages/fitness-tips"><i class="fa-solid fa-chevron-right"></i>Fitness Tips</a>
+            <a onclick="toggleContent('fitness-tips')"><i class="fa-solid fa-chevron-right"></i>Fitness Tips</a>
+            <div id="fitness-tips" class="toggle-content">
+              Các bài viết và mẹo luyện tập từ chuyên gia, giúp bạn đạt được mục tiêu hình thể nhanh chóng và an toàn.
+            </div>
           </li>
           <li>
-            <a href="/pages/faqs"><i class="fa-solid fa-chevron-right"></i>FAQs</a>
+            <a onclick="toggleContent('faqs')"><i class="fa-solid fa-chevron-right"></i>FAQs</a>
+            <div id="faqs" class="toggle-content">
+              Bạn có câu hỏi? Xem ngay phần giải đáp nhanh về đơn hàng, thanh toán, đổi trả và các chính sách khác tại đây.
+            </div>
           </li>
         </ul>
       </div>
@@ -415,3 +446,21 @@
     </div>
   </div>
 </footer>
+
+{% comment %} JavaScript for toggling content {% endcomment %}
+<script>
+  function toggleContent(id) {
+    const content = document.getElementById(id);
+    const isActive = content.classList.contains('active');
+    
+    // Hide all toggle content in the About Us section
+    document.querySelectorAll('.footer-column .toggle-content').forEach((item) => {
+      item.classList.remove('active');
+    });
+    
+    // Show the clicked content if it wasn't already active
+    if (!isActive) {
+      content.classList.add('active');
+    }
+  }
+</script>
