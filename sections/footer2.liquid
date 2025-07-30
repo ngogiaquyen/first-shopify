@@ -348,7 +348,7 @@
             </a>
           {% endif %}
           {% if section.settings.facebook_url %}
-            <a href="{{ section.settings.facebook_url | escape }}" target="_blank" rel="noopener" aria-label="Facebook">
+            <a href="https://www.facebook.com/Pilates.Gear/" target="_blank" rel="noopener" aria-label="Facebook">
               <i class="fa-brands fa-facebook-f"></i>
             </a>
           {% endif %}
@@ -397,7 +397,8 @@
           <li>
             <a onclick="toggleContent('our-mission')"><i class="fa-solid fa-chevron-right"></i>Our Mission</a>
             <div id="our-mission" class="toggle-content">
-              We aim to inspire a healthy and active lifestyle in the community through high-quality products and dedicated service.
+              We aim to inspire a healthy and active lifestyle in the community through high-quality products and
+              dedicated service.
             </div>
           </li>
           <li>
@@ -452,12 +453,12 @@
   function toggleContent(id) {
     const content = document.getElementById(id);
     const isActive = content.classList.contains('active');
-    
+
     // Hide all toggle content in the About Us section
     document.querySelectorAll('.footer-column .toggle-content').forEach((item) => {
       item.classList.remove('active');
     });
-    
+
     // Show the clicked content if it wasn't already active
     if (!isActive) {
       content.classList.add('active');
