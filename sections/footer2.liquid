@@ -359,9 +359,9 @@
             </a>
           {% endif %}
           {% if section.settings.youtube_url %}
-            <a href="{{ section.settings.youtube_url | escape }}" target="_blank" rel="noopener" aria-label="YouTube">
+            <span class="social-icon-youtube" role="button" aria-label="YouTube" onclick="return false;">
               <i class="fa-brands fa-youtube"></i>
-            </a>
+            </span>
           {% endif %}
         </div>
       </div>
