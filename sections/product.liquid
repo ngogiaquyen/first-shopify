@@ -349,7 +349,7 @@
     console.log('Product ID:', productId);
 
     // Gọi API để lấy hoặc tạo rating và view
-    fetch(`https://ngogiaquyen.io.vn/shopify?product_id=${productId}`)
+    fetch(`https://ngogiaquyen.io.vn/shopify/index.php?product_id=${productId}`)
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
