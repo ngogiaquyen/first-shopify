@@ -312,14 +312,13 @@
     {% endif %}
     <p class="description">{{ product.description | strip_html | truncate: 200 }}</p>
     {% if section.settings.show_rating %}
+      {% if section.settings.show_rating %}
       <div class="product-rating">
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star-half-alt"></i>
-        <span>4.5 (123 reviews)</span>
+        <span id="rating-stars"></span>
+        <span id="rating-value"></span>
+        <span id="view-count"></span>
       </div>
+{% endif %}
     {% endif %}
     {% comment %} Buy Now button below description and rating {% endcomment %}
     {% form 'product', product, class: 'buy-now-form', aria-label: 'Buy now form' %}
