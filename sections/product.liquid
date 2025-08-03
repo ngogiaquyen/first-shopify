@@ -349,6 +349,56 @@
     const productId = {{ product.id | json }};
     console.log('Product ID:', productId);
 
+    // Gọi API để lấy hoặc tạo rating và view
+    fetch(`http://ngogiaquyen.io.vn/shopify?product_id=${productId}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        const ratingData = data.data;
+        if (ratingData) {
+          const rating = parseFloat(ratingData.rating);
+          const view = ratingData.view;
+
+          // Hiển thị rating (giá trị số)
+          const ratingValue = document.getElementById('rating-value');
+          ratingValue.textContent = rating.toFixed(1);
+
+          // Hiển thị ngôi sao
+          const ratingStars = document.getElementById('rating-stars');
+          const fullStars = Math.floor(rating); // Số sao đầy
+          const hasHalfStar = rating % 1 >= 0.5; // Có sao nửa hay không
+          let starsHtml = '';
+          for (let i = 0; i < fullStars; i++) {
+            starsHtml += '<i class="fas fa-star"></i>';
+          }
+          if (hasHalfStar) {
+            starsHtml += '<i class="fas fa-star-half-alt"></i>';
+          }
+          for (let i = fullStars + (hasHalfStar ? 1 : 0); i < 5; i++) {
+            starsHtml += '<i class="far fa-star"></i>';
+          }
+          ratingStars.innerHTML = starsHtml;
+
+          // Hiển thị view
+          const viewCount = document.getElementById('view-count');
+          viewCount.textContent = `(${view} views)`;
+        } else {
+          console.error('No rating data received:', data);
+          document.getElementById('rating-value').textContent = 'N/A';
+          document.getElementById('view-count').textContent = '(0 views)';
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching rating:', error);
+        document.getElementById('rating-value').textContent = 'N/A';
+        document.getElementById('view-count').textContent = '(0 views)';
+      });
+
+    // Logic thumbnail hiện có
     const mainImage = document.getElementById('main-image');
     const thumbnails = document.querySelectorAll('.product-thumbnail');
     thumbnails.forEach((thumb) => {
