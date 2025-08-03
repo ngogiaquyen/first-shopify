@@ -358,6 +358,7 @@
       })
       .then(data => {
         const ratingData = data.data;
+        console.log(ratingData)
         if (ratingData) {
           const rating = parseFloat(ratingData.rating);
           const view = ratingData.view;
