@@ -346,6 +346,9 @@
 {% comment %} JavaScript for thumbnail interaction {% endcomment %}
 <script>
   document.addEventListener('DOMContentLoaded', function () {
+    const productId = {{ product.id | json }};
+    console.log('Product ID:', productId);
+
     const mainImage = document.getElementById('main-image');
     const thumbnails = document.querySelectorAll('.product-thumbnail');
     thumbnails.forEach((thumb) => {
