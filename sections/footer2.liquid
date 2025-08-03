@@ -115,7 +115,7 @@
     gap: 1rem;
     flex-wrap: wrap;
   }
-  .social-icons a, .social-icon-youtube {
+  .social-icons a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -129,9 +129,8 @@
     min-width: 48px;
     min-height: 48px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    cursor: pointer; /* Thêm con trỏ chuột */
   }
-  .social-icons a:hover, .social-icon-youtube:hover {
+  .social-icons a:hover {
     background: linear-gradient(45deg, #3b82f6, #10b981);
     transform: scale(1.15) rotate(5deg);
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
@@ -249,12 +248,12 @@
     text-decoration: none;
     transition: color 0.3s ease;
     padding: 0.375rem 0;
-    cursor: pointer;
+    cursor:pointer;
   }
   .legal-links a:hover {
     color: #3b82f6;
   }
-  footer a:focus, footer button:focus, .social-icon-youtube:focus {
+  footer a:focus, footer button:focus {
     outline: 2px solid #3b82f6;
     outline-offset: 3px;
     box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.25);
@@ -278,7 +277,7 @@
     footer p, .footer-links a, .toggle-content {
       font-size: 0.875rem;
     }
-    .social-icons a, .social-icon-youtube {
+    .social-icons a {
       width: 2.25rem;
       height: 2.25rem;
       min-width: 44px;
@@ -309,7 +308,7 @@
     .social-icons {
       gap: 0.75rem;
     }
-    .social-icons a, .social-icon-youtube {
+    .social-icons a {
       width: 2rem;
       height: 2rem;
       min-width: 40px;
@@ -350,19 +349,19 @@
         <p>{{ section.settings.address | escape }}</p>
         <div class="social-icons">
           {% if section.settings.email_url %}
-            <a href="{{ section.settings.email_url | escape }}" rel="noopener" aria-label="Email">
+            <a href="pages/contact" rel="noopener" aria-label="Email">
               <i class="fa-solid fa-envelope"></i>
             </a>
           {% endif %}
           {% if section.settings.facebook_url %}
-            <a href="{{ section.settings.facebook_url | escape }}" target="_blank" rel="noopener" aria-label="Facebook">
+            <a href="https://www.facebook.com/Pilates.Gear/" target="_blank" rel="noopener" aria-label="Facebook">
               <i class="fa-brands fa-facebook-f"></i>
             </a>
           {% endif %}
           {% if section.settings.youtube_url %}
-            <span class="social-icon-youtube" role="button" aria-label="YouTube" onclick="return false;" tabindex="0">
+            <a href="{{ section.settings.youtube_url | escape }}" target="_blank" rel="noopener" aria-label="YouTube">
               <i class="fa-brands fa-youtube"></i>
-            </span>
+            </a>
           {% endif %}
         </div>
       </div>
@@ -370,21 +369,31 @@
       <div class="footer-column">
         <h5>Shop</h5>
         <ul class="footer-links">
-          <li>
-            <a href="/collections/all?collection=Gymnastics"><i class="fa-solid fa-chevron-right"></i>Gymnastics</a>
-          </li>
-          <li>
-            <a href="/collections/all?collection=Functional%20foods"><i class="fa-solid fa-chevron-right"></i>Functional foods</a>
-          </li>
-          <li>
-            <a href="/collections/all?collection=Men's%20fitness"><i class="fa-solid fa-chevron-right"></i>Men's fitness</a>
-          </li>
-          <li>
-            <a href="/collections/all?collection=Women's%20fitness"><i class="fa-solid fa-chevron-right"></i>Women's fitness</a>
-          </li>
-          <li>
-            <a href="/collections/all?collection=Accessory%20Cases"><i class="fa-solid fa-chevron-right"></i>Accessory Cases</a>
-          </li>
+          <ul class="footer-links">
+            <li>
+              <a href="/collections/all?collection=Gymnastics"><i class="fa-solid fa-chevron-right"></i>Gymnastics</a>
+            </li>
+            <li>
+              <a href="/collections/all?collection=Functional%20foods"
+                ><i class="fa-solid fa-chevron-right"></i>Functional foods</a
+              >
+            </li>
+            <li>
+              <a href="/collections/all?collection=Men's%20fitness"
+                ><i class="fa-solid fa-chevron-right"></i>Men's fitness</a
+              >
+            </li>
+            <li>
+              <a href="/collections/all?collection=Women's%20fitness"
+                ><i class="fa-solid fa-chevron-right"></i>Women's fitness</a
+              >
+            </li>
+            <li>
+              <a href="/collections/all?collection=Accessory%20Cases"
+                ><i class="fa-solid fa-chevron-right"></i>Accessory Cases</a
+              >
+            </li>
+          </ul>
         </ul>
       </div>
       {% comment %} About Us Links with Toggle Content {% endcomment %}
@@ -394,7 +403,8 @@
           <li>
             <a onclick="toggleContent('our-mission')"><i class="fa-solid fa-chevron-right"></i>Our Mission</a>
             <div id="our-mission" class="toggle-content">
-              We aim to inspire a healthy and active lifestyle in the community through high-quality products and dedicated service.
+              We aim to inspire a healthy and active lifestyle in the community through high-quality products and
+              dedicated service.
             </div>
           </li>
           <li>
