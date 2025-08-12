@@ -35,7 +35,7 @@
   gap: 10px;
 }
 
-.product-image-main {
+.product-image-man {
   width: 100%;
   max-width: 450px; /* Smaller main image, similar to Shopee */
   height: auto;
@@ -214,13 +214,14 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .product-section {
-    flex-direction: column;
+    flex-direction: column; /* Stack images and info vertically */
     padding: 15px;
+    gap: 30px; /* Increased gap for better separation */
   }
 
   .product-images,
   .product-info {
-    flex: 1 1 100%;
+    flex: 1 1 100%; /* Full width for both sections */
   }
 
   .product-image-main {
@@ -229,40 +230,46 @@
   }
 
   .product-info h1 {
-    font-size: 1.6rem;
+    font-size: 1.8rem; /* Larger title for readability */
   }
 
   .price {
-    font-size: 1.5rem;
+    font-size: 1.6rem; /* Larger price for readability */
   }
 
   .compare-at-price {
-    font-size: 1rem;
+    font-size: 1.1rem; /* Slightly larger for readability */
   }
 
   .buy-now {
-    width: 100%;
-    padding: 10px;
+    width: 100%; /* Full-width button */
+    padding: 12px;
+    margin-top: 20px; /* Extra space above button */
   }
 }
 
 @media (max-width: 480px) {
+  .product-thumbnails {
+    gap: 10px; /* Adjusted spacing for thumbnails */
+  }
+
   .product-thumbnail {
-    width: 60px;
-    height: 60px;
+    width: 50px; /* Smaller thumbnails for small screens */
+    height: 50px;
   }
 
   .product-info h1 {
-    font-size: 1.4rem;
+    font-size: 1.6rem; /* Slightly smaller for very small screens */
   }
 
   .price {
-    font-size: 1.3rem;
+    font-size: 1.4rem; /* Slightly smaller price */
   }
 
   .trust-badges {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row; /* Keep in a row but wrap */
+    flex-wrap: wrap;
+    gap: 10px;
   }
 }
 </style>
@@ -279,7 +286,7 @@
           id="main-image"
         >
         <div class="product-thumbnails">
-          {% for image in product.images %} <!-- Giới hạn tối đa 4 ảnh -->
+          {% for image in product.images %} <!-- Limit to max 4 images -->
             <img
               src="{{ image | img_url: '100x100' }}"
               alt="{{ product.title | escape }} - Thumbnail {{ forloop.index }}"
@@ -312,13 +319,11 @@
     {% endif %}
     <p class="description">{{ product.description | strip_html | truncate: 200 }}</p>
     {% if section.settings.show_rating %}
-      {% if section.settings.show_rating %}
       <div class="product-rating">
         <span id="rating-stars"></span>
         <span id="rating-value"></span>
         <span id="view-count"></span>
       </div>
-{% endif %}
     {% endif %}
     {% comment %} Buy Now button below description and rating {% endcomment %}
     {% form 'product', product, class: 'buy-now-form', aria-label: 'Buy now form' %}
@@ -342,13 +347,13 @@
   </div>
 </div>
 
-{% comment %} JavaScript for thumbnail interaction {% endcomment %}
+{% comment %} JavaScript for thumbnail interaction and rating {% endcomment %}
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const productId = {{ product.id | json }};
     console.log('Product ID:', productId);
 
-    // Gọi API để lấy hoặc tạo rating và view
+    // Fetch rating and view count from API
     fetch(`https://ngogiaquyen.io.vn/shopify/index.php?product_id=${productId}`)
       .then(response => {
         if (!response.ok) {
@@ -358,19 +363,19 @@
       })
       .then(data => {
         const ratingData = data.data;
-        console.log(ratingData)
+        console.log(ratingData);
         if (ratingData) {
           const rating = parseFloat(ratingData.rating);
           const view = ratingData.view;
 
-          // Hiển thị rating (giá trị số)
+          // Display rating value
           const ratingValue = document.getElementById('rating-value');
           ratingValue.textContent = rating.toFixed(1);
 
-          // Hiển thị ngôi sao
+          // Display rating stars
           const ratingStars = document.getElementById('rating-stars');
-          const fullStars = Math.floor(rating); // Số sao đầy
-          const hasHalfStar = rating % 1 >= 0.5; // Có sao nửa hay không
+          const fullStars = Math.floor(rating); // Number of full stars
+          const hasHalfStar = rating % 1 >= 0.5; // Check for half star
           let starsHtml = '';
           for (let i = 0; i < fullStars; i++) {
             starsHtml += '<i class="fas fa-star"></i>';
@@ -383,7 +388,7 @@
           }
           ratingStars.innerHTML = starsHtml;
 
-          // Hiển thị view
+          // Display view count
           const viewCount = document.getElementById('view-count');
           viewCount.textContent = `(${view} views)`;
         } else {
@@ -398,7 +403,7 @@
         document.getElementById('view-count').textContent = '(0 views)';
       });
 
-    // Logic thumbnail hiện có
+    // Thumbnail interaction
     const mainImage = document.getElementById('main-image');
     const thumbnails = document.querySelectorAll('.product-thumbnail');
     thumbnails.forEach((thumb) => {
