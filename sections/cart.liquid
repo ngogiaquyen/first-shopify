@@ -11,13 +11,15 @@
     <div class="cart-items">
       {% for item in cart.items %}
         <div class="cart-item" data-item-id="{{ item.key }}">
-          <div class="cart-item-image">
-            {% render 'image', image: item.image, url: item.url, alt: item.product.title %}
-          </div>
-          <div class="cart-item-details">
-            <p class="cart-item-title"><a href="{{ item.url }}">{{ item.product.title }}</a></p>
-            <p class="cart-item-variant">{{ item.variant.title }}</p>
-            <p class="cart-item-price">{{ item.final_price | money }}</p>
+          <div class="cart-item-info">
+            <div class="cart-item-image">
+              {% render 'image', image: item.image, url: item.url, alt: item.product.title %}
+            </div>
+            <div class="cart-item-details">
+              <p class="cart-item-title"><a href="{{ item.url }}">{{ item.product.title }}</a></p>
+              <p class="cart-item-variant">{{ item.variant.title }}</p>
+              <p class="cart-item-price">{{ item.final_price | money }}</p>
+            </div>
           </div>
           <div class="cart-item-quantity">
             <div class="quantity-selector">
