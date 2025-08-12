@@ -132,8 +132,9 @@
   }
 
   .cart-item-image img {
-    max-width: 120px;
-    max-height: 120px;
+    {% comment %} max-width: 120px;
+    max-height: 120px; {% endcomment %}
+    height: 100%;
     object-fit: cover;
     border-radius: 12px;
     transition: transform 0.4s ease, box-shadow 0.4s ease;
