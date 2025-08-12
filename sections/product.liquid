@@ -8,6 +8,15 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
 {% comment %} Pure CSS for modern, fitness-focused product page styling {% endcomment %}
+{% comment %}
+  This section is used in the product template to render product page with
+  media, content, add-to-cart form, and buy-now button below description.
+  https://shopify.dev/docs/storefronts/themes/architecture/templates/product
+{% endcomment %}
+
+{% comment %} Load Font Awesome for icons {% endcomment %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
 <style>
   /* General Product Section Styling */
 .product-section {
@@ -22,7 +31,7 @@
 
 /* Product Images Section */
 .product-images {
-  flex: 0 0 40%; /* Image takes ~40% of width, like Shopee */
+  flex: 0 0 40%;
   min-width: 300px;
   display: flex;
   flex-direction: column;
@@ -37,10 +46,10 @@
 
 .product-image-main {
   width: 100%;
-  max-width: 450px; /* Smaller main image, similar to Shopee */
+  max-width: 450px;
   height: auto;
   max-height: 450px;
-  object-fit: contain; /* Ensure image fits without cropping */
+  object-fit: contain;
   background-color: #ffffff;
   border: 1px solid #e8e8e8;
   border-radius: 4px;
@@ -55,7 +64,7 @@
 }
 
 .product-thumbnail {
-  width: 80px; /* Smaller thumbnails, Shopee style */
+  width: 80px;
   height: 80px;
   object-fit: contain;
   background-color: #ffffff;
@@ -68,13 +77,13 @@
 
 .product-thumbnail.active,
 .product-thumbnail:hover {
-  border-color: #ee4d2d; /* Shopee's orange accent */
+  border-color: #ee4d2d;
   transform: scale(1.03);
 }
 
 /* Product Info Section */
 .product-info {
-  flex: 0 0 55%; /* Text takes ~55% of width, like Shopee */
+  flex: 0 0 55%;
   min-width: 300px;
   display: flex;
   flex-direction: column;
@@ -93,7 +102,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  background-color: #fafafa; /* Shopee-like price background */
+  background-color: #fafafa;
   padding: 10px;
   border-radius: 4px;
 }
@@ -101,7 +110,7 @@
 .price {
   font-size: 1.8rem;
   font-weight: 600;
-  color: #ee4d2d; /* Shopee's orange price color */
+  color: #ee4d2d;
 }
 
 .compare-at-price {
@@ -133,7 +142,7 @@
   align-items: center;
   gap: 8px;
   font-size: 0.9rem;
-  color: #ee4d2d; /* Shopee's orange for stars */
+  color: #ee4d2d;
 }
 
 .product-rating .fas {
@@ -150,7 +159,7 @@
 }
 
 .buy-now {
-  background-color: #ee4d2d; /* Shopee's orange button */
+  background-color: #ee4d2d;
   color: #ffffff;
   border: none;
   padding: 12px 30px;
@@ -159,11 +168,11 @@
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  width: 200px; /* Fixed width like Shopee's buttons */
+  width: 200px;
 }
 
 .buy-now:hover {
-  background-color: #d73211; /* Darker orange on hover */
+  background-color: #d73211;
 }
 
 /* Trust Badges */
@@ -184,50 +193,23 @@
 
 .trust-badge-item .fas {
   font-size: 1rem;
-  color: #ee4d2d; /* Shopee's orange for icons */
+  color: #ee4d2d;
 }
-
-/* Dark Theme Support */
-{% comment %} @media (prefers-color-scheme: dark) {
-  .product-section {
-    {% comment %} background-color: #1a1a1a; {% endcomment %}
-  }
-
-  .product-info h1,
-  .description,
-  .product-rating span,
-  .trust-badge-item {
-    color: #e0e0e0;
-  }
-
-  .product-price {
-    background-color: #2a2a2a;
-  }
-
-  .product-image-main,
-  .product-thumbnail {
-    background-color: #2a2a2a;
-    border-color: #444444;
-  }
-} {% endcomment %}
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .product-section {
     flex-direction: column;
+    padding: 15px;
   }
 
+  /* Đảm bảo hình ảnh ở trên, thông tin ở dưới */
   .product-images {
-    order: 1; /* Hình sau */
+    order: 1;
   }
 
   .product-info {
-    order: 2; /* Thông tin trước */
-  }
-
-  .product-images,
-  .product-info {
-    flex: 1 1 100%;
+    order: 2;
   }
 
   .product-image-main {
@@ -273,6 +255,7 @@
   }
 }
 </style>
+
 
 {% comment %} Product HTML structure {% endcomment %}
 <div class="product-section">
