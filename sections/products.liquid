@@ -243,16 +243,15 @@
     grid-column: 1 / -1;
   }
 
-  .product-image-wrapper{
-  position: relative
-}
-
-  /* Overlay for out of stock */
-  .product-grid-container-{{ section.id }} .product-card.out-of-stock .product-image {
-    filter: brightness(0.5) grayscale(50%);
+    .product-image-wrapper{
+    position: relative
   }
 
-  .product-grid-container-{{ section.id }} .out-of-stock-overlay {
+    
+  .product-card.out-of-stock .product-image {
+    filter: brightness(0.5) grayscale(50%);
+  }
+  .out-of-stock-overlay {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -265,6 +264,8 @@
     border-radius: 0.375rem;
     z-index: 2;
     text-transform: uppercase;
+    text-align: center;
+    white-space: nowrap;
   }
 
   @media (max-width: 1024px) {
