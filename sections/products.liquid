@@ -325,7 +325,7 @@
     {% for handle in product_handles %}
       {% if handle != blank %}
         {% assign product = all_products[handle] %}
-        {% comment %} {% if product and product.available %} {% endcomment %}
+        {% if product and product.available %}
           {% assign has_products = true %}
           <div class="product-card">
             <a aria-label="{{ product.title | escape }}" href="{{ product.url }}">
@@ -360,7 +360,7 @@
               </form>
             {% endif %}
           </div>
-        {% comment %} {% endif %} {% endcomment %}
+        {% endif %}
       {% endif %}
     {% endfor %}
     {% unless has_products %}
