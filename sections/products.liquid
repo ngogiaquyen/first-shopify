@@ -325,15 +325,18 @@
               {% if product.compare_at_price > product.price %}
                 <span class="sale-badge">Sale</span>
               {% endif %}
-              {% if product.featured_image %}
-                <img class="product-image" src="{{ product.featured_image | img_url: '500x' }}" alt="{{ product.title | escape }}" loading="lazy">
-              {% else %}
-                <img class="product-image" src="https://via.placeholder.com/500?text=No+Image" alt="No image available" loading="lazy">
-              {% endif %}
-
-              {% unless product.available %}
-                <div class="out-of-stock-overlay">Out of stock</div>
-              {% endunless %}
+              <div class="product-image-wrapper">
+                {% if product.featured_image %}
+                  <img class="product-image" src="{{ product.featured_image | img_url: '500x' }}" alt="{{ product.title | escape }}" loading="lazy">
+                {% else %}
+                  <img class="product-image" src="https://via.placeholder.com/500?text=No+Image" alt="No image available" loading="lazy">
+                {% endif %}
+                
+                {% unless product.available %}
+                  <div class="out-of-stock-overlay">Out of stock</div>
+                {% endunless %}
+              </div>
+              
 
               <div class="product-text">
                 <p class="product-title">{{ product.title | default: 'Untitled Product' }}</p>
