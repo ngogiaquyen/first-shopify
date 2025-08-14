@@ -243,29 +243,8 @@
     grid-column: 1 / -1;
   }
 
-    .product-image-wrapper{
+  .product-image-wrapper{
     position: relative
-  }
-
-    
-  .product-card.out-of-stock .product-image {
-    filter: brightness(0.5) grayscale(50%);
-  }
-  .out-of-stock-overlay {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(0,0,0,0.6);
-    color: white;
-    font-size: 1.25rem;
-    font-weight: bold;
-    padding: 0.5rem 1rem;
-    border-radius: 0.375rem;
-    z-index: 2;
-    text-transform: uppercase;
-    text-align: center;
-    white-space: nowrap;
   }
 
   @media (max-width: 1024px) {
@@ -325,7 +304,7 @@
         {% assign product = all_products[handle] %}
         {% if product %}
           {% assign has_products = true %}
-          <div class="product-card {% unless product.available %}out-of-stock{% endunless %}">
+          <div class="product-card">
             <a aria-label="{{ product.title | escape }}" href="{{ product.url }}">
               {% if product.compare_at_price > product.price %}
                 <span class="sale-badge">Sale</span>
@@ -336,13 +315,7 @@
                 {% else %}
                   <img class="product-image" src="https://via.placeholder.com/500?text=No+Image" alt="No image available" loading="lazy">
                 {% endif %}
-                
-                {% unless product.available %}
-                  <div class="out-of-stock-overlay">Out of stock</div>
-                {% endunless %}
               </div>
-              
-
               <div class="product-text">
                 <p class="product-title">{{ product.title | default: 'Untitled Product' }}</p>
                 <p class="product-prices">
