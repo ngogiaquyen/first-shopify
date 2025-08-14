@@ -338,7 +338,7 @@
                 {% endif %}
                 
                 {% unless product.available %}
-                  <div class="out-of-stock-overlay">Out of stock</div>
+                  {% comment %} <div class="out-of-stock-overlay">Out of stock</div> {% endcomment %}
                 {% endunless %}
               </div>
               
